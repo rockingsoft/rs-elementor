@@ -34,6 +34,20 @@ class RS_Elementor_Widget_Advanced_Product_Images extends \Elementor\Widget_Base
         return [ 'woocommerce', 'product', 'gallery', 'images', 'thumbnails', 'lightbox' ];
     }
 
+    /**
+     * Styles this widget depends on.
+     */
+    public function get_style_depends() {
+        return [ 'rs-advanced-product-images' ];
+    }
+
+    /**
+     * Scripts this widget depends on.
+     */
+    public function get_script_depends() {
+        return [ 'rs-advanced-product-images' ];
+    }
+
     protected function register_controls() {
         $this->start_controls_section(
             'section_layout',
@@ -314,191 +328,6 @@ class RS_Elementor_Widget_Advanced_Product_Images extends \Elementor\Widget_Base
                 </div>
             </div>
         </div>
-
-        <style>
-            #<?php echo esc_js( $widget_id ); ?>.rs-adv-images { --thumb-size: <?php echo (int) $thumb_size; ?>px; --thumb-gap: <?php echo (int) $thumb_gap; ?>px; }
-            .rs-adv-images { width: 100%; }
-            .rs-adv-images .rs-adv-images-inner { display: flex; gap: 12px; align-items: stretch; }
-
-            /* Flex layouts per side */
-            .rs-adv-images.layout-left .rs-adv-images-inner { flex-direction: row; }
-            .rs-adv-images.layout-right .rs-adv-images-inner { flex-direction: row-reverse; }
-            .rs-adv-images.layout-top .rs-adv-images-inner { flex-direction: column; }
-            .rs-adv-images.layout-bottom .rs-adv-images-inner { flex-direction: column; }
-
-            /* Thumbs sizing and flow */
-            .rs-adv-thumbs { display: flex; gap: var(--thumb-gap); }
-            .rs-adv-main { flex: 1 1 auto; min-width: 0; }
-
-            /* Vertical thumbs for left/right */
-            .rs-adv-images.layout-left .rs-adv-thumbs,
-            .rs-adv-images.layout-right .rs-adv-thumbs { flex: 0 0 auto; flex-direction: column; max-height: 480px; overflow-y: auto; }
-            .rs-adv-images.layout-left .rs-adv-thumbs { margin-right: 0; }
-            .rs-adv-images.layout-right .rs-adv-thumbs { margin-left: 0; }
-
-            /* Horizontal thumbs for top/bottom */
-            .rs-adv-images.layout-top .rs-adv-thumbs,
-            .rs-adv-images.layout-bottom .rs-adv-thumbs { flex-direction: row; overflow-x: auto; }
-
-            .rs-adv-thumb { padding: 0; border: 0; border-radius: 4px; background: #fff; cursor: pointer; width: var(--thumb-size); height: var(--thumb-size); display: inline-flex; align-items: center; justify-content: center; overflow: hidden; box-sizing: border-box; line-height: 0; }
-            .rs-adv-thumb img { max-width: 100%; max-height: 100%; object-fit: contain; display: block; border-radius: inherit; }
-            .rs-adv-thumb.is-active { box-shadow: none; }
-
-            .rs-adv-main { position: relative; border: 1px solid #eee; border-radius: 6px; overflow: hidden; cursor: zoom-in; display: flex; align-items: center; justify-content: center; background: #fff; min-height: 300px; max-height: var(--rs-main-max, none); }
-            .rs-adv-main-img { width: 100%; height: auto; max-height: 100%; display: block; }
-
-            /* Modal */
-            .rs-adv-modal { display: none; position: fixed; inset: 0; z-index: 9999; }
-            .rs-adv-modal.is-open { display: block; }
-            .rs-adv-modal-backdrop { position: absolute; inset: 0; background: rgba(0,0,0,0.8); }
-            .rs-adv-modal-content { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; padding: 24px; }
-            .rs-adv-modal-img { max-width: 90vw; max-height: 85vh; box-shadow: 0 10px 30px rgba(0,0,0,0.35); border-radius: 6px; background: #000; }
-            .rs-adv-modal-close { position: absolute; top: 12px; right: 18px; font-size: 28px; color: #fff; background: transparent; border: 0; cursor: pointer; line-height: 1; }
-
-            .rs-adv-nav { position: absolute; top: 50%; transform: translateY(-50%); padding: 14px; color: #fff; background: rgba(0,0,0,0.6); border: 0; cursor: pointer; border-radius: 999px; display: inline-flex; align-items: center; justify-content: center; box-shadow: 0 4px 16px rgba(0,0,0,0.35); }
-            .rs-adv-prev { left: 32px; }
-            .rs-adv-next { right: 32px; }
-            .rs-adv-nav .fa, .rs-adv-nav .fas { font-size: 24px; }
-            .rs-adv-nav:hover { background: rgba(0,0,0,0.75); }
-
-            @media (max-width: 767px) {
-                /* Stack on mobile: main first, then thumbs; thumbs horizontal */
-                .rs-adv-images.layout-left .rs-adv-images-inner,
-                .rs-adv-images.layout-right .rs-adv-images-inner,
-                .rs-adv-images.layout-top .rs-adv-images-inner,
-                .rs-adv-images.layout-bottom .rs-adv-images-inner { flex-direction: column !important; }
-                .rs-adv-main { order: 1; width: 100%; }
-                .rs-adv-thumbs { order: 2; width: 100%; flex-direction: row !important; overflow-x: auto; max-height: none; }
-            }
-        </style>
-
-        <script>
-            (function(){
-                document.addEventListener('DOMContentLoaded', function(){
-                    var root = document.getElementById('<?php echo esc_js( $widget_id ); ?>');
-                    if (!root) return;
-                    var thumbs = Array.prototype.slice.call(root.querySelectorAll('.rs-adv-thumb'));
-                    var mainImg = root.querySelector('.rs-adv-main-img');
-                    var mainArea = root.querySelector('.rs-adv-main');
-                    var modal = root.querySelector('.rs-adv-modal');
-                    var modalImg = root.querySelector('.rs-adv-modal-img');
-                    var btnClose = root.querySelector('.rs-adv-modal-close');
-                    var btnPrev = root.querySelector('.rs-adv-prev');
-                    var btnNext = root.querySelector('.rs-adv-next');
-
-                    var current = 0;
-                    function setCurrent(index) {
-                        if (index < 0 || index >= thumbs.length) return;
-                        current = index;
-                        thumbs.forEach(function(t){ t.classList.remove('is-active'); });
-                        var active = thumbs[index];
-                        active.classList.add('is-active');
-                        var large = active.getAttribute('data-large') || active.getAttribute('data-full');
-                        if (large) {
-                            mainImg.src = large;
-                        }
-                        // If modal is open, keep arrow visibility in sync
-                        if (modal && modal.classList.contains('is-open')) {
-                            updateNavVisibility();
-                        }
-                    }
-
-                    function updateModalImage() {
-                        var target = thumbs[current];
-                        if (!target) return;
-                        var full = target.getAttribute('data-full') || target.getAttribute('data-large');
-                        if (full) { modalImg.src = full; }
-                    }
-
-                    function updateNavVisibility() {
-                        if (!btnPrev || !btnNext) return;
-                        var atStart = current <= 0;
-                        var atEnd = current >= (thumbs.length - 1);
-
-                        // Prev button
-                        btnPrev.style.display = atStart ? 'none' : '';
-                        btnPrev.setAttribute('aria-hidden', atStart ? 'true' : 'false');
-                        btnPrev.setAttribute('aria-disabled', atStart ? 'true' : 'false');
-                        btnPrev.tabIndex = atStart ? -1 : 0;
-
-                        // Next button
-                        btnNext.style.display = atEnd ? 'none' : '';
-                        btnNext.setAttribute('aria-hidden', atEnd ? 'true' : 'false');
-                        btnNext.setAttribute('aria-disabled', atEnd ? 'true' : 'false');
-                        btnNext.tabIndex = atEnd ? -1 : 0;
-                    }
-
-                    function openModal(index) {
-                        if (index < 0 || index >= thumbs.length) return;
-                        current = index;
-                        updateModalImage();
-                        modal.classList.add('is-open');
-                        modal.setAttribute('aria-hidden', 'false');
-                        document.body.style.overflow = 'hidden';
-                        updateNavVisibility();
-                    }
-
-                    function closeModal() {
-                        modal.classList.remove('is-open');
-                        modal.setAttribute('aria-hidden', 'true');
-                        document.body.style.overflow = '';
-                    }
-
-                    // Thumb click: select image; clicking the active thumb opens modal
-                    thumbs.forEach(function(btn, idx){
-                        btn.addEventListener('click', function(){
-                            if (idx === current) {
-                                openModal(current);
-                            } else {
-                                setCurrent(idx);
-                            }
-                        });
-                    });
-
-                    // Main area click opens modal
-                    mainArea.addEventListener('click', function(){ openModal(current); });
-                    mainArea.addEventListener('keypress', function(e){ if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openModal(current); } });
-
-                    // Modal controls
-                    btnClose.addEventListener('click', closeModal);
-                    modal.addEventListener('click', function(e){ if (e.target.classList.contains('rs-adv-modal-backdrop')) closeModal(); });
-
-                    function showPrev(){ if (current > 0) { setCurrent(current - 1); updateModalImage(); updateNavVisibility(); } }
-                    function showNext(){ if (current < thumbs.length - 1) { setCurrent(current + 1); updateModalImage(); updateNavVisibility(); } }
-                    btnPrev.addEventListener('click', showPrev);
-                    btnNext.addEventListener('click', showNext);
-
-                    window.addEventListener('keydown', function(e){
-                        if (!modal.classList.contains('is-open')) return;
-                        if (e.key === 'Escape') { closeModal(); }
-                        if (e.key === 'ArrowLeft') { showPrev(); }
-                        if (e.key === 'ArrowRight') { showNext(); }
-                    });
-
-                    // Close when clicking outside the image (backdrop or empty content area)
-                    var content = root.querySelector('.rs-adv-modal-content');
-                    modal.addEventListener('click', function(e){
-                        if (e.target.classList.contains('rs-adv-modal-backdrop')) { closeModal(); }
-                    });
-                    if (content) {
-                        content.addEventListener('click', function(e){
-                            if (e.target === content) { closeModal(); }
-                        });
-                    }
-
-                    // Click left/right half of the image to navigate
-                    modalImg.addEventListener('click', function(e){
-                        var rect = modalImg.getBoundingClientRect();
-                        var x = e.clientX - rect.left;
-                        if (x < rect.width / 2) { showPrev(); } else { showNext(); }
-                    });
-
-                    // Initialize
-                    setCurrent(0);
-                    updateNavVisibility();
-                });
-            })();
-        </script>
         <?php
     }
 }
