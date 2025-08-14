@@ -184,10 +184,12 @@ final class RS_Elementor_Widgets {
         // Include Widget files
         require_once( __DIR__ . '/widgets/product-reviews.php' );
         require_once( __DIR__ . '/widgets/advanced-product-images.php' );
+        require_once( __DIR__ . '/widgets/variation-chooser.php' );
         
         // Register widgets
         $widgets_manager->register( new \RS_Elementor_Widget_Product_Reviews() );
         $widgets_manager->register( new \RS_Elementor_Widget_Advanced_Product_Images() );
+        $widgets_manager->register( new \RS_Elementor_Widget_Variation_Chooser() );
     }
 
     /**
@@ -197,6 +199,7 @@ final class RS_Elementor_Widgets {
         // Per-widget styles (registered only; enqueued via get_style_depends on widgets)
         wp_register_style( 'rs-advanced-product-images', plugins_url( 'assets/css/advanced-product-images.css', __FILE__ ), [], self::VERSION );
         wp_register_style( 'rs-product-reviews', plugins_url( 'assets/css/product-reviews.css', __FILE__ ), [], self::VERSION );
+        wp_register_style( 'rs-variation-chooser', plugins_url( 'assets/css/variation-chooser.css', __FILE__ ), [], self::VERSION );
     }
 
     /**
@@ -206,6 +209,7 @@ final class RS_Elementor_Widgets {
         // Per-widget scripts (registered only; enqueued via get_script_depends on widgets)
         wp_register_script( 'rs-advanced-product-images', plugins_url( 'assets/js/advanced-product-images.js', __FILE__ ), [], self::VERSION, true );
         wp_register_script( 'rs-product-reviews', plugins_url( 'assets/js/product-reviews.js', __FILE__ ), [], self::VERSION, true );
+        wp_register_script( 'rs-variation-chooser', plugins_url( 'assets/js/variation-chooser.js', __FILE__ ), [ 'jquery' ], self::VERSION, true );
     }
 }
 

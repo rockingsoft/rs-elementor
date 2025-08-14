@@ -1,0 +1,15 @@
+/* RS Variation Chooser */
+.rs-variation-chooser { display: block; }
+.rs-variation-chooser .rs-varc-label { display: block; margin-bottom: 6px; font-weight: 600; }
+.rs-variation-chooser .rs-varc-select { width: 100%; max-width: 320px; padding: 6px 8px; }
+
+/* Thumbnails layout */
+.rs-variation-chooser .rs-varc-thumbs { display: flex; flex-wrap: wrap; gap: 8px; }
+.rs-variation-chooser .rs-varc-thumb { border: 1px solid #ddd; background: #fff; padding: 6px; border-radius: 6px; cursor: pointer; outline: none; display: flex; flex-direction: column; align-items: center; }
+.rs-variation-chooser .rs-varc-thumb.is-active { border-color: #2271b1; box-shadow: 0 0 0 2px rgba(34,113,177,0.15); }
+.rs-variation-chooser .rs-varc-thumb img { display: block; width: 56px; height: 56px; object-fit: cover; border-radius: 4px; }
+.rs-variation-chooser .rs-varc-thumb-fallback { display: inline-block; padding: 8px 10px; font-size: 13px; }
+.rs-variation-chooser .rs-varc-thumb-name { display: block; margin-top: 6px; font-size: 12px; color: #222; text-align: center; }
+
+/* Notices */
+.rs-varc-notice { padding: 10px; background: #f8f9fa; border: 1px dashed #dcdcdc; color: #555; border-radius: 4px; }
