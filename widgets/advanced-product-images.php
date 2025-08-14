@@ -253,8 +253,8 @@ class RS_Elementor_Widget_Advanced_Product_Images extends \Elementor\Widget_Base
             .rs-adv-images.layout-top .rs-adv-thumbs,
             .rs-adv-images.layout-bottom .rs-adv-thumbs { flex-direction: row; overflow-x: auto; }
 
-            .rs-adv-thumb { padding: 0; border: 0; border-radius: 4px; background: #fff; cursor: pointer; width: var(--thumb-size); height: var(--thumb-size); display: inline-flex; align-items: center; justify-content: center; }
-            .rs-adv-thumb img { max-width: 100%; max-height: 100%; object-fit: contain; display: block; }
+            .rs-adv-thumb { padding: 0; border: 0; border-radius: 4px; background: #fff; cursor: pointer; width: var(--thumb-size); height: var(--thumb-size); display: inline-flex; align-items: center; justify-content: center; overflow: hidden; box-sizing: border-box; line-height: 0; }
+            .rs-adv-thumb img { max-width: 100%; max-height: 100%; object-fit: contain; display: block; border-radius: inherit; }
             .rs-adv-thumb.is-active { box-shadow: none; }
 
             .rs-adv-main { position: relative; border: 1px solid #eee; border-radius: 6px; overflow: hidden; cursor: zoom-in; display: flex; align-items: center; justify-content: center; background: #fff; min-height: 300px; }
