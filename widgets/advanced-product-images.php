@@ -84,6 +84,93 @@ class RS_Elementor_Widget_Advanced_Product_Images extends \Elementor\Widget_Base
 
         $this->end_controls_section();
 
+
+        // Styles: Main Image
+        $this->start_controls_section(
+            'section_style_main',
+            [
+                'label' => esc_html__( 'Main Image', 'rs-elementor-widgets' ),
+                'tab'   => \Elementor\Controls_Manager::TAB_CONTENT,
+            ]
+        );
+
+        $this->add_responsive_control(
+            'main_height',
+            [
+                'label' => esc_html__( 'Fixed Height', 'rs-elementor-widgets' ),
+                'type' => \Elementor\Controls_Manager::SLIDER,
+                'size_units' => [ 'px', 'vh' ],
+                'range' => [
+                    'px' => [ 'min' => 100, 'max' => 1200 ],
+                    'vh' => [ 'min' => 10, 'max' => 100 ],
+                ],
+                'selectors' => [
+                    '{{WRAPPER}} .rs-adv-main' => 'height: {{SIZE}}{{UNIT}};',
+                    '{{WRAPPER}} .rs-adv-main .rs-adv-main-img' => 'height: 100%;',
+                ],
+            ]
+        );
+
+        $this->add_responsive_control(
+            'main_max_height',
+            [
+                'label' => esc_html__( 'Max Height', 'rs-elementor-widgets' ),
+                'type' => \Elementor\Controls_Manager::SLIDER,
+                'size_units' => [ 'px', 'vh' ],
+                'range' => [
+                    'px' => [ 'min' => 100, 'max' => 1200 ],
+                    'vh' => [ 'min' => 10, 'max' => 100 ],
+                ],
+                'selectors' => [
+                    '{{WRAPPER}} .rs-adv-main' => '--rs-main-max: {{SIZE}}{{UNIT}};',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'main_fit',
+            [
+                'label' => esc_html__( 'When image is larger', 'rs-elementor-widgets' ),
+                'type' => \Elementor\Controls_Manager::SELECT,
+                'default' => 'contain',
+                'options' => [
+                    'contain' => esc_html__( 'Scale to fit (contain)', 'rs-elementor-widgets' ),
+                    'cover' => esc_html__( 'Crop to fill (cover)', 'rs-elementor-widgets' ),
+                    'scale-down' => esc_html__( 'Only scale down', 'rs-elementor-widgets' ),
+                    'fill' => esc_html__( 'Stretch to fill', 'rs-elementor-widgets' ),
+                    'none' => esc_html__( 'No scaling', 'rs-elementor-widgets' ),
+                ],
+                'selectors' => [
+                    '{{WRAPPER}} .rs-adv-main-img' => 'object-fit: {{VALUE}};',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'main_object_position',
+            [
+                'label' => esc_html__( 'Focal Position', 'rs-elementor-widgets' ),
+                'type' => \Elementor\Controls_Manager::SELECT,
+                'default' => 'center center',
+                'options' => [
+                    'center center' => esc_html__( 'Center Center', 'rs-elementor-widgets' ),
+                    'top left' => esc_html__( 'Top Left', 'rs-elementor-widgets' ),
+                    'top center' => esc_html__( 'Top Center', 'rs-elementor-widgets' ),
+                    'top right' => esc_html__( 'Top Right', 'rs-elementor-widgets' ),
+                    'center left' => esc_html__( 'Center Left', 'rs-elementor-widgets' ),
+                    'center right' => esc_html__( 'Center Right', 'rs-elementor-widgets' ),
+                    'bottom left' => esc_html__( 'Bottom Left', 'rs-elementor-widgets' ),
+                    'bottom center' => esc_html__( 'Bottom Center', 'rs-elementor-widgets' ),
+                    'bottom right' => esc_html__( 'Bottom Right', 'rs-elementor-widgets' ),
+                ],
+                'selectors' => [
+                    '{{WRAPPER}} .rs-adv-main-img' => 'object-position: {{VALUE}};',
+                ],
+            ]
+        );
+
+        $this->end_controls_section();
+
         // Styles: Thumbnails
         $this->start_controls_section(
             'section_style_thumbs',
@@ -257,8 +344,8 @@ class RS_Elementor_Widget_Advanced_Product_Images extends \Elementor\Widget_Base
             .rs-adv-thumb img { max-width: 100%; max-height: 100%; object-fit: contain; display: block; border-radius: inherit; }
             .rs-adv-thumb.is-active { box-shadow: none; }
 
-            .rs-adv-main { position: relative; border: 1px solid #eee; border-radius: 6px; overflow: hidden; cursor: zoom-in; display: flex; align-items: center; justify-content: center; background: #fff; min-height: 300px; }
-            .rs-adv-main-img { width: 100%; height: auto; display: block; object-fit: contain; }
+            .rs-adv-main { position: relative; border: 1px solid #eee; border-radius: 6px; overflow: hidden; cursor: zoom-in; display: flex; align-items: center; justify-content: center; background: #fff; min-height: 300px; max-height: var(--rs-main-max, none); }
+            .rs-adv-main-img { width: 100%; height: auto; max-height: 100%; display: block; }
 
             /* Modal */
             .rs-adv-modal { display: none; position: fixed; inset: 0; z-index: 9999; }
