@@ -355,10 +355,11 @@ class RS_Elementor_Widget_Advanced_Product_Images extends \Elementor\Widget_Base
             .rs-adv-modal-img { max-width: 90vw; max-height: 85vh; box-shadow: 0 10px 30px rgba(0,0,0,0.35); border-radius: 6px; background: #000; }
             .rs-adv-modal-close { position: absolute; top: 12px; right: 18px; font-size: 28px; color: #fff; background: transparent; border: 0; cursor: pointer; line-height: 1; }
 
-            .rs-adv-nav { position: absolute; top: 50%; transform: translateY(-50%); padding: 10px; color: #fff; background: rgba(0,0,0,0.4); border: 0; cursor: pointer; border-radius: 999px; display: inline-flex; align-items: center; justify-content: center; }
-            .rs-adv-prev { left: 16px; }
-            .rs-adv-next { right: 16px; }
-            .rs-adv-nav .fa, .rs-adv-nav .fas { font-size: 20px; }
+            .rs-adv-nav { position: absolute; top: 50%; transform: translateY(-50%); padding: 14px; color: #fff; background: rgba(0,0,0,0.6); border: 0; cursor: pointer; border-radius: 999px; display: inline-flex; align-items: center; justify-content: center; box-shadow: 0 4px 16px rgba(0,0,0,0.35); }
+            .rs-adv-prev { left: 32px; }
+            .rs-adv-next { right: 32px; }
+            .rs-adv-nav .fa, .rs-adv-nav .fas { font-size: 24px; }
+            .rs-adv-nav:hover { background: rgba(0,0,0,0.75); }
 
             @media (max-width: 767px) {
                 /* Stack on mobile: main first, then thumbs; thumbs horizontal */
@@ -398,16 +399,27 @@ class RS_Elementor_Widget_Advanced_Product_Images extends \Elementor\Widget_Base
                         }
                     }
 
+                    function updateModalImage() {
+                        var target = thumbs[current];
+                        if (!target) return;
+                        var full = target.getAttribute('data-full') || target.getAttribute('data-large');
+                        if (full) { modalImg.src = full; }
+                    }
+
+                    function updateNavVisibility() {
+                        if (!btnPrev || !btnNext) return;
+                        btnPrev.style.display = (current > 0) ? '' : 'none';
+                        btnNext.style.display = (current < thumbs.length - 1) ? '' : 'none';
+                    }
+
                     function openModal(index) {
                         if (index < 0 || index >= thumbs.length) return;
-                        var target = thumbs[index];
-                        var full = target.getAttribute('data-full') || target.getAttribute('data-large');
-                        if (full) {
-                            modalImg.src = full;
-                        }
+                        current = index;
+                        updateModalImage();
                         modal.classList.add('is-open');
                         modal.setAttribute('aria-hidden', 'false');
                         document.body.style.overflow = 'hidden';
+                        updateNavVisibility();
                     }
 
                     function closeModal() {
@@ -435,8 +447,8 @@ class RS_Elementor_Widget_Advanced_Product_Images extends \Elementor\Widget_Base
                     btnClose.addEventListener('click', closeModal);
                     modal.addEventListener('click', function(e){ if (e.target.classList.contains('rs-adv-modal-backdrop')) closeModal(); });
 
-                    function showPrev(){ setCurrent((current - 1 + thumbs.length) % thumbs.length); openModal(current); }
-                    function showNext(){ setCurrent((current + 1) % thumbs.length); openModal(current); }
+                    function showPrev(){ if (current > 0) { setCurrent(current - 1); updateModalImage(); updateNavVisibility(); } }
+                    function showNext(){ if (current < thumbs.length - 1) { setCurrent(current + 1); updateModalImage(); updateNavVisibility(); } }
                     btnPrev.addEventListener('click', showPrev);
                     btnNext.addEventListener('click', showNext);
 
@@ -447,8 +459,27 @@ class RS_Elementor_Widget_Advanced_Product_Images extends \Elementor\Widget_Base
                         if (e.key === 'ArrowRight') { showNext(); }
                     });
 
+                    // Close when clicking outside the image (backdrop or empty content area)
+                    var content = root.querySelector('.rs-adv-modal-content');
+                    modal.addEventListener('click', function(e){
+                        if (e.target.classList.contains('rs-adv-modal-backdrop')) { closeModal(); }
+                    });
+                    if (content) {
+                        content.addEventListener('click', function(e){
+                            if (e.target === content) { closeModal(); }
+                        });
+                    }
+
+                    // Click left/right half of the image to navigate
+                    modalImg.addEventListener('click', function(e){
+                        var rect = modalImg.getBoundingClientRect();
+                        var x = e.clientX - rect.left;
+                        if (x < rect.width / 2) { showPrev(); } else { showNext(); }
+                    });
+
                     // Initialize
                     setCurrent(0);
+                    updateNavVisibility();
                 });
             })();
         </script>
