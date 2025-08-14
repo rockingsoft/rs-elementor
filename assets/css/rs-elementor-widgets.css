@@ -1,0 +1,281 @@
+/**
+ * RS Elementor Widgets for WooCommerce - Styles
+ */
+
+/* General Styles */
+.rs-elementor-widget {
+    margin-bottom: 30px;
+}
+
+/* Featured Products Carousel */
+.rs-featured-products-carousel {
+    position: relative;
+    margin-bottom: 40px;
+}
+
+.rs-featured-products-title {
+    margin-bottom: 20px;
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.rs-carousel {
+    position: relative;
+    padding: 0 5px;
+}
+
+.rs-carousel-item {
+    padding: 10px;
+}
+
+.rs-product-card {
+    border: 1px solid #eee;
+    border-radius: 5px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.rs-product-card:hover {
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transform: translateY(-3px);
+}
+
+.rs-product-image {
+    position: relative;
+    overflow: hidden;
+}
+
+.rs-product-image img {
+    width: 100%;
+    height: auto;
+    transition: transform 0.3s ease;
+}
+
+.rs-product-card:hover .rs-product-image img {
+    transform: scale(1.05);
+}
+
+.rs-sale-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: #f44336;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 3px;
+    font-size: 12px;
+    font-weight: 600;
+    z-index: 1;
+}
+
+.rs-product-title {
+    padding: 10px 15px;
+    margin: 0;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 1.4;
+}
+
+.rs-product-price {
+    padding: 0 15px 10px;
+    font-weight: 600;
+}
+
+.rs-product-price del {
+    color: #999;
+    margin-right: 5px;
+}
+
+.rs-product-price ins {
+    text-decoration: none;
+    color: #f44336;
+}
+
+.rs-product-actions {
+    padding: 0 15px 15px;
+}
+
+/* Slick Carousel Customization */
+.rs-carousel .slick-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 2;
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    font-size: 0;
+    border: none;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.rs-carousel .slick-arrow:hover {
+    background: rgba(255, 255, 255, 1);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+}
+
+.rs-carousel .slick-prev {
+    left: -20px;
+}
+
+.rs-carousel .slick-next {
+    right: -20px;
+}
+
+.rs-carousel .slick-prev:before,
+.rs-carousel .slick-next:before {
+    font-family: "dashicons";
+    font-size: 20px;
+    line-height: 1;
+    color: #333;
+}
+
+.rs-carousel .slick-prev:before {
+    content: "\f341";
+}
+
+.rs-carousel .slick-next:before {
+    content: "\f345";
+}
+
+.rs-carousel .slick-dots {
+    position: relative;
+    bottom: 0;
+    display: flex !important;
+    justify-content: center;
+    list-style: none;
+    margin: 15px 0 0;
+    padding: 0;
+}
+
+.rs-carousel .slick-dots li {
+    margin: 0 5px;
+}
+
+.rs-carousel .slick-dots li button {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #ddd;
+    border: none;
+    font-size: 0;
+    padding: 0;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.rs-carousel .slick-dots li.slick-active button {
+    background-color: #333;
+    transform: scale(1.2);
+}
+
+/* Product Reviews Widget */
+.rs-product-reviews {
+    margin-bottom: 30px;
+}
+
+.rs-reviews-title {
+    margin-bottom: 20px;
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.rs-review-item {
+    margin-bottom: 20px;
+    padding: 15px;
+    border: 1px solid #e5e5e5;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+.rs-review-item:hover {
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+}
+
+.rs-review-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.rs-review-avatar {
+    margin-right: 15px;
+}
+
+.rs-review-avatar img {
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+}
+
+.rs-review-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.rs-review-author {
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.rs-verified-badge {
+    display: inline-block;
+    background-color: #4CAF50;
+    color: white;
+    font-size: 12px;
+    padding: 2px 8px;
+    border-radius: 3px;
+    margin-right: 10px;
+}
+
+.rs-review-date {
+    color: #777;
+    font-size: 0.9em;
+    margin-right: 10px;
+}
+
+.rs-review-rating {
+    margin-top: 5px;
+}
+
+.rs-review-rating .star-rating {
+    float: none;
+    display: inline-block;
+}
+
+.rs-review-content {
+    margin-top: 10px;
+}
+
+.rs-review-content p:last-child {
+    margin-bottom: 0;
+}
+
+/* Responsive Styles */
+@media (max-width: 767px) {
+    .rs-review-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .rs-review-avatar {
+        margin-right: 0;
+        margin-bottom: 10px;
+    }
+    
+    .rs-review-meta {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .rs-review-author,
+    .rs-verified-badge,
+    .rs-review-date {
+        margin-bottom: 5px;
+    }
+}
