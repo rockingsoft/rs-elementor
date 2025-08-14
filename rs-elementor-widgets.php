@@ -194,18 +194,18 @@ final class RS_Elementor_Widgets {
      * Register widget styles
      */
     public function widget_styles() {
-        wp_register_style( 'rs-elementor-widgets', plugins_url( 'assets/css/rs-elementor-widgets.css', __FILE__ ) );
-        wp_enqueue_style( 'rs-elementor-widgets' );
+        // Per-widget styles (registered only; enqueued via get_style_depends on widgets)
+        wp_register_style( 'rs-advanced-product-images', plugins_url( 'assets/css/advanced-product-images.css', __FILE__ ), [], self::VERSION );
+        wp_register_style( 'rs-product-reviews', plugins_url( 'assets/css/product-reviews.css', __FILE__ ), [], self::VERSION );
     }
 
     /**
      * Register widget scripts
      */
     public function widget_scripts() {
-        // Currently, our scripts are embedded directly in the widget render method
-        // This method is kept for future script registrations
-        // Example of how to register scripts:
-        // wp_register_script('rs-reviews-modal', plugins_url('assets/js/reviews-modal.js', __FILE__), ['jquery'], self::VERSION, true);
+        // Per-widget scripts (registered only; enqueued via get_script_depends on widgets)
+        wp_register_script( 'rs-advanced-product-images', plugins_url( 'assets/js/advanced-product-images.js', __FILE__ ), [], self::VERSION, true );
+        wp_register_script( 'rs-product-reviews', plugins_url( 'assets/js/product-reviews.js', __FILE__ ), [], self::VERSION, true );
     }
 }
 
