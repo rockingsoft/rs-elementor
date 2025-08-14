@@ -183,9 +183,11 @@ final class RS_Elementor_Widgets {
     public function register_widgets( $widgets_manager ) {
         // Include Widget files
         require_once( __DIR__ . '/widgets/product-reviews.php' );
+        require_once( __DIR__ . '/widgets/advanced-product-images.php' );
         
         // Register widgets
         $widgets_manager->register( new \RS_Elementor_Widget_Product_Reviews() );
+        $widgets_manager->register( new \RS_Elementor_Widget_Advanced_Product_Images() );
     }
 
     /**
