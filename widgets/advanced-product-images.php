@@ -397,6 +397,10 @@ class RS_Elementor_Widget_Advanced_Product_Images extends \Elementor\Widget_Base
                         if (large) {
                             mainImg.src = large;
                         }
+                        // If modal is open, keep arrow visibility in sync
+                        if (modal && modal.classList.contains('is-open')) {
+                            updateNavVisibility();
+                        }
                     }
 
                     function updateModalImage() {
@@ -408,8 +412,20 @@ class RS_Elementor_Widget_Advanced_Product_Images extends \Elementor\Widget_Base
 
                     function updateNavVisibility() {
                         if (!btnPrev || !btnNext) return;
-                        btnPrev.style.display = (current > 0) ? '' : 'none';
-                        btnNext.style.display = (current < thumbs.length - 1) ? '' : 'none';
+                        var atStart = current <= 0;
+                        var atEnd = current >= (thumbs.length - 1);
+
+                        // Prev button
+                        btnPrev.style.display = atStart ? 'none' : '';
+                        btnPrev.setAttribute('aria-hidden', atStart ? 'true' : 'false');
+                        btnPrev.setAttribute('aria-disabled', atStart ? 'true' : 'false');
+                        btnPrev.tabIndex = atStart ? -1 : 0;
+
+                        // Next button
+                        btnNext.style.display = atEnd ? 'none' : '';
+                        btnNext.setAttribute('aria-hidden', atEnd ? 'true' : 'false');
+                        btnNext.setAttribute('aria-disabled', atEnd ? 'true' : 'false');
+                        btnNext.tabIndex = atEnd ? -1 : 0;
                     }
 
                     function openModal(index) {
