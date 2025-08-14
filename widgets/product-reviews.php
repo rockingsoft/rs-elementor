@@ -715,12 +715,39 @@ class RS_Elementor_Widget_Product_Reviews extends \Elementor\Widget_Base {
             $product_id = $product->get_id();
         }
 
-        // If we don't have a product ID, show a message
+        // If we don't have a product ID, try to provide a preview in Elementor editor mode
         if (empty($product_id)) {
-            echo '<div class="elementor-alert elementor-alert-info">';
-            echo esc_html__('This widget can only be used on product pages.', 'rs-elementor-widgets');
-            echo '</div>';
-            return;
+            $is_editor = class_exists('\\Elementor\\Plugin') && \Elementor\Plugin::$instance->editor->is_edit_mode();
+
+            if ($is_editor) {
+                // Fallback to a recent published product for preview
+                if (function_exists('wc_get_products')) {
+                    $sample_ids = wc_get_products([
+                        'status'  => 'publish',
+                        'limit'   => 1,
+                        'orderby' => 'date',
+                        'order'   => 'DESC',
+                        'return'  => 'ids',
+                    ]);
+                    if (!empty($sample_ids)) {
+                        $product_id = (int) $sample_ids[0];
+                    }
+                }
+
+                // If we still couldn't find a product, inform the user in the editor
+                if (empty($product_id)) {
+                    echo '<div class="elementor-alert elementor-alert-info">';
+                    echo esc_html__('No products found to preview. Please create a WooCommerce product or place this widget on a product template.', 'rs-elementor-widgets');
+                    echo '</div>';
+                    return;
+                }
+            } else {
+                // Front-end: keep current behavior
+                echo '<div class="elementor-alert elementor-alert-info">';
+                echo esc_html__('This widget can only be used on product pages.', 'rs-elementor-widgets');
+                echo '</div>';
+                return;
+            }
         }
 
         // Get the initial reviews
