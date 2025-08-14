@@ -181,35 +181,27 @@ class RS_Elementor_Widget_Advanced_Product_Images extends \Elementor\Widget_Base
         <style>
             #<?php echo esc_js( $widget_id ); ?>.rs-adv-images { --thumb-size: <?php echo (int) $thumb_size; ?>px; --thumb-gap: <?php echo (int) $thumb_gap; ?>px; }
             .rs-adv-images { width: 100%; }
-            .rs-adv-images .rs-adv-images-inner { display: grid; gap: 12px; align-items: start; }
+            .rs-adv-images .rs-adv-images-inner { display: flex; gap: 12px; align-items: stretch; }
 
-            /* Grid areas to control order regardless of DOM */
-            .rs-adv-images.layout-left .rs-adv-images-inner {
-                grid-template-areas: 'thumbs main';
-                grid-template-columns: minmax(60px, calc(var(--thumb-size) + 2px)) 1fr;
-            }
-            .rs-adv-images.layout-right .rs-adv-images-inner {
-                grid-template-areas: 'main thumbs';
-                grid-template-columns: 1fr minmax(60px, calc(var(--thumb-size) + 2px));
-            }
-            .rs-adv-images.layout-top .rs-adv-images-inner {
-                grid-template-areas: 'thumbs' 'main';
-                grid-template-columns: 1fr;
-            }
-            .rs-adv-images.layout-bottom .rs-adv-images-inner {
-                grid-template-areas: 'main' 'thumbs';
-                grid-template-columns: 1fr;
-            }
+            /* Flex layouts per side */
+            .rs-adv-images.layout-left .rs-adv-images-inner { flex-direction: row; }
+            .rs-adv-images.layout-right .rs-adv-images-inner { flex-direction: row-reverse; }
+            .rs-adv-images.layout-top .rs-adv-images-inner { flex-direction: column; }
+            .rs-adv-images.layout-bottom .rs-adv-images-inner { flex-direction: column; }
 
-            .rs-adv-thumbs { grid-area: thumbs; display: grid; gap: var(--thumb-gap); }
-            .rs-adv-main { grid-area: main; }
+            /* Thumbs sizing and flow */
+            .rs-adv-thumbs { display: flex; gap: var(--thumb-gap); }
+            .rs-adv-main { flex: 1 1 auto; min-width: 0; }
 
-            /* Scrolling/orientation per position */
+            /* Vertical thumbs for left/right */
             .rs-adv-images.layout-left .rs-adv-thumbs,
-            .rs-adv-images.layout-right .rs-adv-thumbs { overflow-y: auto; max-height: 480px; grid-auto-rows: var(--thumb-size); grid-template-columns: 1fr; }
+            .rs-adv-images.layout-right .rs-adv-thumbs { flex: 0 0 auto; flex-direction: column; max-height: 480px; overflow-y: auto; }
+            .rs-adv-images.layout-left .rs-adv-thumbs { margin-right: 0; }
+            .rs-adv-images.layout-right .rs-adv-thumbs { margin-left: 0; }
 
+            /* Horizontal thumbs for top/bottom */
             .rs-adv-images.layout-top .rs-adv-thumbs,
-            .rs-adv-images.layout-bottom .rs-adv-thumbs { grid-auto-flow: column; grid-auto-columns: var(--thumb-size); white-space: nowrap; overflow-x: auto; }
+            .rs-adv-images.layout-bottom .rs-adv-thumbs { flex-direction: row; overflow-x: auto; }
 
             .rs-adv-thumb { padding: 0; border: 2px solid transparent; border-radius: 4px; background: #fff; cursor: pointer; width: var(--thumb-size); height: var(--thumb-size); display: inline-flex; align-items: center; justify-content: center; }
             .rs-adv-thumb img { max-width: 100%; max-height: 100%; object-fit: contain; display: block; }
@@ -232,12 +224,13 @@ class RS_Elementor_Widget_Advanced_Product_Images extends \Elementor\Widget_Base
             .rs-adv-nav .fa, .rs-adv-nav .fas { font-size: 20px; }
 
             @media (max-width: 767px) {
-                /* Stack on mobile: main then thumbs */
+                /* Stack on mobile: main first, then thumbs; thumbs horizontal */
                 .rs-adv-images.layout-left .rs-adv-images-inner,
-                .rs-adv-images.layout-right .rs-adv-images-inner {
-                    grid-template-areas: 'main' 'thumbs';
-                    grid-template-columns: 1fr;
-                }
+                .rs-adv-images.layout-right .rs-adv-images-inner,
+                .rs-adv-images.layout-top .rs-adv-images-inner,
+                .rs-adv-images.layout-bottom .rs-adv-images-inner { flex-direction: column !important; }
+                .rs-adv-main { order: 1; width: 100%; }
+                .rs-adv-thumbs { order: 2; width: 100%; flex-direction: row !important; overflow-x: auto; max-height: none; }
             }
         </style>
 
