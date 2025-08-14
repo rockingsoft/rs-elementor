@@ -139,19 +139,21 @@ class RS_Elementor_Widget_Advanced_Product_Images extends \Elementor\Widget_Base
             return;
         }
 
-        // Only render on single product
-        if ( ! is_product() ) {
-            echo '<div class="elementor-alert elementor-alert-info">' . esc_html__( 'This widget is intended for single product pages.', 'rs-elementor-widgets' ) . '</div>';
-            return;
-        }
-
         $settings = $this->get_settings_for_display();
         $thumbs_position = $settings['thumbs_position'];
         $thumb_size = isset($settings['thumb_size']) ? (int)$settings['thumb_size'] : 80;
         $thumb_gap = isset($settings['thumb_gap']) ? (int)$settings['thumb_gap'] : 8;
 
+        // Resolve product in both frontend and Elementor editor preview
         global $product;
-        if ( ! $product ) {
+        if ( ! $product || ! is_a( $product, 'WC_Product' ) ) {
+            $maybe_product = wc_get_product( get_the_ID() );
+            if ( $maybe_product && is_a( $maybe_product, 'WC_Product' ) ) {
+                $product = $maybe_product;
+            }
+        }
+        if ( ! $product || ! is_a( $product, 'WC_Product' ) ) {
+            echo '<div class="elementor-alert elementor-alert-info">' . esc_html__( 'No product found for preview. Please set a Product in the Preview Settings.', 'rs-elementor-widgets' ) . '</div>';
             return;
         }
 
