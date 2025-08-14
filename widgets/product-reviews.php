@@ -668,8 +668,7 @@ class RS_Elementor_Widget_Product_Reviews extends \Elementor\Widget_Base {
      * Render widget output on the frontend.
      */
     protected function render() {
-        // Enqueue dashicons
-        wp_enqueue_style('dashicons');
+        // Dashicons not needed; Elementor includes Font Awesome
         
         if (!class_exists('WooCommerce')) {
             echo '<div class="elementor-alert elementor-alert-warning">';
@@ -818,14 +817,9 @@ class RS_Elementor_Widget_Product_Reviews extends \Elementor\Widget_Base {
                     
                     <div class="rs-reviews-modal-sorting">
                         <span class="rs-sort-label"><?php echo esc_html__('Sort by Rating:', 'rs-elementor-widgets'); ?></span>
-                        <div class="rs-sort-buttons">
-                            <button type="button" class="rs-sort-button rs-sort-desc active" data-sort="rating-desc" title="<?php echo esc_attr__('Highest to Lowest', 'rs-elementor-widgets'); ?>">
-                                <span class="dashicons dashicons-arrow-down-alt"></span>
-                            </button>
-                            <button type="button" class="rs-sort-button rs-sort-asc" data-sort="rating-asc" title="<?php echo esc_attr__('Lowest to Highest', 'rs-elementor-widgets'); ?>">
-                                <span class="dashicons dashicons-arrow-up-alt"></span>
-                            </button>
-                        </div>
+                        <button type="button" class="rs-sort-toggle" data-sort="rating-desc" title="<?php echo esc_attr__('Highest to Lowest', 'rs-elementor-widgets'); ?>" aria-label="<?php echo esc_attr__('Sort reviews', 'rs-elementor-widgets'); ?>">
+                            <i class="fas fa-sort-amount-down" aria-hidden="true"></i>
+                        </button>
                     </div>
                     
                     <div class="rs-reviews-modal-list">
@@ -1013,49 +1007,28 @@ class RS_Elementor_Widget_Product_Reviews extends \Elementor\Widget_Base {
                 font-weight: 600;
             }
             
-            .rs-sort-buttons {
-                display: flex;
-                align-items: center;
-            }
-            
-            .rs-sort-button {
+            .rs-sort-toggle {
                 background: #f7f7f7;
                 border: 1px solid #ddd;
-                padding: 5px 10px;
+                padding: 6px 12px;
                 cursor: pointer;
-                display: flex;
+                display: inline-flex;
                 align-items: center;
                 justify-content: center;
                 transition: all 0.2s ease;
+                border-radius: 4px;
             }
-            
-            .rs-sort-button:first-child {
-                border-top-left-radius: 4px;
-                border-bottom-left-radius: 4px;
-                border-right: none;
-            }
-            
-            .rs-sort-button:last-child {
-                border-top-right-radius: 4px;
-                border-bottom-right-radius: 4px;
-            }
-            
-            .rs-sort-button.active {
-                background: #ebebeb;
-                box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1);
-            }
-            
-            .rs-sort-button:hover {
+
+            .rs-sort-toggle:hover {
                 background: #ebebeb;
             }
-            
-            .rs-sort-button .dashicons {
+
+            .rs-sort-toggle .fa,
+            .rs-sort-toggle .fas {
                 font-size: 18px;
                 width: 18px;
                 height: 18px;
                 line-height: 18px;
-                font-family: dashicons !important;
-                speak: never;
             }
 
             .rs-reviews-modal-list .rs-loading,
@@ -1096,6 +1069,7 @@ class RS_Elementor_Widget_Product_Reviews extends \Elementor\Widget_Base {
                     var modal = document.getElementById(widgetId + '-modal');
                     var closeBtn = modal.querySelector('.rs-reviews-modal-close');
                     var modalList = modal.querySelector('.rs-reviews-modal-list');
+                    var sortToggle = modal.querySelector('.rs-sort-toggle');
 
                     // Client-side sorting (no AJAX). Sort .rs-review-item nodes by data-rating
                     function sortReviews(sortType) {
@@ -1135,19 +1109,28 @@ class RS_Elementor_Widget_Product_Reviews extends \Elementor\Widget_Base {
                         }
                     });
                     
-                    // Sort reviews when clicking sort buttons (client-side)
-                    var sortButtons = modal.querySelectorAll('.rs-sort-button');
-                    sortButtons.forEach(function(button) {
-                        button.addEventListener('click', function() {
-                            // Remove active class from all buttons
-                            sortButtons.forEach(function(btn) { btn.classList.remove('active'); });
-                            // Add active class to clicked button
-                            this.classList.add('active');
+                    // Toggle sort order with a single button (client-side)
+                    if (sortToggle) {
+                        sortToggle.addEventListener('click', function() {
+                            var current = this.getAttribute('data-sort') || 'rating-desc';
+                            var next = current === 'rating-desc' ? 'rating-asc' : 'rating-desc';
+                            this.setAttribute('data-sort', next);
+                            // Update icon and title
+                            var icon = this.querySelector('i');
+                            if (icon) {
+                                if (next === 'rating-desc') {
+                                    icon.className = 'fas fa-sort-amount-down';
+                                    this.title = '<?php echo esc_js(__('Highest to Lowest', 'rs-elementor-widgets')); ?>';
+                                } else {
+                                    icon.className = 'fas fa-sort-amount-up';
+                                    this.title = '<?php echo esc_js(__('Lowest to Highest', 'rs-elementor-widgets')); ?>';
+                                }
+                            }
                             // Sort in the browser
-                            sortReviews(this.getAttribute('data-sort'));
+                            sortReviews(next);
                         });
-                    });
-                    // Ensure initial ordering in modal matches default
+                    }
+                    // Ensure initial ordering matches default and correct icon state
                     sortReviews('rating-desc');
                 });
             })();
