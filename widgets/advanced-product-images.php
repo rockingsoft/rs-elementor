@@ -51,6 +51,8 @@ class RS_Elementor_Widget_Advanced_Product_Images extends \Elementor\Widget_Base
                 'default' => 'left',
                 'options' => [
                     'left' => esc_html__( 'Left', 'rs-elementor-widgets' ),
+                    'right' => esc_html__( 'Right', 'rs-elementor-widgets' ),
+                    'top' => esc_html__( 'Top', 'rs-elementor-widgets' ),
                     'bottom' => esc_html__( 'Bottom', 'rs-elementor-widgets' ),
                 ],
             ]
@@ -143,7 +145,9 @@ class RS_Elementor_Widget_Advanced_Product_Images extends \Elementor\Widget_Base
         }
 
         $widget_id = 'rs-adv-images-' . $this->get_id();
-        $container_classes = 'rs-adv-images layout-' . ( $thumbs_position === 'bottom' ? 'bottom' : 'left' );
+        $allowed_positions = [ 'left', 'right', 'top', 'bottom' ];
+        $pos = in_array( $thumbs_position, $allowed_positions, true ) ? $thumbs_position : 'left';
+        $container_classes = 'rs-adv-images layout-' . $pos;
         ?>
         <div id="<?php echo esc_attr( $widget_id ); ?>" class="<?php echo esc_attr( $container_classes ); ?>">
             <div class="rs-adv-images-inner">
@@ -178,12 +182,33 @@ class RS_Elementor_Widget_Advanced_Product_Images extends \Elementor\Widget_Base
             #<?php echo esc_js( $widget_id ); ?>.rs-adv-images { --thumb-size: <?php echo (int) $thumb_size; ?>px; --thumb-gap: <?php echo (int) $thumb_gap; ?>px; }
             .rs-adv-images { width: 100%; }
             .rs-adv-images .rs-adv-images-inner { display: grid; gap: 12px; align-items: start; }
-            .rs-adv-images.layout-left .rs-adv-images-inner { grid-template-columns: minmax(60px, calc(var(--thumb-size) + 2px)) 1fr; }
-            .rs-adv-images.layout-bottom .rs-adv-images-inner { grid-template-columns: 1fr; }
 
-            .rs-adv-thumbs { display: grid; gap: var(--thumb-gap); overflow: auto; }
-            .rs-adv-images.layout-left .rs-adv-thumbs { max-height: 480px; grid-auto-rows: var(--thumb-size); }
-            .rs-adv-images.layout-left .rs-adv-thumbs { grid-template-columns: 1fr; }
+            /* Grid areas to control order regardless of DOM */
+            .rs-adv-images.layout-left .rs-adv-images-inner {
+                grid-template-areas: 'thumbs main';
+                grid-template-columns: minmax(60px, calc(var(--thumb-size) + 2px)) 1fr;
+            }
+            .rs-adv-images.layout-right .rs-adv-images-inner {
+                grid-template-areas: 'main thumbs';
+                grid-template-columns: 1fr minmax(60px, calc(var(--thumb-size) + 2px));
+            }
+            .rs-adv-images.layout-top .rs-adv-images-inner {
+                grid-template-areas: 'thumbs' 'main';
+                grid-template-columns: 1fr;
+            }
+            .rs-adv-images.layout-bottom .rs-adv-images-inner {
+                grid-template-areas: 'main' 'thumbs';
+                grid-template-columns: 1fr;
+            }
+
+            .rs-adv-thumbs { grid-area: thumbs; display: grid; gap: var(--thumb-gap); }
+            .rs-adv-main { grid-area: main; }
+
+            /* Scrolling/orientation per position */
+            .rs-adv-images.layout-left .rs-adv-thumbs,
+            .rs-adv-images.layout-right .rs-adv-thumbs { overflow-y: auto; max-height: 480px; grid-auto-rows: var(--thumb-size); grid-template-columns: 1fr; }
+
+            .rs-adv-images.layout-top .rs-adv-thumbs,
             .rs-adv-images.layout-bottom .rs-adv-thumbs { grid-auto-flow: column; grid-auto-columns: var(--thumb-size); white-space: nowrap; overflow-x: auto; }
 
             .rs-adv-thumb { padding: 0; border: 2px solid transparent; border-radius: 4px; background: #fff; cursor: pointer; width: var(--thumb-size); height: var(--thumb-size); display: inline-flex; align-items: center; justify-content: center; }
@@ -207,7 +232,12 @@ class RS_Elementor_Widget_Advanced_Product_Images extends \Elementor\Widget_Base
             .rs-adv-nav .fa, .rs-adv-nav .fas { font-size: 20px; }
 
             @media (max-width: 767px) {
-                .rs-adv-images.layout-left .rs-adv-images-inner { grid-template-columns: 1fr; }
+                /* Stack on mobile: main then thumbs */
+                .rs-adv-images.layout-left .rs-adv-images-inner,
+                .rs-adv-images.layout-right .rs-adv-images-inner {
+                    grid-template-areas: 'main' 'thumbs';
+                    grid-template-columns: 1fr;
+                }
             }
         </style>
 
