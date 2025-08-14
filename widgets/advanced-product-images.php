@@ -83,6 +83,54 @@ class RS_Elementor_Widget_Advanced_Product_Images extends \Elementor\Widget_Base
         );
 
         $this->end_controls_section();
+
+        // Styles: Thumbnails
+        $this->start_controls_section(
+            'section_style_thumbs',
+            [
+                'label' => esc_html__( 'Thumbnails', 'rs-elementor-widgets' ),
+                'tab'   => \Elementor\Controls_Manager::TAB_STYLE,
+            ]
+        );
+
+        $this->add_group_control(
+            \Elementor\Group_Control_Border::get_type(),
+            [
+                'name' => 'thumb_border',
+                'label' => esc_html__( 'Border', 'rs-elementor-widgets' ),
+                'selector' => '{{WRAPPER}} .rs-adv-thumb',
+            ]
+        );
+
+        $this->add_control(
+            'thumb_border_radius',
+            [
+                'label' => esc_html__( 'Border Radius', 'rs-elementor-widgets' ),
+                'type' => \Elementor\Controls_Manager::DIMENSIONS,
+                'size_units' => [ 'px', '%', 'em', 'rem' ],
+                'selectors' => [
+                    '{{WRAPPER}} .rs-adv-thumb' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+                    '{{WRAPPER}} .rs-adv-modal-img' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'thumb_active_border_color',
+            [
+                'label' => esc_html__( 'Border Color (Active)', 'rs-elementor-widgets' ),
+                'type' => \Elementor\Controls_Manager::COLOR,
+                'default' => '#0073aa',
+                'selectors' => [
+                    '{{WRAPPER}} .rs-adv-thumb.is-active' => 'border-color: {{VALUE}};',
+                ],
+                'condition' => [
+                    'thumb_border_border!' => '',
+                ],
+            ]
+        );
+
+        $this->end_controls_section();
     }
 
     protected function render() {
@@ -203,9 +251,9 @@ class RS_Elementor_Widget_Advanced_Product_Images extends \Elementor\Widget_Base
             .rs-adv-images.layout-top .rs-adv-thumbs,
             .rs-adv-images.layout-bottom .rs-adv-thumbs { flex-direction: row; overflow-x: auto; }
 
-            .rs-adv-thumb { padding: 0; border: 2px solid transparent; border-radius: 4px; background: #fff; cursor: pointer; width: var(--thumb-size); height: var(--thumb-size); display: inline-flex; align-items: center; justify-content: center; }
+            .rs-adv-thumb { padding: 0; border: 0; border-radius: 4px; background: #fff; cursor: pointer; width: var(--thumb-size); height: var(--thumb-size); display: inline-flex; align-items: center; justify-content: center; }
             .rs-adv-thumb img { max-width: 100%; max-height: 100%; object-fit: contain; display: block; }
-            .rs-adv-thumb.is-active { border-color: #0073aa; }
+            .rs-adv-thumb.is-active { box-shadow: none; }
 
             .rs-adv-main { position: relative; border: 1px solid #eee; border-radius: 6px; overflow: hidden; cursor: zoom-in; display: flex; align-items: center; justify-content: center; background: #fff; min-height: 300px; }
             .rs-adv-main-img { width: 100%; height: auto; display: block; object-fit: contain; }
