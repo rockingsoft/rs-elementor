@@ -347,6 +347,22 @@ class RS_Elementor_Widget_Advanced_Add_To_Cart extends \Elementor\Widget_Base {
             return; // No product context available
         }
 
+        // Read settings and, if requested, hide stock notices even if they are
+        // rendered outside the widget wrapper by WooCommerce templates.
+        // Elementor's CSS selectors ({{WRAPPER}} ...) cannot target outside elements,
+        // so we inject a product-scoped style using the body postid class.
+        $settings = method_exists( $this, 'get_settings_for_display' ) ? $this->get_settings_for_display() : [];
+        if ( ! empty( $settings['hide_stock_notices'] ) && 'yes' === $settings['hide_stock_notices'] ) {
+            $product_id = is_callable( [ $product, 'get_id' ] ) ? (int) $product->get_id() : 0;
+            if ( $product_id > 0 ) {
+                // Target only this product page using WordPress' body class: postid-{$product_id}
+                echo '<style>body.single-product.postid-' . esc_attr( $product_id ) . ' .stock{display:none!important;}</style>';
+            } else {
+                // Fallback: still hide stock on single product pages
+                echo '<style>body.single-product .stock{display:none!important;}</style>';
+            }
+        }
+
         echo '<div class="rs-advanced-add-to-cart">';
 
         // Render WooCommerce's default add-to-cart area for the current product
