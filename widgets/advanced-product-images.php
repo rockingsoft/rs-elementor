@@ -96,6 +96,19 @@ class RS_Elementor_Widget_Advanced_Product_Images extends \Elementor\Widget_Base
             ]
         );
 
+        $this->add_control(
+            'include_variation_images',
+            [
+                'label' => esc_html__( 'Include Variation Images', 'rs-elementor-widgets' ),
+                'type' => \Elementor\Controls_Manager::SWITCHER,
+                'label_on' => esc_html__( 'Yes', 'rs-elementor-widgets' ),
+                'label_off' => esc_html__( 'No', 'rs-elementor-widgets' ),
+                'return_value' => 'yes',
+                'default' => 'yes',
+                'description' => esc_html__( 'If enabled, adds each variation image to the gallery and syncs selection to show that image.', 'rs-elementor-widgets' ),
+            ]
+        );
+
         $this->end_controls_section();
 
 
@@ -244,6 +257,7 @@ class RS_Elementor_Widget_Advanced_Product_Images extends \Elementor\Widget_Base
         $thumbs_position = $settings['thumbs_position'];
         $thumb_size = isset($settings['thumb_size']) ? (int)$settings['thumb_size'] : 80;
         $thumb_gap = isset($settings['thumb_gap']) ? (int)$settings['thumb_gap'] : 8;
+        $include_variation_images = (!isset($settings['include_variation_images'])) || ($settings['include_variation_images'] === 'yes');
 
         // Resolve product in both frontend and Elementor editor preview
         global $product;
@@ -275,9 +289,9 @@ class RS_Elementor_Widget_Advanced_Product_Images extends \Elementor\Widget_Base
             }
         }
 
-        // Include variation images if product is variable
+        // Include variation images if enabled
         $variation_index_map = [];
-        if ( $product && $product->is_type( 'variable' ) ) {
+        if ( $include_variation_images && $product && $product->is_type( 'variable' ) ) {
             /** @var WC_Product_Variable $product */
             $avail = $product->get_available_variations();
             if ( ! empty( $avail ) && is_array( $avail ) ) {
