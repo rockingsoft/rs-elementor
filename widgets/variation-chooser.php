@@ -197,8 +197,19 @@ class RS_Elementor_Widget_Variation_Chooser extends \Elementor\Widget_Base {
         $show_label = ( isset( $settings['show_label'] ) && 'yes' === $settings['show_label'] );
         $style_type = $settings['style_type'];
         $include_name = ( isset( $settings['include_product_name'] ) && 'yes' === $settings['include_product_name'] );
+        // Default to syncing ON if control isn't present
+        $sync_with_form = ( ! isset( $settings['sync_with_variations_form'] ) ) || ( 'yes' === $settings['sync_with_variations_form'] );
 
-        echo '<div id="' . $wrapper_id . '" class="rs-variation-chooser">';
+        // Build variations mapping for JS syncing
+        $mapping = [];
+        foreach ( $available as $var ) {
+            $vid = isset( $var['variation_id'] ) ? (int) $var['variation_id'] : 0;
+            if ( ! $vid || empty( $var['attributes'] ) || ! is_array( $var['attributes'] ) ) { continue; }
+            $mapping[ $vid ] = $var['attributes'];
+        }
+        $mapping_json = esc_attr( wp_json_encode( $mapping ) );
+
+        echo '<div id="' . $wrapper_id . '" class="rs-variation-chooser" data-sync="' . ( $sync_with_form ? '1' : '0' ) . '" data-variations="' . $mapping_json . '">';
 
         if ( $show_label && $label ) {
             echo '<label class="rs-varc-label" for="' . $wrapper_id . '-select">' . esc_html( $label ) . '</label>';
