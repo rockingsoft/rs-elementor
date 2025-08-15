@@ -5,8 +5,12 @@
 
 /* Thumbnails layout */
 .rs-variation-chooser .rs-varc-thumbs { display: flex; flex-wrap: wrap; gap: 8px; }
-.rs-variation-chooser .rs-varc-thumb { border: 1px solid #ddd; background: #fff; padding: 6px; border-radius: 6px; cursor: pointer; outline: none; display: flex; flex-direction: column; align-items: center; }
+.rs-variation-chooser .rs-varc-thumb { border: 1px solid #ddd; background: #fff; padding: 6px; border-radius: 6px; cursor: pointer; outline: none; display: flex; flex-direction: column; align-items: center; -webkit-appearance: none; appearance: none; }
+.rs-variation-chooser .rs-varc-thumb:hover { border-color: #bbb; box-shadow: 0 0 0 2px rgba(0,0,0,0.04); }
 .rs-variation-chooser .rs-varc-thumb.is-active { border-color: #2271b1; box-shadow: 0 0 0 2px rgba(34,113,177,0.15); }
+.rs-variation-chooser .rs-varc-thumb:focus,
+.rs-variation-chooser .rs-varc-thumb:focus-visible,
+.rs-variation-chooser .rs-varc-thumb:active { background: #fff; box-shadow: none; outline: none; }
 .rs-variation-chooser .rs-varc-thumb img { display: block; width: 56px; height: 56px; object-fit: cover; border-radius: 4px; }
 .rs-variation-chooser .rs-varc-thumb-fallback { display: inline-block; padding: 8px 10px; font-size: 13px; }
 .rs-variation-chooser .rs-varc-thumb-name { display: block; margin-top: 6px; font-size: 12px; color: #222; text-align: center; }
