@@ -87,6 +87,32 @@ class RS_Elementor_Widget_Add_To_Cart extends \Elementor\Widget_Base {
             ]
         );
 
+        // Woo messages toggles
+        $this->add_control(
+            'show_success_notice',
+            [
+                'label'        => esc_html__( 'Show Woo success notice', 'rs-elementor-widgets' ),
+                'type'         => \Elementor\Controls_Manager::SWITCHER,
+                'label_on'     => esc_html__( 'Show', 'rs-elementor-widgets' ),
+                'label_off'    => esc_html__( 'Hide', 'rs-elementor-widgets' ),
+                'return_value' => 'yes',
+                'default'      => 'yes',
+                'description'  => esc_html__( 'Controls default WooCommerce "Added to cart" notice.', 'rs-elementor-widgets' ),
+            ]
+        );
+        $this->add_control(
+            'show_view_cart_link',
+            [
+                'label'        => esc_html__( 'Show "View cart" link', 'rs-elementor-widgets' ),
+                'type'         => \Elementor\Controls_Manager::SWITCHER,
+                'label_on'     => esc_html__( 'Show', 'rs-elementor-widgets' ),
+                'label_off'    => esc_html__( 'Hide', 'rs-elementor-widgets' ),
+                'return_value' => 'yes',
+                'default'      => 'yes',
+                'condition'    => [ 'show_success_notice' => 'yes' ],
+            ]
+        );
+
         // Icon controls
         $this->add_control(
             'show_icon',
@@ -294,7 +320,9 @@ class RS_Elementor_Widget_Add_To_Cart extends \Elementor\Widget_Base {
             . ' data-mode="' . esc_attr( $mode ) . '"'
             . ' data-msg-select="' . esc_attr( $settings['msg_select_variation'] ) . '"'
             . ' data-msg-added="' . esc_attr( $settings['msg_added'] ) . '"'
-            . ' data-msg-error="' . esc_attr( $settings['msg_error'] ) . '">';
+            . ' data-msg-error="' . esc_attr( $settings['msg_error'] ) . '"'
+            . ' data-show-success="' . ( ! empty( $settings['show_success_notice'] ) && 'yes' === $settings['show_success_notice'] ? '1' : '0' ) . '"'
+            . ' data-show-view-cart="' . ( ! empty( $settings['show_view_cart_link'] ) && 'yes' === $settings['show_view_cart_link'] ? '1' : '0' ) . '">';
 
         // Content with icon
         $label = ! empty( $settings['button_text'] ) ? $settings['button_text'] : esc_html__( 'Add to cart', 'rs-elementor-widgets' );

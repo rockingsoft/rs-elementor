@@ -103,6 +103,8 @@
     var msgSelect = String($btn.data('msg-select') || 'Please select a variation first.');
     var msgAdded = String($btn.data('msg-added') || 'Added to cart!');
     var msgError = String($btn.data('msg-error') || 'Something went wrong. Please try again.');
+    var showSuccess = String($btn.data('show-success') || '1') === '1';
+    var showViewCart = String($btn.data('show-view-cart') || '1') === '1';
 
     if (!productId) return;
 
@@ -136,7 +138,15 @@
       }
 
       ajaxAddToCart(data, $btn)
-        .done(function(){ showMessage($btn, msgAdded, 'success'); })
+        .done(function(){
+          // Handle default Woo notices per toggles
+          if (!showSuccess) {
+            $('.woocommerce-message, .woocommerce-notices-wrapper .woocommerce-message').remove();
+          } else if (!showViewCart) {
+            $('.woocommerce-message a.wc-forward, .woocommerce-message a.button.wc-forward').remove();
+          }
+          showMessage($btn, msgAdded, 'success');
+        })
         .fail(function(){ showMessage($btn, msgError, 'error'); })
         .always(function(){ setLoading($btn, false); });
 

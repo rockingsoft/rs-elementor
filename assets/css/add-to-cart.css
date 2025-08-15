@@ -6,3 +6,9 @@
 .rs-atc-message.is-error { color: #b32d2e; }
 .rs-atc-message.is-success { color: #2e7d32; }
 .rs-atc-btn.is-loading .rs-atc-label, .rs-atc-btn.is-loading .rs-atc-icon { opacity: .6; }
+
+/* Ensure icons (including SVG) inherit the text color and are visible */
+.rs-atc-btn .rs-atc-icon,
+.rs-atc-btn .rs-atc-loading-icon { display: inline-flex; align-items: center; line-height: 1; }
+.rs-atc-btn .rs-atc-icon svg,
+.rs-atc-btn .rs-atc-loading-icon svg { width: 1em; height: 1em; fill: currentColor; stroke: currentColor; }
