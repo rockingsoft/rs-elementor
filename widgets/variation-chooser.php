@@ -136,6 +136,135 @@ class RS_Elementor_Widget_Variation_Chooser extends \Elementor\Widget_Base {
             ]
         );
 
+        // Thumbnail appearance
+        $this->add_control(
+            'thumb_bg_color',
+            [
+                'label' => esc_html__( 'Thumb Background', 'rs-elementor-widgets' ),
+                'type'  => \Elementor\Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} .rs-variation-chooser .rs-varc-thumb' => 'background-color: {{VALUE}};',
+                ],
+                'condition' => [ 'style_type' => 'thumbnails' ],
+            ]
+        );
+
+        $this->add_control(
+            'thumb_text_color',
+            [
+                'label' => esc_html__( 'Label Color', 'rs-elementor-widgets' ),
+                'type'  => \Elementor\Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} .rs-variation-chooser .rs-varc-thumb-name' => 'color: {{VALUE}};',
+                ],
+                'condition' => [ 'style_type' => 'thumbnails' ],
+            ]
+        );
+
+        $this->add_control(
+            'thumb_border_color',
+            [
+                'label' => esc_html__( 'Border Color', 'rs-elementor-widgets' ),
+                'type'  => \Elementor\Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} .rs-variation-chooser .rs-varc-thumb' => 'border-color: {{VALUE}};',
+                ],
+                'condition' => [ 'style_type' => 'thumbnails' ],
+            ]
+        );
+
+        $this->add_responsive_control(
+            'thumb_border_width',
+            [
+                'label' => esc_html__( 'Border Width', 'rs-elementor-widgets' ),
+                'type'  => \Elementor\Controls_Manager::SLIDER,
+                'size_units' => [ 'px' ],
+                'range' => [ 'px' => [ 'min' => 0, 'max' => 8 ] ],
+                'selectors' => [
+                    '{{WRAPPER}} .rs-variation-chooser .rs-varc-thumb' => 'border-width: {{SIZE}}{{UNIT}}; border-style: solid;',
+                ],
+                'condition' => [ 'style_type' => 'thumbnails' ],
+            ]
+        );
+
+        $this->add_responsive_control(
+            'thumb_border_radius',
+            [
+                'label' => esc_html__( 'Border Radius', 'rs-elementor-widgets' ),
+                'type'  => \Elementor\Controls_Manager::SLIDER,
+                'size_units' => [ 'px' ],
+                'range' => [ 'px' => [ 'min' => 0, 'max' => 30 ] ],
+                'selectors' => [
+                    '{{WRAPPER}} .rs-variation-chooser .rs-varc-thumb' => 'border-radius: {{SIZE}}{{UNIT}};',
+                ],
+                'condition' => [ 'style_type' => 'thumbnails' ],
+            ]
+        );
+
+        $this->add_responsive_control(
+            'thumb_padding',
+            [
+                'label' => esc_html__( 'Thumb Padding', 'rs-elementor-widgets' ),
+                'type'  => \Elementor\Controls_Manager::SLIDER,
+                'size_units' => [ 'px' ],
+                'range' => [ 'px' => [ 'min' => 0, 'max' => 30 ] ],
+                'selectors' => [
+                    '{{WRAPPER}} .rs-variation-chooser .rs-varc-thumb' => 'padding: {{SIZE}}{{UNIT}};',
+                ],
+                'condition' => [ 'style_type' => 'thumbnails' ],
+            ]
+        );
+
+        // Hover state
+        $this->add_control(
+            'thumb_hover_bg_color',
+            [
+                'label' => esc_html__( 'Hover Background', 'rs-elementor-widgets' ),
+                'type'  => \Elementor\Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} .rs-variation-chooser .rs-varc-thumb:hover' => 'background-color: {{VALUE}};',
+                ],
+                'condition' => [ 'style_type' => 'thumbnails' ],
+            ]
+        );
+
+        $this->add_control(
+            'thumb_hover_border_color',
+            [
+                'label' => esc_html__( 'Hover Border', 'rs-elementor-widgets' ),
+                'type'  => \Elementor\Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} .rs-variation-chooser .rs-varc-thumb:hover' => 'border-color: {{VALUE}};',
+                ],
+                'condition' => [ 'style_type' => 'thumbnails' ],
+            ]
+        );
+
+        // Active state
+        $this->add_control(
+            'thumb_active_bg_color',
+            [
+                'label' => esc_html__( 'Active Background', 'rs-elementor-widgets' ),
+                'type'  => \Elementor\Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} .rs-variation-chooser .rs-varc-thumb.is-active' => 'background-color: {{VALUE}};',
+                ],
+                'condition' => [ 'style_type' => 'thumbnails' ],
+            ]
+        );
+
+        $this->add_control(
+            'thumb_active_border_color',
+            [
+                'label' => esc_html__( 'Active Border', 'rs-elementor-widgets' ),
+                'type'  => \Elementor\Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} .rs-variation-chooser .rs-varc-thumb.is-active' => 'border-color: {{VALUE}};',
+                ],
+                'condition' => [ 'style_type' => 'thumbnails' ],
+            ]
+        );
+
         $this->end_controls_section();
     }
 
