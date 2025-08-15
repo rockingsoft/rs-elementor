@@ -275,6 +275,48 @@ class RS_Elementor_Widget_Advanced_Product_Images extends \Elementor\Widget_Base
             }
         }
 
+        // Include variation images if product is variable
+        $variation_index_map = [];
+        if ( $product && $product->is_type( 'variable' ) ) {
+            /** @var WC_Product_Variable $product */
+            $avail = $product->get_available_variations();
+            if ( ! empty( $avail ) && is_array( $avail ) ) {
+                foreach ( $avail as $var ) {
+                    $vid = isset( $var['variation_id'] ) ? (int) $var['variation_id'] : 0;
+                    if ( ! $vid ) { continue; }
+                    $img_id = 0;
+                    if ( ! empty( $var['image_id'] ) ) {
+                        $img_id = (int) $var['image_id'];
+                    } elseif ( ! empty( $var['image']['id'] ) ) {
+                        $img_id = (int) $var['image']['id'];
+                    }
+                    if ( $img_id ) {
+                        // Ensure image id is present in gallery list
+                        if ( ! in_array( $img_id, $image_ids, true ) ) {
+                            $image_ids[] = $img_id;
+                        }
+                    }
+                }
+                // After finalizing image_ids, compute index map (variation_id -> index in $image_ids)
+                foreach ( $avail as $var ) {
+                    $vid = isset( $var['variation_id'] ) ? (int) $var['variation_id'] : 0;
+                    if ( ! $vid ) { continue; }
+                    $img_id = 0;
+                    if ( ! empty( $var['image_id'] ) ) {
+                        $img_id = (int) $var['image_id'];
+                    } elseif ( ! empty( $var['image']['id'] ) ) {
+                        $img_id = (int) $var['image']['id'];
+                    }
+                    if ( $img_id ) {
+                        $idx = array_search( $img_id, $image_ids, true );
+                        if ( false !== $idx ) {
+                            $variation_index_map[ (string) $vid ] = (int) $idx;
+                        }
+                    }
+                }
+            }
+        }
+
         if ( empty( $image_ids ) ) {
             echo '<div class="elementor-alert elementor-alert-info">' . esc_html__( 'No images for this product.', 'rs-elementor-widgets' ) . '</div>';
             return;
@@ -299,8 +341,9 @@ class RS_Elementor_Widget_Advanced_Product_Images extends \Elementor\Widget_Base
         $allowed_positions = [ 'left', 'right', 'top', 'bottom' ];
         $pos = in_array( $thumbs_position, $allowed_positions, true ) ? $thumbs_position : 'left';
         $container_classes = 'rs-adv-images layout-' . $pos;
+        $var_map_json = esc_attr( wp_json_encode( $variation_index_map ) );
         ?>
-        <div id="<?php echo esc_attr( $widget_id ); ?>" class="<?php echo esc_attr( $container_classes ); ?>">
+        <div id="<?php echo esc_attr( $widget_id ); ?>" class="<?php echo esc_attr( $container_classes ); ?>" data-variation-map="<?php echo $var_map_json; ?>">
             <div class="rs-adv-images-inner">
                 <div class="rs-adv-thumbs" style="--thumb-size: <?php echo (int) $thumb_size; ?>px; --thumb-gap: <?php echo (int) $thumb_gap; ?>px;">
                     <?php foreach ( $images as $index => $img ) : ?>
