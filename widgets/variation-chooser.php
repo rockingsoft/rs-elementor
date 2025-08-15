@@ -99,6 +99,18 @@ class RS_Elementor_Widget_Variation_Chooser extends \Elementor\Widget_Base {
             ]
         );
 
+        $this->add_control(
+            'include_product_name',
+            [
+                'label'        => esc_html__( 'Include Product Name in Variation Labels', 'rs-elementor-widgets' ),
+                'type'         => \Elementor\Controls_Manager::SWITCHER,
+                'label_on'     => esc_html__( 'Yes', 'rs-elementor-widgets' ),
+                'label_off'    => esc_html__( 'No', 'rs-elementor-widgets' ),
+                'return_value' => 'yes',
+                'default'      => 'no',
+            ]
+        );
+
         $this->end_controls_section();
 
         $this->start_controls_section(
@@ -147,15 +159,18 @@ class RS_Elementor_Widget_Variation_Chooser extends \Elementor\Widget_Base {
         return null;
     }
 
-    private function get_variation_label( $variation_id ) {
+    private function get_variation_label( $variation_id, $include_product_name = false ) {
         $variation = wc_get_product( $variation_id );
         if ( $variation && $variation instanceof WC_Product_Variation ) {
-            // Returns formatted attributes only (no product name), nice for labels
-            $label = wc_get_formatted_variation( $variation, true, false, true );
-            if ( $label ) {
-                return wp_strip_all_tags( $label );
+            
+            $variation_name = $variation->get_name();
+            if ( !$include_product_name ) {
+                $parts = explode( ' - ', $variation_name );
+                if ( count( $parts ) > 1 ) {
+                    $variation_name = $parts[1];
+                }
             }
-            return $variation->get_name();
+            return wp_strip_all_tags( $variation_name );
         }
         return '#' . absint( $variation_id );
     }
@@ -181,6 +196,7 @@ class RS_Elementor_Widget_Variation_Chooser extends \Elementor\Widget_Base {
         $label      = ! empty( $settings['label_text'] ) ? $settings['label_text'] : '';
         $show_label = ( isset( $settings['show_label'] ) && 'yes' === $settings['show_label'] );
         $style_type = $settings['style_type'];
+        $include_name = ( isset( $settings['include_product_name'] ) && 'yes' === $settings['include_product_name'] );
 
         echo '<div id="' . $wrapper_id . '" class="rs-variation-chooser">';
 
@@ -199,7 +215,7 @@ class RS_Elementor_Widget_Variation_Chooser extends \Elementor\Widget_Base {
                 $vid = isset( $var['variation_id'] ) ? (int) $var['variation_id'] : 0;
                 if ( ! $vid ) { continue; }
                 $selected = $first ? ' selected' : '';
-                $name = $this->get_variation_label( $vid );
+                $name = $this->get_variation_label( $vid, $include_name );
                 echo '<option value="' . esc_attr( $vid ) . '"' . $selected . '>' . esc_html( $name ) . '</option>';
                 $first = false;
             }
@@ -210,7 +226,7 @@ class RS_Elementor_Widget_Variation_Chooser extends \Elementor\Widget_Base {
             foreach ( $available as $var ) {
                 $vid = isset( $var['variation_id'] ) ? (int) $var['variation_id'] : 0;
                 if ( ! $vid ) { continue; }
-                $name = $this->get_variation_label( $vid );
+                $name = $this->get_variation_label( $vid, $include_name );
                 $img  = '';
                 if ( ! empty( $var['image']['url'] ) ) {
                     $img = esc_url( $var['image']['url'] );
