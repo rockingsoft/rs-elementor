@@ -105,8 +105,14 @@ class RS_Elementor_Widget_Advanced_Add_To_Cart extends \Elementor\Widget_Base {
                     'right'  => [ 'title' => esc_html__( 'Right', 'rs-elementor-widgets' ),  'icon' => 'eicon-text-align-right' ],
                 ],
                 'default'   => 'left',
+                'selectors_dictionary' => [
+                    'left'   => 'flex-start',
+                    'center' => 'center',
+                    'right'  => 'flex-end',
+                ],
                 'selectors' => [
-                    '{{WRAPPER}} .rs-advanced-add-to-cart' => 'text-align: {{VALUE}};',
+                    '{{WRAPPER}} .rs-advanced-add-to-cart form.cart' => 'display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; justify-content: {{VALUE}};',
+                    '{{WRAPPER}} .rs-advanced-add-to-cart .woocommerce-variation-add-to-cart' => 'display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; justify-content: {{VALUE}};',
                 ],
             ]
         );
