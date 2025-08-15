@@ -185,11 +185,13 @@ final class RS_Elementor_Widgets {
         require_once( __DIR__ . '/widgets/product-reviews.php' );
         require_once( __DIR__ . '/widgets/advanced-product-images.php' );
         require_once( __DIR__ . '/widgets/variation-chooser.php' );
+        require_once( __DIR__ . '/widgets/advanced-add-to-cart.php' );
         
         // Register widgets
         $widgets_manager->register( new \RS_Elementor_Widget_Product_Reviews() );
         $widgets_manager->register( new \RS_Elementor_Widget_Advanced_Product_Images() );
         $widgets_manager->register( new \RS_Elementor_Widget_Variation_Chooser() );
+        $widgets_manager->register( new \RS_Elementor_Widget_Advanced_Add_To_Cart() );
     }
 
     /**
