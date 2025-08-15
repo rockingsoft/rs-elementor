@@ -12,6 +12,13 @@
       var btnPrev = root.querySelector('.rs-adv-prev');
       var btnNext = root.querySelector('.rs-adv-next');
 
+      // Variation map: variation_id -> image index
+      var varMap = {};
+      try {
+        var data = root.getAttribute('data-variation-map');
+        if (data) { varMap = JSON.parse(data) || {}; }
+      } catch(e) { /* noop */ }
+
       var current = 0;
       function setCurrent(index){
         if (index < 0 || index >= thumbs.length) return;
@@ -122,6 +129,60 @@
 
       setCurrent(0);
       updateNavVisibility();
+
+      // --- Variation sync via events ---
+      function handleVariationSelection(variationId){
+        if (!variationId) { setCurrent(0); updateModalImage(); updateNavVisibility(); return; }
+        var key = String(variationId);
+        if (Object.prototype.hasOwnProperty.call(varMap, key)) {
+          var idx = parseInt(varMap[key], 10);
+          if (!isNaN(idx)) { setCurrent(idx); updateModalImage(); updateNavVisibility(); }
+        }
+      }
+
+      // Listen to our custom chooser event on document (native and jQuery)
+      document.addEventListener('rs_varc_change', function(e){
+        if (e && e.detail && typeof e.detail.variationId !== 'undefined') {
+          handleVariationSelection(e.detail.variationId);
+        }
+      });
+      if (window.jQuery) {
+        window.jQuery(document).on('rs_varc_change', function(_e, variationId){
+          handleVariationSelection(variationId);
+        });
+      }
+
+      // Also bind to nearest variations_form for Woo events
+      var form = root.closest('.product') || root.parentElement;
+      if (form) { form = form.querySelector('.variations_form') || form.closest('.variations_form') || form; }
+      if (form && form.addEventListener) {
+        form.addEventListener('found_variation', function(ev){
+          try {
+            var variation = ev.detail && ev.detail.variation ? ev.detail.variation : (ev.originalEvent && ev.originalEvent.detail && ev.originalEvent.detail.variation);
+            var vid = variation && (variation.variation_id || variation.variationId);
+            handleVariationSelection(vid);
+          } catch(_){}
+        });
+        form.addEventListener('reset_data', function(){ handleVariationSelection(null); });
+        form.addEventListener('woocommerce_variation_has_changed', function(){
+          // If Woo cleared selection without found_variation, fallback to first.
+          var selects = form.querySelectorAll('select[name^="attribute_"]');
+          var anyEmpty = false; selects.forEach(function(s){ if (!s.value) anyEmpty = true; });
+          if (anyEmpty) handleVariationSelection(null);
+        });
+      }
+      if (window.jQuery && form) {
+        var $form = window.jQuery(form);
+        $form.on('found_variation', function(_e, variation){
+          var vid = variation && (variation.variation_id || variation.variationId);
+          handleVariationSelection(vid);
+        });
+        $form.on('reset_data', function(){ handleVariationSelection(null); });
+        $form.on('woocommerce_variation_has_changed', function(){
+          var anyEmpty = false; $form.find('select[name^="attribute_"]').each(function(){ if (!this.value) anyEmpty = true; });
+          if (anyEmpty) handleVariationSelection(null);
+        });
+      }
     });
   });
 })();
