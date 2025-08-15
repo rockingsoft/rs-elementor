@@ -12,3 +12,6 @@
 .rs-atc-btn .rs-atc-loading-icon { display: inline-flex; align-items: center; line-height: 1; }
 .rs-atc-btn .rs-atc-icon svg,
 .rs-atc-btn .rs-atc-loading-icon svg { width: 1em; height: 1em; fill: currentColor; stroke: currentColor; }
+/* When the class is applied directly on the SVG */
+.rs-atc-btn svg.rs-atc-icon,
+.rs-atc-btn svg.rs-atc-loading-icon { width: 1em; height: 1em; fill: currentColor; stroke: currentColor; display: inline-block; vertical-align: middle; }
