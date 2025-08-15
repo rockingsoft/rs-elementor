@@ -64,19 +64,6 @@ class RS_Elementor_Widget_Variation_Chooser extends \Elementor\Widget_Base {
             ]
         );
 
-        // No attribute control: widget reads variations directly from the product
-
-        // Preview product for editor (when not on single product)
-        $this->add_control(
-            'preview_product_id',
-            [
-                'label'       => esc_html__( 'Preview Product', 'rs-elementor-widgets' ),
-                'type'        => \Elementor\Controls_Manager::NUMBER,
-                'min'         => 0,
-                'description' => esc_html__( 'Used in the editor or non-product pages to load variations for preview.', 'rs-elementor-widgets' ),
-            ]
-        );
-
         $this->add_control(
             'show_label',
             [
