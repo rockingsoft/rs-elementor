@@ -143,17 +143,6 @@ class RS_Elementor_Widget_Add_To_Cart extends \Elementor\Widget_Base {
 
         // Behavior: always follows WooCommerce's AJAX setting (no overrides)
 
-        // Editor preview product
-        $this->add_control(
-            'preview_product_id',
-            [
-                'label'       => esc_html__( 'Preview Product', 'rs-elementor-widgets' ),
-                'type'        => \Elementor\Controls_Manager::NUMBER,
-                'min'         => 0,
-                'description' => esc_html__( 'Used in the editor or non-product pages.', 'rs-elementor-widgets' ),
-            ]
-        );
-
         $this->end_controls_section();
 
         // Style controls
@@ -179,6 +168,18 @@ class RS_Elementor_Widget_Add_To_Cart extends \Elementor\Widget_Base {
                 'label'     => esc_html__( 'Text Color', 'rs-elementor-widgets' ),
                 'type'      => \Elementor\Controls_Manager::COLOR,
                 'selectors' => [ '{{WRAPPER}} .rs-atc-btn' => 'color: {{VALUE}};' ],
+            ]
+        );
+        $this->add_control(
+            'icon_color',
+            [
+                'label'     => esc_html__( 'Icon Color', 'rs-elementor-widgets' ),
+                'type'      => \Elementor\Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} .rs-atc-btn .rs-atc-icon' => 'color: {{VALUE}};',
+                    '{{WRAPPER}} .rs-atc-btn .rs-atc-loading-icon' => 'color: {{VALUE}};',
+                ],
+                'description' => esc_html__( 'Leave empty to inherit the button text color.', 'rs-elementor-widgets' ),
             ]
         );
         $this->add_control(
@@ -244,7 +245,7 @@ class RS_Elementor_Widget_Add_To_Cart extends \Elementor\Widget_Base {
         $this->end_controls_section();
     }
 
-    private function get_product_context( $settings ) {
+    private function get_product_context() {
         global $product;
         $ctx = [ 'id' => 0, 'type' => 'simple' ];
         if ( $product instanceof \WC_Product ) {
@@ -252,19 +253,13 @@ class RS_Elementor_Widget_Add_To_Cart extends \Elementor\Widget_Base {
             $ctx['type'] = $product->is_type( 'variable' ) ? 'variable' : 'simple';
             return $ctx;
         }
-        if ( ! empty( $settings['preview_product_id'] ) ) {
-            $p = wc_get_product( (int) $settings['preview_product_id'] );
-            if ( $p ) {
-                $ctx['id'] = $p->get_id();
-                $ctx['type'] = $p->is_type( 'variable' ) ? 'variable' : 'simple';
-            }
-        }
-        return $ctx;
+        // Outside product context, do not render
+        return [ 'id' => 0, 'type' => 'simple' ];
     }
 
     public function render() {
         $settings = $this->get_settings_for_display();
-        $ctx = $this->get_product_context( $settings );
+        $ctx = $this->get_product_context();
         if ( empty( $ctx['id'] ) ) { return; }
 
         // Follow WooCommerce setting for AJAX add to cart
