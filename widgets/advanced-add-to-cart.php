@@ -111,8 +111,17 @@ class RS_Elementor_Widget_Advanced_Add_To_Cart extends \Elementor\Widget_Base {
                     'right'  => 'flex-end',
                 ],
                 'selectors' => [
+                    // Simple products container
                     '{{WRAPPER}} .rs-advanced-add-to-cart form.cart' => 'display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; justify-content: {{VALUE}};',
+                    // Variable products button row
                     '{{WRAPPER}} .rs-advanced-add-to-cart .woocommerce-variation-add-to-cart' => 'display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; justify-content: {{VALUE}};',
+                    // Variation wrap (contains price/stock and button row)
+                    '{{WRAPPER}} .rs-advanced-add-to-cart .single_variation_wrap' => 'display: flex; flex-direction: column; align-items: {{VALUE}}; width: 100%;',
+                    // Variation details (price/stock area) alignment
+                    '{{WRAPPER}} .rs-advanced-add-to-cart .single_variation' => 'display: flex; width: 100%; justify-content: {{VALUE}};',
+                    '{{WRAPPER}} .rs-advanced-add-to-cart .woocommerce-variation' => 'display: flex; width: 100%; justify-content: {{VALUE}};',
+                    // Stock message alignment
+                    '{{WRAPPER}} .rs-advanced-add-to-cart .stock' => 'display: flex; width: 100%; justify-content: {{VALUE}};',
                 ],
             ]
         );
