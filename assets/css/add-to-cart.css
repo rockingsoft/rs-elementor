@@ -1,0 +1,8 @@
+/* RS Add To Cart base styles */
+.rs-add-to-cart-wrapper { position: relative; }
+.rs-atc-btn { display: inline-flex; align-items: center; gap: .5em; cursor: pointer; border: none; padding: .6em 1.2em; }
+.rs-atc-btn .rs-atc-loading { margin-left: .4em; }
+.rs-atc-message { margin-top: .5em; font-size: .9em; display:none; }
+.rs-atc-message.is-error { color: #b32d2e; }
+.rs-atc-message.is-success { color: #2e7d32; }
+.rs-atc-btn.is-loading .rs-atc-label, .rs-atc-btn.is-loading .rs-atc-icon { opacity: .6; }
