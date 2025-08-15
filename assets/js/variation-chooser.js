@@ -25,6 +25,11 @@
 
 		function selectInForm(variationId){
 			if(!syncEnabled || !$form.length) return;
+			if(!variationId){
+				// Clear Woo form state when no selection
+				$form.trigger('reset_data');
+				return;
+			}
 			var attrs = variationsMap[String(variationId)] || variationsMap[variationId] || null;
 			if(!attrs) return;
 			// Set each attribute select and trigger change
@@ -41,8 +46,28 @@
 			$form.trigger('check_variations');
 		}
 
+		// Clear UI helpers
+		function clearThumbs(){
+			if($thumbs.length){
+				$thumbs.find('.rs-varc-thumb').removeClass('is-active').attr('aria-pressed','false');
+			}
+		}
+		function clearSelect(){
+			if($select.length){
+				$select.val('');
+			}
+		}
+
 		// Helper to set value and trigger events for compatibility
 		function setValue(val){
+			if(!val){
+				clearThumbs();
+				clearSelect();
+				$hidden.val('').trigger('change');
+				$root.trigger('rs_varc_change', ['']);
+				selectInForm('');
+				return;
+			}
 			$hidden.val(val).trigger('change');
 			$root.trigger('rs_varc_change', [val]);
 			selectInForm(val);
@@ -50,9 +75,6 @@
 
 		// Dropdown mode
 		if($select.length){
-			// Default to first option
-			var firstVal = $select.find('option:first').val();
-			if(firstVal){ setValue(firstVal); }
 			$select.on('change', function(){
 				setValue($(this).val());
 			});
@@ -60,10 +82,6 @@
 
 		// Thumbnails mode
 		if($thumbs.length){
-			var $first = $thumbs.find('.rs-varc-thumb').first();
-			if($first.length){
-				setValue($first.data('value'));
-			}
 			$thumbs.on('click', '.rs-varc-thumb', function(){
 				var $btn = $(this);
 				$thumbs.find('.rs-varc-thumb').removeClass('is-active').attr('aria-pressed','false');
@@ -76,7 +94,13 @@
 		if(syncEnabled && $form.length){
 			var reflectFromForm = function(){
 				var vid = $form.find('input[name="variation_id"]').val();
-				if(!vid){ return; }
+				if(!vid){
+					// Clear UI when no resolved variation
+					clearThumbs();
+					clearSelect();
+					$hidden.val('');
+					return;
+				}
 				// update hidden
 				$hidden.val(vid);
 				// update dropdown
@@ -102,25 +126,19 @@
 				reflectFromForm();
 			});
 			$form.on('reset_data', function(){
-				// reset widget to first
-				if($select.length){
-					var v=$select.find('option:first').val();
-					$select.val(v);
-					setValue(v);
-				}
-				if($thumbs.length){
-					var $f=$thumbs.find('.rs-varc-thumb').first();
-					if($f.length){
-						$thumbs.find('.rs-varc-thumb').removeClass('is-active').attr('aria-pressed','false');
-						$f.addClass('is-active').attr('aria-pressed','true');
-						setValue($f.data('value'));
-					}
-				}
+				// Clear widget selection on Woo reset
+				clearThumbs();
+				clearSelect();
+				$hidden.val('');
 			});
 
-			// Initial reflect if form already has a selection
-			setTimeout(reflectFromForm, 0);
+			// Initial reflect based on Woo defaults (if any)
+			setTimeout(function(){
+				$form.trigger('check_variations');
+				setTimeout(reflectFromForm, 0);
+			}, 0);
 		}
+
 	}
 
 	function mountAll(){

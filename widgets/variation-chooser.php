@@ -220,20 +220,17 @@ class RS_Elementor_Widget_Variation_Chooser extends \Elementor\Widget_Base {
 
         if ( 'dropdown' === $style_type ) {
             echo '<select class="rs-varc-select" id="' . $wrapper_id . '-select">';
-            // First is default (selected)
-            $first = true;
+            // Placeholder to allow "no selection"
+            echo '<option value="">' . esc_html__( '— Select an option —', 'rs-elementor-widgets' ) . '</option>';
             foreach ( $available as $var ) {
                 $vid = isset( $var['variation_id'] ) ? (int) $var['variation_id'] : 0;
                 if ( ! $vid ) { continue; }
-                $selected = $first ? ' selected' : '';
                 $name = $this->get_variation_label( $vid, $include_name );
-                echo '<option value="' . esc_attr( $vid ) . '"' . $selected . '>' . esc_html( $name ) . '</option>';
-                $first = false;
+                echo '<option value="' . esc_attr( $vid ) . '">' . esc_html( $name ) . '</option>';
             }
             echo '</select>';
         } else {
             echo '<div class="rs-varc-thumbs" role="list">';
-            $first = true;
             foreach ( $available as $var ) {
                 $vid = isset( $var['variation_id'] ) ? (int) $var['variation_id'] : 0;
                 if ( ! $vid ) { continue; }
@@ -247,8 +244,7 @@ class RS_Elementor_Widget_Variation_Chooser extends \Elementor\Widget_Base {
                         $img = esc_url( wp_get_attachment_image_url( $img_id, 'woocommerce_thumbnail' ) );
                     }
                 }
-                $active = $first ? ' is-active' : '';
-                echo '<button type="button" class="rs-varc-thumb' . $active . '" role="listitem" data-value="' . esc_attr( $vid ) . '" aria-pressed="' . ( $first ? 'true' : 'false' ) . '">';
+                echo '<button type="button" class="rs-varc-thumb" role="listitem" data-value="' . esc_attr( $vid ) . '" aria-pressed="false">';
                 if ( $img ) {
                     echo '<img src="' . $img . '" alt="' . esc_attr( $name ) . '" />';
                 } else {
@@ -256,7 +252,6 @@ class RS_Elementor_Widget_Variation_Chooser extends \Elementor\Widget_Base {
                 }
                 echo '<span class="rs-varc-thumb-name">' . esc_html( $name ) . '</span>';
                 echo '</button>';
-                $first = false;
             }
             echo '</div>';
         }
