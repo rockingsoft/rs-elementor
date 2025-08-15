@@ -180,14 +180,14 @@ class RS_Elementor_Widget_Variation_Chooser extends \Elementor\Widget_Base {
         $product  = $this->get_product_context( $settings );
 
         if ( ! $product || ! $product->is_type( 'variable' ) ) {
-            echo '<div class="rs-varc-notice">' . esc_html__( 'Select a variable product to preview the variation chooser.', 'rs-elementor-widgets' ) . '</div>';
+            // Do not render anything when product is not variable
             return;
         }
 
         /** @var WC_Product_Variable $product */
         $available = $product->get_available_variations();
         if ( empty( $available ) ) {
-            echo '<div class="rs-varc-notice">' . esc_html__( 'No variations available for this product.', 'rs-elementor-widgets' ) . '</div>';
+            // Do not render anything when there are no variations
             return;
         }
 
