@@ -21,6 +21,10 @@
 			if(!$form.length){
 				$form = $('form.variations_form, .variations_form').first();
 			}
+			// Tag the form so we can hide default selectors via scoped CSS
+			if($form.length){
+				$form.addClass('rs-varc-hide-defaults');
+			}
 		}
 
 		function selectInForm(variationId){

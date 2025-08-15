@@ -18,3 +18,11 @@
 
 /* Notices */
 .rs-varc-notice { padding: 10px; background: #f8f9fa; border: 1px dashed #dcdcdc; color: #555; border-radius: 4px; }
+
+/* Hide default Woo variation selectors when our widget is present */
+form.variations_form.rs-varc-hide-defaults .variations,
+.variations_form.rs-varc-hide-defaults .reset_variations { display: none !important; }
+
+/* Ensure important variation output (price, stock, etc.) stays visible */
+.variations_form.rs-varc-hide-defaults .single_variation,
+.variations_form.rs-varc-hide-defaults .woocommerce-variation { display: block; }
