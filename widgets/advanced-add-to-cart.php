@@ -432,9 +432,21 @@ class RS_Elementor_Widget_Advanced_Add_To_Cart extends \Elementor\Widget_Base {
 
 		echo '<div class="rs-advanced-add-to-cart">';
 
-		// Render WooCommerce's default add-to-cart area for the current product.
-		if ( function_exists( 'woocommerce_template_single_add_to_cart' ) ) {
-			woocommerce_template_single_add_to_cart();
+		// Use the appropriate WooCommerce template depending on context so 3rd-party AJAX carts (e.g., FunnelKit) can hook into
+		// the expected markup/classes on archives.
+		if ( function_exists( 'is_product' ) && is_product() ) {
+			// Single product context.
+			if ( function_exists( 'woocommerce_template_single_add_to_cart' ) ) {
+				woocommerce_template_single_add_to_cart();
+			}
+		} else {
+			// Archive/loop context: output the standard loop add-to-cart markup so plugins can intercept clicks.
+			if ( function_exists( 'woocommerce_template_loop_add_to_cart' ) ) {
+				woocommerce_template_loop_add_to_cart();
+			} elseif ( function_exists( 'woocommerce_template_single_add_to_cart' ) ) {
+				// Fallback in case loop template is unavailable for some reason.
+				woocommerce_template_single_add_to_cart();
+			}
 		}
 
 		echo '</div>';
