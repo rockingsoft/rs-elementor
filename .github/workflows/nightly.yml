@@ -1,0 +1,65 @@
+name: Nightly Build (main)
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  nightly-zip:
+    name: Build Nightly ZIP
+    runs-on: ubuntu-latest
+    env:
+      PLUGIN_SLUG: rs-elementor-widgets
+      MAIN_PLUGIN_FILE: rs-elementor-widgets.php
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Compute nightly version
+        id: nightly
+        shell: bash
+        run: |
+          set -euo pipefail
+          TS=$(date -u +"%Y%m%d-%H%M%S")
+          SHORT_SHA=${GITHUB_SHA::7}
+          VERSION="0.0.0-nightly.${TS}+${SHORT_SHA}"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "stamp=${TS}" >> "$GITHUB_OUTPUT"
+          echo "sha=${SHORT_SHA}" >> "$GITHUB_OUTPUT"
+
+      - name: Prepare build directory
+        run: |
+          set -euo pipefail
+          mkdir -p build
+          DEST="build/${{ env.PLUGIN_SLUG }}"
+          rsync -av . "$DEST" \
+            --exclude '.git/' \
+            --exclude '.github/' \
+            --exclude 'build/' \
+            --exclude '.gitignore' \
+            --exclude '.editorconfig' \
+            --exclude 'node_modules/' \
+            --exclude 'vendor/' \
+            --exclude '*.zip' \
+            --exclude 'README-dev*' \
+            --exclude 'tests/'
+
+      - name: Validate main plugin file exists
+        run: |
+          test -f "build/${{ env.PLUGIN_SLUG }}/${{ env.MAIN_PLUGIN_FILE }}" || { echo "Main plugin file not found"; ls -la "build/${{ env.PLUGIN_SLUG }}"; exit 1; }
+
+      - name: Create Nightly ZIP
+        id: zip
+        run: |
+          cd build
+          ZIP_NAME="${{ env.PLUGIN_SLUG }}-nightly-${{ steps.nightly.outputs.stamp }}-${{ steps.nightly.outputs.sha }}.zip"
+          zip -r "$ZIP_NAME" "${{ env.PLUGIN_SLUG }}" -9
+          echo "zip_path=$(pwd)/$ZIP_NAME" >> "$GITHUB_OUTPUT"
+          echo "zip_name=$ZIP_NAME" >> "$GITHUB_OUTPUT"
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ steps.zip.outputs.zip_name }}
+          path: ${{ steps.zip.outputs.zip_path }}
+          retention-days: 14
