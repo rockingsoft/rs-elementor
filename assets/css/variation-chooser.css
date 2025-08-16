@@ -1,28 +1,239 @@
 /* RS Variation Chooser */
-.rs-variation-chooser { display: block; }
-.rs-variation-chooser .rs-varc-label { display: block; margin-bottom: 6px; font-weight: 600; }
-.rs-variation-chooser .rs-varc-select { width: 100%; max-width: 320px; padding: 6px 8px; }
+.rs-variation-chooser {
+  display: block;
+  max-width: 100%;
+  width: 100%;
+  min-width: 0;
+  overflow: hidden;
+  contain: inline-size;
+}
+
+/* Ensure any descendants don't create intrinsic min-content width that enlarges the card */
+.rs-variation-chooser,
+.rs-variation-chooser * {
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+/* Help parent containers (Elementor/WooCommerce) allow shrinking when this widget is inside */
+.elementor-widget:has(.rs-variation-chooser),
+.elementor-widget-container:has(.rs-variation-chooser),
+.elementor-column:has(.rs-variation-chooser),
+.woocommerce ul.products li.product:has(.rs-variation-chooser) {
+  min-width: 0 !important;
+  max-width: 100% !important;
+  flex-basis: 0 !important;
+  /* allow equal-width distribution in flex grids */
+  width: auto !important;
+}
+
+.rs-variation-chooser .rs-varc-label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+
+.rs-variation-chooser .rs-varc-select {
+  width: 100%;
+  max-width: 320px;
+  padding: 6px 8px;
+}
 
 /* Thumbnails layout */
-.rs-variation-chooser .rs-varc-thumbs { display: flex; flex-wrap: wrap; gap: 8px; }
-.rs-variation-chooser .rs-varc-thumb { border: 1px solid #ddd; background: #fff; padding: 6px; border-radius: 6px; cursor: pointer; outline: none; display: flex; flex-direction: column; align-items: center; -webkit-appearance: none; appearance: none; }
-.rs-variation-chooser .rs-varc-thumb:hover { background: #fff; color: inherit; border-color: #bbb; box-shadow: 0 0 0 2px rgba(0,0,0,0.04); }
-.rs-variation-chooser .rs-varc-thumb.is-active { border-color: #2271b1; box-shadow: 0 0 0 2px rgba(34,113,177,0.15); }
+.rs-variation-chooser .rs-varc-thumbs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  width: 100%;
+  min-width: 0;
+}
+
+.rs-variation-chooser .rs-varc-thumb {
+  border: 1px solid #ddd;
+  background: #fff;
+  padding: 6px;
+  border-radius: 6px;
+  cursor: pointer;
+  outline: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.rs-variation-chooser .rs-varc-thumb:hover {
+  background: #fff;
+  color: inherit;
+  border-color: #bbb;
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.04);
+}
+
+.rs-variation-chooser .rs-varc-thumb.is-active {
+  border-color: #2271b1;
+  box-shadow: 0 0 0 2px rgba(34, 113, 177, 0.15);
+}
+
 .rs-variation-chooser .rs-varc-thumb:focus,
 .rs-variation-chooser .rs-varc-thumb:focus-visible,
 .rs-variation-chooser .rs-varc-thumb:active,
-.rs-variation-chooser .rs-varc-thumb:hover { background: #fff; outline: none; }
-.rs-variation-chooser .rs-varc-thumb img { display: block; width: 56px; height: 56px; object-fit: cover; border-radius: 4px; }
-.rs-variation-chooser .rs-varc-thumb-fallback { display: inline-block; padding: 8px 10px; font-size: 13px; }
-.rs-variation-chooser .rs-varc-thumb-name { display: block; margin-top: 6px; font-size: 12px; color: #222; text-align: center; }
+.rs-variation-chooser .rs-varc-thumb:hover {
+  background: #fff;
+  outline: none;
+}
+
+.rs-variation-chooser .rs-varc-thumb img {
+  display: block;
+  width: 56px;
+  height: 56px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.rs-variation-chooser .rs-varc-thumb-fallback {
+  display: inline-block;
+  padding: 8px 10px;
+  font-size: 13px;
+}
+
+.rs-variation-chooser .rs-varc-thumb-name {
+  display: block;
+  margin-top: 6px;
+  font-size: 12px;
+  color: #222;
+  text-align: center;
+  white-space: normal;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+/* Single-line thumbnails with arrows */
+.rs-variation-chooser .rs-varc-thumbs-wrap.rs-varc-singleline { position: relative; display: block; max-width: 100%; width: 100%; min-width: 0; overflow: hidden; padding-inline: 28px; }
+.rs-variation-chooser .rs-varc-thumbs-wrap.rs-varc-singleline .rs-varc-thumbs { width: 100%; min-width: 0; display: flex; flex-wrap: nowrap; overflow-x: auto; gap: 8px; scroll-behavior: smooth; -webkit-overflow-scrolling: touch; -ms-overflow-style: none; scrollbar-width: none; }
+/* Hide scrollbar in WebKit */
+.rs-variation-chooser .rs-varc-thumbs-wrap.rs-varc-singleline .rs-varc-thumbs::-webkit-scrollbar { display: none; height: 0; width: 0; }
+.rs-variation-chooser .rs-varc-thumbs-wrap.rs-varc-singleline .rs-varc-thumb { flex: 0 0 auto; }
+.rs-variation-chooser .rs-varc-thumbs-wrap.rs-varc-singleline .rs-varc-nav { position: absolute; top: 50%; transform: translateY(-50%); width: 22px; height: 22px; border-radius: 50%; border: 1px solid #d9dfe6; background: #fff; color: #333; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; padding: 0; line-height: 1; z-index: 2; font-size: 13px; }
+.rs-variation-chooser .rs-varc-thumbs-wrap.rs-varc-singleline .rs-varc-prev { left: 3px; }
+.rs-variation-chooser .rs-varc-thumbs-wrap.rs-varc-singleline .rs-varc-next { right: 3px; }
+
+.rs-variation-chooser .rs-varc-thumbs-wrap.rs-varc-singleline .rs-varc-nav:hover {
+  background: #f5f7fa;
+  border-color: #cbd3dd;
+}
+
+.rs-variation-chooser .rs-varc-thumbs-wrap.rs-varc-singleline .rs-varc-nav:active {
+  transform: translateY(1px);
+}
+
+/* Uniform sizing mode: keep all thumbs same width & height, and gracefully clamp labels */
+.rs-variation-chooser.rs-varc-uniform .rs-varc-thumbs {
+  align-items: stretch;
+}
+
+.rs-variation-chooser.rs-varc-uniform .rs-varc-thumb {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  overflow: hidden;
+  position: relative;
+  aspect-ratio: 1 / 1;
+  padding: 8px;
+  border-radius: 10px;
+  border: 1px solid #e3e6ea;
+  background: #fff;
+  transition: box-shadow .18s ease, border-color .18s ease, transform .12s ease;
+}
+
+.rs-variation-chooser.rs-varc-uniform .rs-varc-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  display: block;
+}
+
+.rs-variation-chooser.rs-varc-uniform .rs-varc-thumb.is-active {
+  border-color: #2271b1;
+  box-shadow: 0 0 0 2px rgba(34, 113, 177, 0.15);
+}
+
+.rs-variation-chooser.rs-varc-uniform .rs-varc-thumb:hover {
+  border-color: #c9ced6;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  transform: translateY(-1px);
+}
+
+.rs-variation-chooser.rs-varc-uniform .rs-varc-thumb:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(34, 113, 177, 0.25);
+  border-color: #2271b1;
+}
+
+/* Bottom caption overlay */
+.rs-variation-chooser.rs-varc-uniform .rs-varc-thumb .rs-varc-thumb-name {
+  position: absolute;
+  left: 8px;
+  right: 8px;
+  bottom: 8px;
+  margin: 0;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.0) 0%, rgba(255, 255, 255, 0.9) 45%, rgba(255, 255, 255, 1) 100%);
+  color: #223;
+  border-radius: 6px;
+  padding: 6px 8px;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.2;
+  /* Wrap words across multiple lines, no ellipsis */
+  white-space: normal;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  display: block;
+  overflow: hidden;
+  text-overflow: clip;
+  max-height: 3.6em;
+  /* ~3 lines */
+}
+
+/* Tooltips disabled intentionally */
+.rs-variation-chooser .rs-varc-thumb:hover::after,
+.rs-variation-chooser .rs-varc-thumb:focus-visible::after,
+.rs-variation-chooser .rs-varc-thumb:focus::after,
+.rs-variation-chooser .rs-varc-thumb:hover::before,
+.rs-variation-chooser .rs-varc-thumb:focus-visible::before,
+.rs-variation-chooser .rs-varc-thumb:focus::before {
+  content: none !important;
+}
+
+/* Fallback single-line ellipsis if multi-line clamp unsupported */
+@supports not (-webkit-line-clamp: 2) {
+  .rs-variation-chooser.rs-varc-uniform .rs-varc-thumb .rs-varc-thumb-name {
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-height: 1.4em;
+  }
+}
 
 /* Notices */
-.rs-varc-notice { padding: 10px; background: #f8f9fa; border: 1px dashed #dcdcdc; color: #555; border-radius: 4px; }
+.rs-varc-notice {
+  padding: 10px;
+  background: #f8f9fa;
+  border: 1px dashed #dcdcdc;
+  color: #555;
+  border-radius: 4px;
+}
 
 /* Hide default Woo variation selectors when our widget is present */
 form.variations_form.rs-varc-hide-defaults .variations,
-.variations_form.rs-varc-hide-defaults .reset_variations { display: none !important; }
+.variations_form.rs-varc-hide-defaults .reset_variations {
+  display: none !important;
+}
 
 /* Ensure important variation output (price, stock, etc.) stays visible */
 .variations_form.rs-varc-hide-defaults .single_variation,
-.variations_form.rs-varc-hide-defaults .woocommerce-variation { display: block; }
+.variations_form.rs-varc-hide-defaults .woocommerce-variation {
+  display: block;
+}
