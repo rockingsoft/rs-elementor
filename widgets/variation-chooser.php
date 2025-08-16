@@ -463,9 +463,9 @@ class RS_Elementor_Widget_Variation_Chooser extends \Elementor\Widget_Base {
 		$style_type   = $settings['style_type'];
 		$include_name = ( isset( $settings['include_product_name'] ) && 'yes' === $settings['include_product_name'] );
 		// Default to syncing ON if control isn't present.
-		$sync_with_form = ( ! isset( $settings['sync_with_variations_form'] ) ) || ( 'yes' === $settings['sync_with_variations_form'] );
-		$uniform_thumbs   = ( isset( $settings['uniform_thumb_size'] ) && 'yes' === $settings['uniform_thumb_size'] );
-		$single_line_nav  = ( isset( $settings['thumbs_single_line'] ) && 'yes' === $settings['thumbs_single_line'] );
+		$sync_with_form  = ( ! isset( $settings['sync_with_variations_form'] ) ) || ( 'yes' === $settings['sync_with_variations_form'] );
+		$uniform_thumbs  = ( isset( $settings['uniform_thumb_size'] ) && 'yes' === $settings['uniform_thumb_size'] );
+		$single_line_nav = ( isset( $settings['thumbs_single_line'] ) && 'yes' === $settings['thumbs_single_line'] );
 
 		// Build variations mapping for JS syncing.
 		$mapping = array();
@@ -542,5 +542,4 @@ class RS_Elementor_Widget_Variation_Chooser extends \Elementor\Widget_Base {
 		}
 		echo '</div>';
 	}
-
 }
