@@ -23,7 +23,7 @@ jobs:
         with:
           php-version: ${{ matrix.php }}
           coverage: none
-          tools: phpcs
+          tools: composer
 
       - name: PHP syntax check (php -l)
         run: |
@@ -34,13 +34,21 @@ jobs:
             -not -path './build/*' \
             -print0 | xargs -0 -n1 -P4 php -l
 
-      - name: Install WPCS and run PHPCS
+      - name: Install Composer dependencies
         run: |
           set -euo pipefail
-          git clone --depth 1 https://github.com/WordPress/WordPress-Coding-Standards/WordPress-Coding-Standards "$HOME/wpcs"
-          phpcs --config-set installed_paths "$HOME/wpcs"
-          phpcs -i
-          phpcs \
+          composer install --no-interaction --no-progress --prefer-dist
+
+      - name: Configure PHPCS installed_paths
+        run: |
+          set -euo pipefail
+          vendor/bin/phpcs --config-set installed_paths vendor/wp-coding-standards/wpcs
+          vendor/bin/phpcs -i
+
+      - name: Run PHPCS
+        run: |
+          set -euo pipefail
+          vendor/bin/phpcs \
             --standard=WordPress \
             --extensions=php \
             --report=full \
