@@ -42,38 +42,13 @@
   display: block; overflow: hidden; text-overflow: clip; max-height: 3.6em; /* ~3 lines */
 }
 
-/* Tooltip with full label on hover (uses the button title attr) */
-.rs-variation-chooser.rs-varc-uniform .rs-varc-thumb:hover::after,
-.rs-variation-chooser.rs-varc-uniform .rs-varc-thumb:focus-visible::after,
-.rs-variation-chooser.rs-varc-uniform .rs-varc-thumb:focus::after {
-  content: attr(title);
-  position: absolute;
-  bottom: 100%;
-  left: 50%;
-  transform: translateX(-50%);
-  background: rgba(0, 0, 0, 0.85);
-  color: #fff;
-  padding: 6px 8px;
-  border-radius: 4px;
-  white-space: normal;
-  width: max-content;
-  max-width: 260px;
-  text-align: center;
-  z-index: 30;
-  pointer-events: none;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-}
-.rs-variation-chooser.rs-varc-uniform .rs-varc-thumb:hover::before,
-.rs-variation-chooser.rs-varc-uniform .rs-varc-thumb:focus-visible::before,
-.rs-variation-chooser.rs-varc-uniform .rs-varc-thumb:focus::before {
-  content: '';
-  position: absolute;
-  bottom: calc(100% - 2px);
-  left: 50%;
-  transform: translateX(-50%);
-  border: 6px solid transparent;
-  border-top-color: rgba(0,0,0,0.85);
-}
+/* Tooltips disabled intentionally */
+.rs-variation-chooser .rs-varc-thumb:hover::after,
+.rs-variation-chooser .rs-varc-thumb:focus-visible::after,
+.rs-variation-chooser .rs-varc-thumb:focus::after,
+.rs-variation-chooser .rs-varc-thumb:hover::before,
+.rs-variation-chooser .rs-varc-thumb:focus-visible::before,
+.rs-variation-chooser .rs-varc-thumb:focus::before { content: none !important; }
 
 /* Fallback single-line ellipsis if multi-line clamp unsupported */
 @supports not (-webkit-line-clamp: 2) {
