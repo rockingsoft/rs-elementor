@@ -92,6 +92,31 @@
 				$btn.addClass('is-active').attr('aria-pressed','true');
 				setValue($btn.data('value'));
 			});
+
+			// Enhance tooltips if Tippy.js is available (Elementor may provide it on frontend)
+			try {
+				if (window.tippy && typeof window.tippy === 'function') {
+					$thumbs.find('.rs-varc-thumb').each(function(){
+						var $btn = $(this);
+						var title = $btn.attr('title');
+						if(title){
+							// Prevent native tooltip; move to data for Tippy
+							$btn.attr('data-tippy-content', title);
+							$btn.attr('aria-label', title);
+							$btn.removeAttr('title');
+						}
+					});
+					window.tippy($thumbs.find('.rs-varc-thumb').get(), {
+						allowHTML: false,
+						placement: 'top',
+						theme: 'light-border',
+						animation: 'shift-away-subtle',
+						duration: [150, 120],
+						maxWidth: 300,
+						appendTo: function(){ return document.body; }
+					});
+				}
+			} catch(e) { /* noop fallback to CSS tooltip */ }
 		}
 
 		// Reflect Woo form -> widget

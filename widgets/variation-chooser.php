@@ -503,13 +503,13 @@ class RS_Elementor_Widget_Variation_Chooser extends \Elementor\Widget_Base {
 						$img = esc_url( wp_get_attachment_image_url( $img_id, 'woocommerce_thumbnail' ) );
 					}
 				}
-				echo '<button type="button" class="rs-varc-thumb" role="listitem" data-value="' . esc_attr( $vid ) . '" aria-pressed="false">';
+				echo '<button type="button" class="rs-varc-thumb" role="listitem" data-value="' . esc_attr( $vid ) . '" aria-pressed="false" title="' . esc_attr( $name ) . '">';
 				if ( $img ) {
 					echo '<img src="' . esc_url( $img ) . '" alt="' . esc_attr( $name ) . '" />';
 				} else {
-					echo '<span class="rs-varc-thumb-fallback">' . esc_html( $name ) . '</span>';
+					echo '<span class="rs-varc-thumb-fallback" title="' . esc_attr( $name ) . '">' . esc_html( $name ) . '</span>';
 				}
-				echo '<span class="rs-varc-thumb-name">' . esc_html( $name ) . '</span>';
+				echo '<span class="rs-varc-thumb-name" title="' . esc_attr( $name ) . '">' . esc_html( $name ) . '</span>';
 				echo '</button>';
 			}
 			echo '</div>';
