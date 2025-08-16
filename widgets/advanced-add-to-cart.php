@@ -159,6 +159,24 @@ class RS_Elementor_Widget_Advanced_Add_To_Cart extends \Elementor\Widget_Base {
 		);
 
 		$this->add_responsive_control(
+			'button_full_width',
+			array(
+				'label'        => esc_html__( 'Full Width', 'rs-elementor-widgets' ),
+				'type'         => \Elementor\Controls_Manager::SWITCHER,
+				'label_on'     => esc_html__( 'Yes', 'rs-elementor-widgets' ),
+				'label_off'    => esc_html__( 'No', 'rs-elementor-widgets' ),
+				'return_value' => 'yes',
+				'default'      => '',
+				'selectors'    => array(
+					// Ensure parent containers span full width
+					'{{WRAPPER}} .rs-advanced-add-to-cart, {{WRAPPER}} .rs-advanced-add-to-cart .single_variation_wrap, {{WRAPPER}} .rs-advanced-add-to-cart form.cart, {{WRAPPER}} .rs-advanced-add-to-cart .woocommerce-variation-add-to-cart' => 'width: 100%;',
+					// Make button truly full width inside flex rows
+					'{{WRAPPER}} .rs-advanced-add-to-cart .single_add_to_cart_button' => 'display: block; width: 100%; flex: 0 0 100%; align-self: stretch;',
+				),
+			)
+		);
+
+		$this->add_responsive_control(
 			'button_alignment',
 			array(
 				'label'                => esc_html__( 'Alignment', 'rs-elementor-widgets' ),
@@ -196,23 +214,8 @@ class RS_Elementor_Widget_Advanced_Add_To_Cart extends \Elementor\Widget_Base {
 					// Stock message alignment.
 					'{{WRAPPER}} .rs-advanced-add-to-cart .stock' => 'width: 100%; justify-content: {{VALUE}};',
 				),
-			)
-		);
-
-		$this->add_responsive_control(
-			'button_full_width',
-			array(
-				'label'        => esc_html__( 'Full Width', 'rs-elementor-widgets' ),
-				'type'         => \Elementor\Controls_Manager::SWITCHER,
-				'label_on'     => esc_html__( 'Yes', 'rs-elementor-widgets' ),
-				'label_off'    => esc_html__( 'No', 'rs-elementor-widgets' ),
-				'return_value' => 'yes',
-				'default'      => '',
-				'selectors'    => array(
-					// Ensure parent containers span full width
-					'{{WRAPPER}} .rs-advanced-add-to-cart, {{WRAPPER}} .rs-advanced-add-to-cart .single_variation_wrap, {{WRAPPER}} .rs-advanced-add-to-cart form.cart, {{WRAPPER}} .rs-advanced-add-to-cart .woocommerce-variation-add-to-cart' => 'width: 100%;',
-					// Make button truly full width inside flex rows
-					'{{WRAPPER}} .rs-advanced-add-to-cart .single_add_to_cart_button' => 'display: block; width: 100%; flex: 0 0 100%; align-self: stretch;',
+				'condition'           => array(
+					'button_full_width!' => 'yes',
 				),
 			)
 		);
@@ -233,6 +236,32 @@ class RS_Elementor_Widget_Advanced_Add_To_Cart extends \Elementor\Widget_Base {
 			array(
 				'name'     => 'button_typography',
 				'selector' => '{{WRAPPER}} .rs-advanced-add-to-cart .single_add_to_cart_button',
+			)
+		);
+
+		$this->add_responsive_control(
+			'button_text_align',
+			array(
+				'label'   => esc_html__( 'Text Align', 'rs-elementor-widgets' ),
+				'type'    => \Elementor\Controls_Manager::CHOOSE,
+				'options' => array(
+					'left'   => array(
+						'title' => esc_html__( 'Left', 'rs-elementor-widgets' ),
+						'icon'  => 'eicon-text-align-left',
+					),
+					'center' => array(
+						'title' => esc_html__( 'Center', 'rs-elementor-widgets' ),
+						'icon'  => 'eicon-text-align-center',
+					),
+					'right'  => array(
+						'title' => esc_html__( 'Right', 'rs-elementor-widgets' ),
+						'icon'  => 'eicon-text-align-right',
+					),
+				),
+				'default'   => 'center',
+				'selectors' => array(
+					'{{WRAPPER}} .rs-advanced-add-to-cart .single_add_to_cart_button' => 'text-align: {{VALUE}};',
+				),
 			)
 		);
 
