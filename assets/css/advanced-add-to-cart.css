@@ -1,0 +1,23 @@
+/* Advanced Add To Cart – loop context fixes
+   Scope narrowly to our widget wrapper to avoid side effects. */
+
+/* Remove unintended bottom spacing in loop cards */
+.rs-advanced-add-to-cart.rs-context-loop form.cart,
+.rs-advanced-add-to-cart.rs-context-loop .variations_form,
+.rs-advanced-add-to-cart.rs-context-loop .woocommerce-variation-add-to-cart,
+.rs-advanced-add-to-cart.rs-context-loop .variations {
+  margin-bottom: 0 !important;
+  padding-bottom: 0 !important;
+  border-bottom: 0 !important;
+}
+
+/* Ensure single anchor buttons in loops don't get extra spacing */
+.rs-advanced-add-to-cart.rs-context-loop a.add_to_cart_button,
+.rs-advanced-add-to-cart.rs-context-loop .single_add_to_cart_button {
+  margin-bottom: 0 !important;
+}
+
+/* Reset any form border that some themes add inside product loops */
+.rs-advanced-add-to-cart.rs-context-loop form.cart {
+  border: 0 !important;
+}

@@ -224,6 +224,7 @@ final class RS_Elementor_Widgets {
 	public function widget_styles() {
 		// Per-widget styles (registered only; enqueued via get_style_depends on widgets).
 		$css_files = array(
+			'rs-advanced-add-to-cart'   => 'assets/css/advanced-add-to-cart.css',
 			'rs-advanced-product-images' => 'assets/css/advanced-product-images.css',
 			'rs-product-reviews'        => 'assets/css/product-reviews.css',
 			'rs-variation-chooser'      => 'assets/css/variation-chooser.css',

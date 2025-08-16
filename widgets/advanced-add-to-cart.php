@@ -72,7 +72,7 @@ class RS_Elementor_Widget_Advanced_Add_To_Cart extends \Elementor\Widget_Base {
 	 * @return string[]
 	 */
 	public function get_style_depends() {
-		return array();
+		return array( 'rs-advanced-add-to-cart' );
 	}
 
 	/**
