@@ -34,7 +34,7 @@ Widgets are designed to be fast, accessible, and easy to customize in Elementor.
 - WooCommerce: 3.0+
 - Elementor: 3.0.0+
 
-These checks are enforced in the main plugin file `rs-elementor-widgets.php`.
+These checks are enforced in the main plugin file `class-rs-elementor-widgets.php`.
 
 ## Installation
 

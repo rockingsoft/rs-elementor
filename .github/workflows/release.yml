@@ -1,0 +1,93 @@
+name: Build and Release Plugin
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to release (e.g., 1.2.3). If empty, parse from plugin file.'
+        required: false
+        default: ''
+
+jobs:
+  build-and-release:
+    name: Build ZIP and Create Release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    env:
+      PLUGIN_SLUG: rs-elementor-widgets
+      MAIN_PLUGIN_FILE: class-rs-elementor-widgets.php
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Determine version
+        id: ver
+        shell: bash
+        run: |
+          TAG_NAME="${GITHUB_REF#refs/tags/}"
+          VERSION="${TAG_NAME#v}"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "tag=v$VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Prepare build directory
+        run: |
+          mkdir -p build
+          DEST="build/${{ env.PLUGIN_SLUG }}"
+          rsync -av . "$DEST" \
+            --exclude '.git/' \
+            --exclude '.github/' \
+            --exclude 'build/' \
+            --exclude '.gitignore' \
+            --exclude '.editorconfig' \
+            --exclude 'node_modules/' \
+            --exclude 'vendor/' \
+            --exclude '*.zip' \
+            --exclude 'README-dev*' \
+            --exclude 'tests/'
+
+      - name: Stamp tag version into plugin file
+        run: |
+          PLUGIN_FILE="build/${{ env.PLUGIN_SLUG }}/${{ env.MAIN_PLUGIN_FILE }}"
+          test -f "$PLUGIN_FILE" || { echo "Plugin file not found: $PLUGIN_FILE"; exit 1; }
+          sed -E -i "s/^(\\s*\\*\\s*Version\\s*:\\s*).*/\\1${{ steps.ver.outputs.version }}/I" "$PLUGIN_FILE"
+
+      - name: Validate main plugin file exists
+        run: |
+          test -f "build/${{ env.PLUGIN_SLUG }}/${{ env.MAIN_PLUGIN_FILE }}" || { echo "Main plugin file not found"; ls -la "build/${{ env.PLUGIN_SLUG }}"; exit 1; }
+
+      - name: Create ZIP
+        id: zip
+        run: |
+          cd build
+          ZIP_NAME="${{ env.PLUGIN_SLUG }}-${{ steps.ver.outputs.version }}.zip"
+          zip -r "$ZIP_NAME" "${{ env.PLUGIN_SLUG }}" -9
+          echo "zip_path=$(pwd)/$ZIP_NAME" >> "$GITHUB_OUTPUT"
+          echo "zip_name=$ZIP_NAME" >> "$GITHUB_OUTPUT"
+
+      - name: Upload artifact (ZIP)
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ steps.zip.outputs.zip_name }}
+          path: ${{ steps.zip.outputs.zip_path }}
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.ver.outputs.tag }}
+          name: rs-elementor-widgets v${{ steps.ver.outputs.version }}
+          draft: false
+          prerelease: ${{ contains(steps.ver.outputs.version, '-') }}
+          files: ${{ steps.zip.outputs.zip_path }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Post-release info
+        run: |
+          echo "Release tag: ${{ steps.ver.outputs.tag }}"
+          echo "ZIP ready for WordPress.com upload: ${{ steps.zip.outputs.zip_name }}"

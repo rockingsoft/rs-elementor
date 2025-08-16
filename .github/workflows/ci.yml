@@ -1,0 +1,43 @@
+name: CI - Validate Plugin
+
+on:
+  pull_request:
+    branches: [ main ]
+  push:
+    branches: [ main ]
+
+jobs:
+  php-lint-phpcs:
+    name: PHP Lint & PHPCS (matrix)
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php: [ '7.4', '8.0', '8.1', '8.2' ]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP ${{ matrix.php }}
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+          tools: composer
+
+      - name: PHP syntax check (php -l)
+        run: |
+          find . -type f -name '*.php' \
+            -not -path './vendor/*' \
+            -not -path './node_modules/*' \
+            -not -path './build/*' \
+            -print0 | xargs -0 -n1 -P4 php -l
+
+      - name: Install Composer dependencies
+        run: |
+          composer install --no-interaction --no-progress --prefer-dist
+
+      - name: Run PHPCS
+        run: |
+          vendor/bin/phpcs --standard=WordPress ./widgets/* ./class-rs-elementor-widgets.php
+
