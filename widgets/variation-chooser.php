@@ -272,6 +272,48 @@ class RS_Elementor_Widget_Variation_Chooser extends \Elementor\Widget_Base {
 			)
 		);
 
+		// Uniform thumbnails: make all thumb buttons equal square size for a cleaner grid regardless of label length.
+		$this->add_control(
+			'uniform_thumb_size',
+			array(
+				'label'        => esc_html__( 'Uniform Thumb Size', 'rs-elementor-widgets' ),
+				'description'  => esc_html__( 'Force all thumbnail buttons to have the same width and height.', 'rs-elementor-widgets' ),
+				'type'         => \Elementor\Controls_Manager::SWITCHER,
+				'label_on'     => esc_html__( 'On', 'rs-elementor-widgets' ),
+				'label_off'    => esc_html__( 'Off', 'rs-elementor-widgets' ),
+				'return_value' => 'yes',
+				'default'      => '',
+				'condition'    => array( 'style_type' => 'thumbnails' ),
+			)
+		);
+
+		$this->add_responsive_control(
+			'uniform_thumb_square',
+			array(
+				'label'      => esc_html__( 'Thumb Size', 'rs-elementor-widgets' ),
+				'type'       => \Elementor\Controls_Manager::SLIDER,
+				'size_units' => array( 'px' ),
+				'range'      => array(
+					'px' => array(
+						'min' => 48,
+						'max' => 240,
+					),
+				),
+				'default'    => array(
+					'size' => 96,
+					'unit' => 'px',
+				),
+				// Only apply when thumbnails style is active and uniform mode is enabled.
+				'selectors'  => array(
+					'{{WRAPPER}} .rs-variation-chooser.rs-varc-uniform .rs-varc-thumb' => 'width: {{SIZE}}{{UNIT}}; height: {{SIZE}}{{UNIT}};',
+				),
+				'condition'  => array(
+					'style_type'         => 'thumbnails',
+					'uniform_thumb_size' => 'yes',
+				),
+			)
+		);
+
 		// Hover state.
 		$this->add_control(
 			'thumb_hover_bg_color',
@@ -407,6 +449,7 @@ class RS_Elementor_Widget_Variation_Chooser extends \Elementor\Widget_Base {
 		$include_name = ( isset( $settings['include_product_name'] ) && 'yes' === $settings['include_product_name'] );
 		// Default to syncing ON if control isn't present.
 		$sync_with_form = ( ! isset( $settings['sync_with_variations_form'] ) ) || ( 'yes' === $settings['sync_with_variations_form'] );
+		$uniform_thumbs = ( isset( $settings['uniform_thumb_size'] ) && 'yes' === $settings['uniform_thumb_size'] );
 
 		// Build variations mapping for JS syncing.
 		$mapping = array();
@@ -418,7 +461,12 @@ class RS_Elementor_Widget_Variation_Chooser extends \Elementor\Widget_Base {
 		}
 		$mapping_json = wp_json_encode( $mapping );
 
-		echo '<div id="' . esc_attr( $wrapper_id ) . '" class="rs-variation-chooser" data-sync="' . ( $sync_with_form ? '1' : '0' ) . '" data-variations="' . esc_attr( $mapping_json ) . '">';
+		$wrapper_classes = 'rs-variation-chooser';
+		if ( 'thumbnails' === $style_type && $uniform_thumbs ) {
+			$wrapper_classes .= ' rs-varc-uniform';
+		}
+
+		echo '<div id="' . esc_attr( $wrapper_id ) . '" class="' . esc_attr( $wrapper_classes ) . '" data-sync="' . ( $sync_with_form ? '1' : '0' ) . '" data-variations="' . esc_attr( $mapping_json ) . '">';
 
 		if ( $show_label && $label ) {
 			echo '<label class="rs-varc-label" for="' . esc_attr( $wrapper_id . '-select' ) . '">' . esc_html( $label ) . '</label>';
