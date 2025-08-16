@@ -129,6 +129,24 @@ class RS_Elementor_Widget_Advanced_Add_To_Cart extends \Elementor\Widget_Base {
 			)
 		);
 
+		// Option: Hide native WooCommerce variations UI (useful when using our Variation Chooser widget).
+		$this->add_control(
+			'hide_wc_variations',
+			array(
+				'label'        => esc_html__( 'Hide Native Variations', 'rs-elementor-widgets' ),
+				'description'  => esc_html__( 'Hides WooCommerce\'s default variation selectors inside this widget. Useful if you add the Variation Chooser widget.', 'rs-elementor-widgets' ),
+				'type'         => \Elementor\Controls_Manager::SWITCHER,
+				'label_on'     => esc_html__( 'Hide', 'rs-elementor-widgets' ),
+				'label_off'    => esc_html__( 'Show', 'rs-elementor-widgets' ),
+				'return_value' => 'yes',
+				'default'      => 'yes',
+				'selectors'    => array(
+					'{{WRAPPER}} .rs-advanced-add-to-cart .variations' => 'display: none !important;',
+					'{{WRAPPER}} .rs-advanced-add-to-cart .reset_variations' => 'display: none !important;',
+				),
+			)
+		);
+
 		$this->end_controls_section();
 
 		// Style: Alignment.
@@ -191,7 +209,10 @@ class RS_Elementor_Widget_Advanced_Add_To_Cart extends \Elementor\Widget_Base {
 				'return_value' => 'yes',
 				'default'      => '',
 				'selectors'    => array(
-					'{{WRAPPER}} .rs-advanced-add-to-cart .single_add_to_cart_button' => 'display: block; width: 100%;',
+					// Ensure parent containers span full width
+					'{{WRAPPER}} .rs-advanced-add-to-cart, {{WRAPPER}} .rs-advanced-add-to-cart .single_variation_wrap, {{WRAPPER}} .rs-advanced-add-to-cart form.cart, {{WRAPPER}} .rs-advanced-add-to-cart .woocommerce-variation-add-to-cart' => 'width: 100%;',
+					// Make button truly full width inside flex rows
+					'{{WRAPPER}} .rs-advanced-add-to-cart .single_add_to_cart_button' => 'display: block; width: 100%; flex: 0 0 100%; align-self: stretch;',
 				),
 			)
 		);
@@ -406,6 +427,8 @@ class RS_Elementor_Widget_Advanced_Add_To_Cart extends \Elementor\Widget_Base {
 		if ( ! $product || ! is_a( $product, 'WC_Product' ) ) {
 			return; // No product context available.
 		}
+
+		// Visibility of Woo native variations is now handled by the 'hide_wc_variations' control via dynamic CSS.
 
 		echo '<div class="rs-advanced-add-to-cart">';
 
