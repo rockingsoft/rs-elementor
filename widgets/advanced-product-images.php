@@ -566,6 +566,16 @@ class RS_Elementor_Widget_Advanced_Product_Images extends \Elementor\Widget_Base
 		if ( '0' === $click_new_tab && isset( $settings['click_new_tab'] ) && 'yes' === $settings['click_new_tab'] ) {
 			$click_new_tab = '1';
 		}
+		// Build rel attribute value safely.
+		$rel_parts = array();
+		if ( '1' === $click_new_tab ) {
+			$rel_parts[] = 'noopener';
+			$rel_parts[] = 'noreferrer';
+		}
+		if ( '1' === $click_nofollow ) {
+			$rel_parts[] = 'nofollow';
+		}
+		$rel_attr = implode( ' ', array_unique( $rel_parts ) );
 		?>
 		<div id="<?php echo esc_attr( $widget_id ); ?>" class="<?php echo esc_attr( $container_classes ); ?>" data-variation-map="<?php echo esc_attr( $var_map_json ); ?>" data-click-action="<?php echo esc_attr( $click_action ); ?>" data-click-url="<?php echo esc_url( $click_url ); ?>" data-click-new-tab="<?php echo esc_attr( $click_new_tab ); ?>">
 			<div class="rs-adv-images-inner">
@@ -589,7 +599,7 @@ class RS_Elementor_Widget_Advanced_Product_Images extends \Elementor\Widget_Base
 							$main_src = $images[0]['large'] ? $images[0]['large'] : $images[0]['full'];
 							?>
 							<?php if ( 'link' === $click_action && ! empty( $click_url ) ) : ?>
-								<a class="rs-adv-main-link" href="<?php echo esc_url( $click_url ); ?>"<?php echo ( '1' === $click_new_tab ) ? ' target="_blank"' : ''; ?><?php echo ( '1' === $click_new_tab || '1' === $click_nofollow ) ? ' rel="' . trim( ( '1' === $click_new_tab ? 'noopener noreferrer' : '' ) . ( '1' === $click_nofollow ? ' nofollow' : '' ) ) . '"' : ''; ?>>
+								<a class="rs-adv-main-link" href="<?php echo esc_url( $click_url ); ?>"<?php echo ( '1' === $click_new_tab ) ? ' target="_blank"' : ''; ?><?php echo ( '' !== $rel_attr ) ? ' rel="' . esc_attr( $rel_attr ) . '"' : ''; ?>>
 									<img class="rs-adv-main-img" src="<?php echo esc_url( $main_src ); ?>" alt="<?php echo esc_attr( $images[0]['alt'] ); ?>"/>
 								</a>
 							<?php else : ?>
@@ -606,7 +616,7 @@ class RS_Elementor_Widget_Advanced_Product_Images extends \Elementor\Widget_Base
 						$main_src = $images[0]['large'] ? $images[0]['large'] : $images[0]['full'];
 						?>
 						<?php if ( 'link' === $click_action && ! empty( $click_url ) ) : ?>
-							<a class="rs-adv-main-link" href="<?php echo esc_url( $click_url ); ?>"<?php echo ( '1' === $click_new_tab ) ? ' target="_blank"' : ''; ?><?php echo ( '1' === $click_new_tab || '1' === $click_nofollow ) ? ' rel="' . trim( ( '1' === $click_new_tab ? 'noopener noreferrer' : '' ) . ( '1' === $click_nofollow ? ' nofollow' : '' ) ) . '"' : ''; ?>>
+							<a class="rs-adv-main-link" href="<?php echo esc_url( $click_url ); ?>"<?php echo ( '1' === $click_new_tab ) ? ' target="_blank"' : ''; ?><?php echo ( '' !== $rel_attr ) ? ' rel="' . esc_attr( $rel_attr ) . '"' : ''; ?>>
 								<img class="rs-adv-main-img" src="<?php echo esc_url( $main_src ); ?>" alt="<?php echo esc_attr( $images[0]['alt'] ); ?>"/>
 							</a>
 						<?php else : ?>
