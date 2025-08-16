@@ -108,12 +108,14 @@
 }
 
 /* Single-line thumbnails with arrows */
-.rs-variation-chooser .rs-varc-thumbs-wrap.rs-varc-singleline { position: relative; display: block; max-width: 100%; width: 100%; min-width: 0; overflow: hidden; padding-inline: 36px; }
-.rs-variation-chooser .rs-varc-thumbs-wrap.rs-varc-singleline .rs-varc-thumbs { width: 100%; min-width: 0; display: flex; flex-wrap: nowrap; overflow-x: auto; gap: 8px; scroll-behavior: smooth; -webkit-overflow-scrolling: touch; }
+.rs-variation-chooser .rs-varc-thumbs-wrap.rs-varc-singleline { position: relative; display: block; max-width: 100%; width: 100%; min-width: 0; overflow: hidden; padding-inline: 28px; }
+.rs-variation-chooser .rs-varc-thumbs-wrap.rs-varc-singleline .rs-varc-thumbs { width: 100%; min-width: 0; display: flex; flex-wrap: nowrap; overflow-x: auto; gap: 8px; scroll-behavior: smooth; -webkit-overflow-scrolling: touch; -ms-overflow-style: none; scrollbar-width: none; }
+/* Hide scrollbar in WebKit */
+.rs-variation-chooser .rs-varc-thumbs-wrap.rs-varc-singleline .rs-varc-thumbs::-webkit-scrollbar { display: none; height: 0; width: 0; }
 .rs-variation-chooser .rs-varc-thumbs-wrap.rs-varc-singleline .rs-varc-thumb { flex: 0 0 auto; }
-.rs-variation-chooser .rs-varc-thumbs-wrap.rs-varc-singleline .rs-varc-nav { position: absolute; top: 50%; transform: translateY(-50%); width: 28px; height: 28px; border-radius: 50%; border: 1px solid #d9dfe6; background: #fff; color: #333; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; padding: 0; line-height: 1; z-index: 2; }
-.rs-variation-chooser .rs-varc-thumbs-wrap.rs-varc-singleline .rs-varc-prev { left: 4px; }
-.rs-variation-chooser .rs-varc-thumbs-wrap.rs-varc-singleline .rs-varc-next { right: 4px; }
+.rs-variation-chooser .rs-varc-thumbs-wrap.rs-varc-singleline .rs-varc-nav { position: absolute; top: 50%; transform: translateY(-50%); width: 22px; height: 22px; border-radius: 50%; border: 1px solid #d9dfe6; background: #fff; color: #333; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; padding: 0; line-height: 1; z-index: 2; font-size: 13px; }
+.rs-variation-chooser .rs-varc-thumbs-wrap.rs-varc-singleline .rs-varc-prev { left: 3px; }
+.rs-variation-chooser .rs-varc-thumbs-wrap.rs-varc-singleline .rs-varc-next { right: 3px; }
 
 .rs-variation-chooser .rs-varc-thumbs-wrap.rs-varc-singleline .rs-varc-nav:hover {
   background: #f5f7fa;
