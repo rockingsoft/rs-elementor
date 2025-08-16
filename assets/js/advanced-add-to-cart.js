@@ -83,6 +83,8 @@
     var payload = collectVariationFormData($form);
     var isLoopContext = $form.closest('.rs-advanced-add-to-cart').hasClass('rs-context-loop');
     var prevCartRedirect = null;
+    // Ensure repeated clicks don't leave the button in an 'added' state
+    $button.removeClass('added');
 
     if (!payload.variation_id) {
       // Ask Woo to re-check and show messages
@@ -101,6 +103,46 @@
     delete payload.variation_id;
 
     // Button/UI state
+    // Compute a faded background color for loading state, based on the current background
+    try {
+      var node = $button.get(0);
+      if (node) {
+        var cs = window.getComputedStyle(node);
+        var bg = cs && cs.backgroundColor ? cs.backgroundColor : '';
+        // Store previous background to restore later
+        if (!$button.data('rsPrevBg')) {
+          $button.data('rsPrevBg', node.style.backgroundColor || '');
+        }
+        var faded = (function toFaded(color, alpha) {
+          alpha = (typeof alpha === 'number') ? alpha : 0.75;
+          if (!color) return '';
+          // rgb(a)
+          var m = color.match(/^rgba?\((\d+)\s*,\s*(\d+)\s*,\s*(\d+)(?:\s*,\s*([0-9.]+))?\)$/i);
+          if (m) {
+            var r = parseInt(m[1], 10), g = parseInt(m[2], 10), b = parseInt(m[3], 10);
+            return 'rgba(' + r + ', ' + g + ', ' + b + ', ' + alpha + ')';
+          }
+          // hex #rrggbb or #rgb
+          var hx = color.replace(/^#/, '');
+          if (/^[0-9a-f]{3}$/i.test(hx)) {
+            var r3 = parseInt(hx[0] + hx[0], 16);
+            var g3 = parseInt(hx[1] + hx[1], 16);
+            var b3 = parseInt(hx[2] + hx[2], 16);
+            return 'rgba(' + r3 + ', ' + g3 + ', ' + b3 + ', ' + alpha + ')';
+          }
+          if (/^[0-9a-f]{6}$/i.test(hx)) {
+            var r6 = parseInt(hx.slice(0, 2), 16);
+            var g6 = parseInt(hx.slice(2, 4), 16);
+            var b6 = parseInt(hx.slice(4, 6), 16);
+            return 'rgba(' + r6 + ', ' + g6 + ', ' + b6 + ', ' + alpha + ')';
+          }
+          return color; // fallback unchanged
+        })(bg, 0.75);
+        if (faded) {
+          node.style.backgroundColor = faded;
+        }
+      }
+    } catch (e) { }
     $button.addClass('loading').prop('disabled', true);
     // In loop context, suppress downstream Woo/theme redirects driven by this flag
     if (typeof wc_add_to_cart_params !== 'undefined') {
@@ -136,6 +178,15 @@
 
 
       // Visual state
+      // Restore background color before toggling to 'added'
+      try {
+        var node = $button.get(0);
+        var prev = $button.data('rsPrevBg');
+        if (node) {
+          node.style.backgroundColor = (typeof prev === 'string') ? prev : '';
+        }
+        $button.removeData('rsPrevBg');
+      } catch (e) { }
       $button.removeClass('loading').addClass('added').prop('disabled', false);
 
       setTimeout(function () {
@@ -143,7 +194,15 @@
       }, 10000);
 
     }).fail(function () {
-      // On failure, just re-enable
+      // On failure, just re-enable and restore background
+      try {
+        var node = $button.get(0);
+        var prev = $button.data('rsPrevBg');
+        if (node) {
+          node.style.backgroundColor = (typeof prev === 'string') ? prev : '';
+        }
+        $button.removeData('rsPrevBg');
+      } catch (e) { }
       $button.removeClass('loading').prop('disabled', false);
     }).always(function () {
       // Restore Woo redirect flag after our flow completes
@@ -196,10 +255,79 @@
     return false;
   }, true);
 
+  // Apply faded background for simple product buttons managed by Woo core
+  function applyFadedBg($button) {
+    try {
+      if (!$button || !$button.length) return;
+      var node = $button.get(0);
+      if (!node) return;
+      var cs = window.getComputedStyle(node);
+      var bg = cs && cs.backgroundColor ? cs.backgroundColor : '';
+      if (!$button.data('rsPrevBg')) {
+        $button.data('rsPrevBg', node.style.backgroundColor || '');
+      }
+      var faded = (function toFaded(color, alpha) {
+        alpha = (typeof alpha === 'number') ? alpha : 0.75;
+        if (!color) return '';
+        var m = color.match(/^rgba?\((\d+)\s*,\s*(\d+)\s*,\s*(\d+)(?:\s*,\s*([0-9.]+))?\)$/i);
+        if (m) {
+          var r = parseInt(m[1], 10), g = parseInt(m[2], 10), b = parseInt(m[3], 10);
+          return 'rgba(' + r + ', ' + g + ', ' + b + ', ' + alpha + ')';
+        }
+        var hx = color.replace(/^#/, '');
+        if (/^[0-9a-f]{3}$/i.test(hx)) {
+          var r3 = parseInt(hx[0] + hx[0], 16);
+          var g3 = parseInt(hx[1] + hx[1], 16);
+          var b3 = parseInt(hx[2] + hx[2], 16);
+          return 'rgba(' + r3 + ', ' + g3 + ', ' + b3 + ', ' + alpha + ')';
+        }
+        if (/^[0-9a-f]{6}$/i.test(hx)) {
+          var r6 = parseInt(hx.slice(0, 2), 16);
+          var g6 = parseInt(hx.slice(2, 4), 16);
+          var b6 = parseInt(hx.slice(4, 6), 16);
+          return 'rgba(' + r6 + ', ' + g6 + ', ' + b6 + ', ' + alpha + ')';
+        }
+        return color;
+      })(bg, 0.75);
+      if (faded) node.style.backgroundColor = faded;
+    } catch (e) {}
+  }
+
+  function restoreBg($button) {
+    try {
+      if (!$button || !$button.length) return;
+      var node = $button.get(0);
+      var prev = $button.data('rsPrevBg');
+      if (node) node.style.backgroundColor = (typeof prev === 'string') ? prev : '';
+      $button.removeData('rsPrevBg');
+    } catch (e) {}
+  }
+
+  // Woo core events for simple products
+  $(document.body).on('adding_to_cart', function (ev, $button /*, data */) {
+    if (!$button || !$button.length) return;
+    if (!$button.closest('.rs-advanced-add-to-cart').length) return;
+    // Remove 'added' immediately and apply faded bg while loading
+    $button.removeClass('added');
+    applyFadedBg($button);
+  });
+
+  $(document.body).on('added_to_cart', function (ev, fragments, cart_hash, $button) {
+    if ($button && $button.length && $button.closest('.rs-advanced-add-to-cart').length) {
+      restoreBg($button);
+    }
+  });
+
   document.addEventListener('click', function (ev) {
     var target = ev.target;
     if (!target || !target.closest) return;
+    // For variable forms (our AJAX handler)
     var btn = target.closest('.rs-advanced-add-to-cart.rs-context-loop .single_add_to_cart_button');
+    // Regardless of type, if any add-to-cart within our widget has 'added', remove it immediately to prevent spinning icon re-animating
+    var anyBtn = target.closest('.rs-advanced-add-to-cart .single_add_to_cart_button, .rs-advanced-add-to-cart a.add_to_cart_button');
+    if (anyBtn) {
+      try { anyBtn.classList.remove('added'); } catch (e) {}
+    }
     if (!btn) return;
     var wrapper = btn.closest('.rs-advanced-add-to-cart.rs-context-loop');
     var form = btn.closest('form') || (wrapper ? wrapper.querySelector('form') : null);
