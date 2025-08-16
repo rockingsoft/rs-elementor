@@ -237,3 +237,15 @@ form.variations_form.rs-varc-hide-defaults .variations,
 .variations_form.rs-varc-hide-defaults .woocommerce-variation {
   display: block;
 }
+
+/* Editor-only: hide Woo default variation selectors when our chooser is on the canvas
+   and within the same Elementor widget/container/column. This prevents the duplicate
+   "Model" dropdown from showing while designing. */
+.elementor-editor-active .elementor-widget:has(.rs-variation-chooser) .variations_form .variations,
+.elementor-editor-active .elementor-widget-container:has(.rs-variation-chooser) .variations_form .variations,
+.elementor-editor-active .elementor-column:has(.rs-variation-chooser) .variations_form .variations,
+.elementor-editor-active .elementor-widget:has(.rs-variation-chooser) .variations_form .reset_variations,
+.elementor-editor-active .elementor-widget-container:has(.rs-variation-chooser) .variations_form .reset_variations,
+.elementor-editor-active .elementor-column:has(.rs-variation-chooser) .variations_form .reset_variations {
+  display: none !important;
+}
