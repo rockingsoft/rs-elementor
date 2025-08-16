@@ -137,34 +137,6 @@ class RS_Elementor_Widget_Advanced_Info_Table extends \Elementor\Widget_Base {
             ]
         );
 
-        $this->add_control(
-            'alt_rows',
-            [
-                'label'        => esc_html__( 'Alternating Rows', 'rs-elementor-widgets' ),
-                'type'         => \Elementor\Controls_Manager::SWITCHER,
-                'label_on'     => esc_html__( 'Yes', 'rs-elementor-widgets' ),
-                'label_off'    => esc_html__( 'No', 'rs-elementor-widgets' ),
-                'return_value' => 'yes',
-                'default'      => 'yes',
-                'selectors'    => [
-                    '{{WRAPPER}} .rs-adv-info-table' => '--rs-alt-enabled: {{VALUE}};',
-                ],
-            ]
-        );
-
-        $this->add_control(
-            'alt_row_bg',
-            [
-                'label' => esc_html__( 'Alt Row Background', 'rs-elementor-widgets' ),
-                'type'  => \Elementor\Controls_Manager::COLOR,
-                'default' => '#f7f7f7',
-                'selectors' => [
-                    '{{WRAPPER}} .rs-adv-info-table' => '--rs-alt-bg: {{VALUE}};',
-                ],
-                'condition' => [ 'alt_rows' => 'yes' ],
-            ]
-        );
-
         $this->add_group_control(
             \Elementor\Group_Control_Border::get_type(),
             [
