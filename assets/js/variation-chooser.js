@@ -6,6 +6,7 @@
 		var $hidden = $root.find('.rs-varc-input');
 		var $select = $root.find('.rs-varc-select');
 		var $thumbs = $root.find('.rs-varc-thumbs');
+		var $singleLineWrap = $root.find('.rs-varc-thumbs-wrap.rs-varc-singleline');
 		var syncEnabled = String($root.data('sync')) === '1';
 		var variationsMap = {};
 		try {
@@ -75,6 +76,13 @@
 			$hidden.val(val).trigger('change');
 			$root.trigger('rs_varc_change', [val]);
 			selectInForm(val);
+			// When in single-line mode, ensure selected is visible
+			if($singleLineWrap.length && $thumbs.length){
+				var $active = $thumbs.find('.rs-varc-thumb.is-active');
+				if($active.length){
+					try{ $active[0].scrollIntoView({behavior:'smooth', inline:'center', block:'nearest'}); }catch(e){}
+				}
+			}
 		}
 
 		// Dropdown mode
@@ -93,6 +101,19 @@
 				setValue($btn.data('value'));
 			});
 
+			// Single-line navigation buttons
+			if($singleLineWrap.length){
+				var $prev = $singleLineWrap.find('.rs-varc-prev');
+				var $next = $singleLineWrap.find('.rs-varc-next');
+				var scrollBy = function(dir){
+					var el = $thumbs.get(0);
+					if(!el) return;
+					var amount = Math.max(el.clientWidth * 0.8, 80);
+					el.scrollBy({left: dir * amount, behavior: 'smooth'});
+				};
+				$prev.on('click', function(){ scrollBy(-1); });
+				$next.on('click', function(){ scrollBy(1); });
+			}
 		}
 
 		// Reflect Woo form -> widget
@@ -121,6 +142,13 @@
 						var isMatch = String($b.data('value'))===String(vid);
 						$b.toggleClass('is-active', isMatch).attr('aria-pressed', isMatch?'true':'false');
 					});
+					// ensure active visible in single-line
+					if($singleLineWrap.length){
+						var $active = $thumbs.find('.rs-varc-thumb.is-active');
+						if($active.length){
+							try{ $active[0].scrollIntoView({behavior:'smooth', inline:'center', block:'nearest'}); }catch(e){}
+						}
+					}
 				}
 			};
 

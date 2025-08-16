@@ -287,6 +287,21 @@ class RS_Elementor_Widget_Variation_Chooser extends \Elementor\Widget_Base {
 			)
 		);
 
+		// Single-line navigation flag for thumbnails.
+		$this->add_control(
+			'thumbs_single_line',
+			array(
+				'label'        => esc_html__( 'Single Line with Arrows', 'rs-elementor-widgets' ),
+				'description'  => esc_html__( 'Show thumbnails in a single line with previous/next arrows.', 'rs-elementor-widgets' ),
+				'type'         => \Elementor\Controls_Manager::SWITCHER,
+				'label_on'     => esc_html__( 'On', 'rs-elementor-widgets' ),
+				'label_off'    => esc_html__( 'Off', 'rs-elementor-widgets' ),
+				'return_value' => 'yes',
+				'default'      => '',
+				'condition'    => array( 'style_type' => 'thumbnails' ),
+			)
+		);
+
 		$this->add_responsive_control(
 			'uniform_thumb_square',
 			array(
@@ -449,7 +464,8 @@ class RS_Elementor_Widget_Variation_Chooser extends \Elementor\Widget_Base {
 		$include_name = ( isset( $settings['include_product_name'] ) && 'yes' === $settings['include_product_name'] );
 		// Default to syncing ON if control isn't present.
 		$sync_with_form = ( ! isset( $settings['sync_with_variations_form'] ) ) || ( 'yes' === $settings['sync_with_variations_form'] );
-		$uniform_thumbs = ( isset( $settings['uniform_thumb_size'] ) && 'yes' === $settings['uniform_thumb_size'] );
+		$uniform_thumbs   = ( isset( $settings['uniform_thumb_size'] ) && 'yes' === $settings['uniform_thumb_size'] );
+		$single_line_nav  = ( isset( $settings['thumbs_single_line'] ) && 'yes' === $settings['thumbs_single_line'] );
 
 		// Build variations mapping for JS syncing.
 		$mapping = array();
@@ -487,8 +503,14 @@ class RS_Elementor_Widget_Variation_Chooser extends \Elementor\Widget_Base {
 				echo '<option value="' . esc_attr( $vid ) . '">' . esc_html( $name ) . '</option>';
 			}
 			echo '</select>';
-		} else {
-			echo '<div class="rs-varc-thumbs" role="list">';
+		} elseif ( 'thumbnails' === $style_type ) {
+			if ( $single_line_nav ) {
+				echo '<div class="rs-varc-thumbs-wrap rs-varc-singleline">';
+				echo '<button type="button" class="rs-varc-nav rs-varc-prev" aria-label="' . esc_attr__( 'Previous variation', 'rs-elementor-widgets' ) . '">‹</button>';
+				echo '<div class="rs-varc-thumbs" role="list">';
+			} else {
+				echo '<div class="rs-varc-thumbs" role="list">';
+			}
 			foreach ( $available as $var ) {
 				$vid = isset( $var['variation_id'] ) ? (int) $var['variation_id'] : 0;
 				if ( ! $vid ) {
@@ -513,8 +535,12 @@ class RS_Elementor_Widget_Variation_Chooser extends \Elementor\Widget_Base {
 				echo '</button>';
 			}
 			echo '</div>';
+			if ( $single_line_nav ) {
+				echo '<button type="button" class="rs-varc-nav rs-varc-next" aria-label="' . esc_attr__( 'Next variation', 'rs-elementor-widgets' ) . '">›</button>';
+				echo '</div>';
+			}
 		}
-
 		echo '</div>';
 	}
+
 }
