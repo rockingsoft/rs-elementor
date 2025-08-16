@@ -132,6 +132,19 @@ class RS_Elementor_Widget_Advanced_Product_Images extends \Elementor\Widget_Base
 		);
 
 		$this->add_control(
+			'hide_thumbnails',
+			array(
+				'label'        => esc_html__( 'Hide Thumbnails', 'rs-elementor-widgets' ),
+				'type'         => \Elementor\Controls_Manager::SWITCHER,
+				'label_on'     => esc_html__( 'Yes', 'rs-elementor-widgets' ),
+				'label_off'    => esc_html__( 'No', 'rs-elementor-widgets' ),
+				'return_value' => 'yes',
+				'default'      => 'no',
+				'description'  => esc_html__( 'Hide the thumbnails strip. Main image remains and stays in sync with variations.', 'rs-elementor-widgets' ),
+			)
+		);
+
+		$this->add_control(
 			'include_variation_images',
 			array(
 				'label'        => esc_html__( 'Include Variation Images', 'rs-elementor-widgets' ),
@@ -307,6 +320,7 @@ class RS_Elementor_Widget_Advanced_Product_Images extends \Elementor\Widget_Base
 		$thumb_size               = isset( $settings['thumb_size'] ) ? (int) $settings['thumb_size'] : 80;
 		$thumb_gap                = isset( $settings['thumb_gap'] ) ? (int) $settings['thumb_gap'] : 8;
 		$include_variation_images = ( ! isset( $settings['include_variation_images'] ) ) || ( 'yes' === $settings['include_variation_images'] );
+		$hide_thumbnails          = isset( $settings['hide_thumbnails'] ) && 'yes' === $settings['hide_thumbnails'];
 
 		// Resolve product in both frontend and Elementor editor preview.
 		global $product;
@@ -411,12 +425,12 @@ class RS_Elementor_Widget_Advanced_Product_Images extends \Elementor\Widget_Base
 		$widget_id         = 'rs-adv-images-' . $this->get_id();
 		$allowed_positions = array( 'left', 'right', 'top', 'bottom' );
 		$pos               = in_array( $thumbs_position, $allowed_positions, true ) ? $thumbs_position : 'left';
-		$container_classes = 'rs-adv-images layout-' . $pos;
+		$container_classes = 'rs-adv-images layout-' . $pos . ( $hide_thumbnails ? ' hide-thumbs' : '' );
 		$var_map_json      = wp_json_encode( $variation_index_map );
 		?>
 		<div id="<?php echo esc_attr( $widget_id ); ?>" class="<?php echo esc_attr( $container_classes ); ?>" data-variation-map="<?php echo esc_attr( $var_map_json ); ?>">
 			<div class="rs-adv-images-inner">
-				<div class="rs-adv-thumbs" style="--thumb-size: <?php echo (int) $thumb_size; ?>px; --thumb-gap: <?php echo (int) $thumb_gap; ?>px;">
+				<div class="rs-adv-thumbs" style="--thumb-size: <?php echo (int) $thumb_size; ?>px; --thumb-gap: <?php echo (int) $thumb_gap; ?>px;"<?php echo $hide_thumbnails ? ' aria-hidden="true"' : ''; ?>>
 					<?php foreach ( $images as $index => $img ) : ?>
 						<button type="button" class="rs-adv-thumb<?php echo ( 0 === (int) $index ) ? ' is-active' : ''; ?>" data-index="<?php echo (int) $index; ?>" data-full="<?php echo esc_url( $img['full'] ); ?>" data-large="<?php echo esc_url( $img['large'] ); ?>">
 							<?php
