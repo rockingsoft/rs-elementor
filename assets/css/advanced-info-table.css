@@ -1,0 +1,32 @@
+/* Advanced Info Table widget styles */
+
+.rs-adv-info-table {
+  display: grid;
+  grid-template-columns: repeat(var(--rs-columns, 1), minmax(0, 1fr));
+  gap: var(--rs-row-gap, 8px);
+}
+
+.rs-adv-info-table .rs-info-item {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: start;
+  background: var(--rs-item-bg, transparent);
+}
+
+/* Alternating rows (enabled when --rs-alt-bg is set by control) */
+.rs-adv-info-table.has-alt-rows .rs-info-item:nth-child(even) {
+  background: var(--rs-alt-bg, transparent);
+}
+
+.rs-adv-info-table .rs-info-label {
+  font-weight: 600;
+}
+
+@media (max-width: 480px) {
+  .rs-adv-info-table .rs-info-item {
+    grid-template-columns: 1fr;
+  }
+  .rs-adv-info-table .rs-info-value {
+    margin-top: 2px;
+  }
+}

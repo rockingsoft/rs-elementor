@@ -186,12 +186,14 @@ final class RS_Elementor_Widgets {
         require_once( __DIR__ . '/widgets/advanced-product-images.php' );
         require_once( __DIR__ . '/widgets/variation-chooser.php' );
         require_once( __DIR__ . '/widgets/advanced-add-to-cart.php' );
+        require_once( __DIR__ . '/widgets/advanced-info-table.php' );
         
         // Register widgets
         $widgets_manager->register( new \RS_Elementor_Widget_Product_Reviews() );
         $widgets_manager->register( new \RS_Elementor_Widget_Advanced_Product_Images() );
         $widgets_manager->register( new \RS_Elementor_Widget_Variation_Chooser() );
         $widgets_manager->register( new \RS_Elementor_Widget_Advanced_Add_To_Cart() );
+        $widgets_manager->register( new \RS_Elementor_Widget_Advanced_Info_Table() );
     }
 
     /**
@@ -202,6 +204,7 @@ final class RS_Elementor_Widgets {
         wp_register_style( 'rs-advanced-product-images', plugins_url( 'assets/css/advanced-product-images.css', __FILE__ ), [], self::VERSION );
         wp_register_style( 'rs-product-reviews', plugins_url( 'assets/css/product-reviews.css', __FILE__ ), [], self::VERSION );
         wp_register_style( 'rs-variation-chooser', plugins_url( 'assets/css/variation-chooser.css', __FILE__ ), [], self::VERSION );
+        wp_register_style( 'rs-advanced-info-table', plugins_url( 'assets/css/advanced-info-table.css', __FILE__ ), [], self::VERSION );
     }
 
     /**
