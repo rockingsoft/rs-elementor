@@ -29,6 +29,11 @@
 /* Hide thumbnails option */
 .rs-adv-images.hide-thumbs .rs-adv-thumbs { display: none !important; }
 
+.rs-adv-main-wrap { display: flex; align-items: center; gap: 8px; width: 100%; }
+.rs-adv-inline-btn { flex: 0 0 auto; width: 32px; height: 32px; border-radius: 999px; border: 0; background: rgba(0,0,0,0.08); color: #333; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 2px 6px rgba(0,0,0,0.08); }
+.rs-adv-inline-btn i { font-size: 14px; line-height: 1; }
+.rs-adv-inline-btn.is-disabled { opacity: 0.5; cursor: default; pointer-events: none; }
+
 .rs-adv-main { position: relative; border: 1px solid #eee; border-radius: 6px; overflow: hidden; cursor: zoom-in; display: flex; align-items: center; justify-content: center; background: #fff; min-height: 300px; max-height: var(--rs-main-max, none); }
 .rs-adv-main-img { width: 100%; height: auto; max-height: 100%; display: block; }
 

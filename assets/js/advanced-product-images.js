@@ -11,6 +11,9 @@
       var btnClose = root.querySelector('.rs-adv-modal-close');
       var btnPrev = root.querySelector('.rs-adv-prev');
       var btnNext = root.querySelector('.rs-adv-next');
+      // Inline navigation buttons (outside image)
+      var inlinePrev = root.querySelector('.rs-adv-inline-prev');
+      var inlineNext = root.querySelector('.rs-adv-inline-next');
 
       // Variation map: variation_id -> image index
       var varMap = {};
@@ -39,17 +42,30 @@
       }
 
       function updateNavVisibility(){
-        if (!btnPrev || !btnNext) return;
         var atStart = current <= 0;
         var atEnd = current >= (thumbs.length - 1);
-        btnPrev.style.display = atStart ? 'none' : '';
-        btnPrev.setAttribute('aria-hidden', atStart ? 'true' : 'false');
-        btnPrev.setAttribute('aria-disabled', atStart ? 'true' : 'false');
-        btnPrev.tabIndex = atStart ? -1 : 0;
-        btnNext.style.display = atEnd ? 'none' : '';
-        btnNext.setAttribute('aria-hidden', atEnd ? 'true' : 'false');
-        btnNext.setAttribute('aria-disabled', atEnd ? 'true' : 'false');
-        btnNext.tabIndex = atEnd ? -1 : 0;
+        // Modal prev/next: hide at ends
+        if (btnPrev && btnNext) {
+          btnPrev.style.display = atStart ? 'none' : '';
+          btnPrev.setAttribute('aria-hidden', atStart ? 'true' : 'false');
+          btnPrev.setAttribute('aria-disabled', atStart ? 'true' : 'false');
+          btnPrev.tabIndex = atStart ? -1 : 0;
+          btnNext.style.display = atEnd ? 'none' : '';
+          btnNext.setAttribute('aria-hidden', atEnd ? 'true' : 'false');
+          btnNext.setAttribute('aria-disabled', atEnd ? 'true' : 'false');
+          btnNext.tabIndex = atEnd ? -1 : 0;
+        }
+        // Inline prev/next: keep visible but disabled at ends
+        if (inlinePrev) {
+          inlinePrev.classList.toggle('is-disabled', atStart);
+          inlinePrev.setAttribute('aria-disabled', atStart ? 'true' : 'false');
+          inlinePrev.tabIndex = atStart ? -1 : 0;
+        }
+        if (inlineNext) {
+          inlineNext.classList.toggle('is-disabled', atEnd);
+          inlineNext.setAttribute('aria-disabled', atEnd ? 'true' : 'false');
+          inlineNext.tabIndex = atEnd ? -1 : 0;
+        }
       }
 
       function openModal(index){
@@ -101,6 +117,16 @@
       function showNext(){ if (current < thumbs.length - 1) { setCurrent(current + 1); updateModalImage(); updateNavVisibility(); } }
       if (btnPrev) btnPrev.addEventListener('click', showPrev);
       if (btnNext) btnNext.addEventListener('click', showNext);
+
+      // Inline buttons handlers
+      if (inlinePrev) inlinePrev.addEventListener('click', function(){
+        if (inlinePrev.classList.contains('is-disabled')) return;
+        showPrev();
+      });
+      if (inlineNext) inlineNext.addEventListener('click', function(){
+        if (inlineNext.classList.contains('is-disabled')) return;
+        showNext();
+      });
 
       window.addEventListener('keydown', function(e){
         if (!modal || !modal.classList.contains('is-open')) return;

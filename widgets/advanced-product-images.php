@@ -157,6 +157,94 @@ class RS_Elementor_Widget_Advanced_Product_Images extends \Elementor\Widget_Base
 			)
 		);
 
+		$this->add_control(
+			'inline_navigation',
+			array(
+				'label'        => esc_html__( 'Inline Navigation (Prev/Next)', 'rs-elementor-widgets' ),
+				'type'         => \Elementor\Controls_Manager::SWITCHER,
+				'label_on'     => esc_html__( 'Show', 'rs-elementor-widgets' ),
+				'label_off'    => esc_html__( 'Hide', 'rs-elementor-widgets' ),
+				'return_value' => 'yes',
+				'default'      => 'no',
+				'description'  => esc_html__( 'Show small Previous/Next arrows alongside the main image (outside the image).', 'rs-elementor-widgets' ),
+			)
+		);
+
+		$this->end_controls_section();
+
+		// Styles: Inline navigation.
+		$this->start_controls_section(
+			'section_style_inline_nav',
+			array(
+				'label' => esc_html__( 'Inline Navigation', 'rs-elementor-widgets' ),
+				'tab'   => \Elementor\Controls_Manager::TAB_STYLE,
+			)
+		);
+
+		$this->add_control(
+			'inline_prev_icon_class',
+			array(
+				'label'       => esc_html__( 'Prev Icon Class', 'rs-elementor-widgets' ),
+				'type'        => \Elementor\Controls_Manager::TEXT,
+				'placeholder' => 'fas fa-chevron-left',
+				'default'     => 'fas fa-chevron-left',
+			)
+		);
+
+		$this->add_control(
+			'inline_next_icon_class',
+			array(
+				'label'       => esc_html__( 'Next Icon Class', 'rs-elementor-widgets' ),
+				'type'        => \Elementor\Controls_Manager::TEXT,
+				'placeholder' => 'fas fa-chevron-right',
+				'default'     => 'fas fa-chevron-right',
+			)
+		);
+
+		$this->add_control(
+			'inline_nav_bg',
+			array(
+				'label'     => esc_html__( 'Button Background', 'rs-elementor-widgets' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}} .rs-adv-inline-btn' => 'background-color: {{VALUE}};',
+				),
+			)
+		);
+
+		$this->add_control(
+			'inline_nav_color',
+			array(
+				'label'     => esc_html__( 'Icon Color', 'rs-elementor-widgets' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}} .rs-adv-inline-btn' => 'color: {{VALUE}};',
+				),
+			)
+		);
+
+		$this->add_control(
+			'inline_nav_bg_disabled',
+			array(
+				'label'     => esc_html__( 'Disabled Background', 'rs-elementor-widgets' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}} .rs-adv-inline-btn.is-disabled' => 'background-color: {{VALUE}};',
+				),
+			)
+		);
+
+		$this->add_control(
+			'inline_nav_color_disabled',
+			array(
+				'label'     => esc_html__( 'Disabled Icon Color', 'rs-elementor-widgets' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}} .rs-adv-inline-btn.is-disabled' => 'color: {{VALUE}};',
+				),
+			)
+		);
+
 		$this->end_controls_section();
 
 		// Styles: Main Image.
@@ -440,12 +528,29 @@ class RS_Elementor_Widget_Advanced_Product_Images extends \Elementor\Widget_Base
 						</button>
 					<?php endforeach; ?>
 				</div>
-				<div class="rs-adv-main" role="button" tabindex="0" aria-label="<?php echo esc_attr__( 'Open image in fullscreen', 'rs-elementor-widgets' ); ?>">
-					<?php
-					$main_src = $images[0]['large'] ? $images[0]['large'] : $images[0]['full'];
-					?>
-					<img class="rs-adv-main-img" src="<?php echo esc_url( $main_src ); ?>" alt="<?php echo esc_attr( $images[0]['alt'] ); ?>"/>
-				</div>
+				<?php if ( ! empty( $settings['inline_navigation'] ) && 'yes' === $settings['inline_navigation'] ) : ?>
+					<div class="rs-adv-main-wrap">
+						<button type="button" class="rs-adv-inline-btn rs-adv-inline-prev" aria-label="<?php echo esc_attr__( 'Previous image', 'rs-elementor-widgets' ); ?>" aria-disabled="true">
+							<i class="<?php echo esc_attr( $settings['inline_prev_icon_class'] ?? 'fas fa-chevron-left' ); ?>" aria-hidden="true"></i>
+						</button>
+						<div class="rs-adv-main" role="button" tabindex="0" aria-label="<?php echo esc_attr__( 'Open image in fullscreen', 'rs-elementor-widgets' ); ?>">
+							<?php
+							$main_src = $images[0]['large'] ? $images[0]['large'] : $images[0]['full'];
+							?>
+							<img class="rs-adv-main-img" src="<?php echo esc_url( $main_src ); ?>" alt="<?php echo esc_attr( $images[0]['alt'] ); ?>"/>
+						</div>
+						<button type="button" class="rs-adv-inline-btn rs-adv-inline-next" aria-label="<?php echo esc_attr__( 'Next image', 'rs-elementor-widgets' ); ?>" aria-disabled="<?php echo count( $images ) > 1 ? 'false' : 'true'; ?>">
+							<i class="<?php echo esc_attr( $settings['inline_next_icon_class'] ?? 'fas fa-chevron-right' ); ?>" aria-hidden="true"></i>
+						</button>
+					</div>
+				<?php else : ?>
+					<div class="rs-adv-main" role="button" tabindex="0" aria-label="<?php echo esc_attr__( 'Open image in fullscreen', 'rs-elementor-widgets' ); ?>">
+						<?php
+						$main_src = $images[0]['large'] ? $images[0]['large'] : $images[0]['full'];
+						?>
+						<img class="rs-adv-main-img" src="<?php echo esc_url( $main_src ); ?>" alt="<?php echo esc_attr( $images[0]['alt'] ); ?>"/>
+					</div>
+				<?php endif; ?>
 			</div>
 
 			<div class="rs-adv-modal" aria-hidden="true">
