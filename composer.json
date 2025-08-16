@@ -1,21 +1,11 @@
 {
-  "name": "rs-development/rs-elementor-widgets",
-  "description": "RS Elementor Widgets for WooCommerce - development tools",
-  "type": "project",
-  "license": "GPL-2.0-or-later",
-  "require": {},
-  "require-dev": {
-    "wp-coding-standards/wpcs": "^3.0",
-    "phpcsstandards/phpcsutils": "^1.0",
-    "phpcsstandards/phpcsextra": "^1.0"
-  },
-  "config": {
-    "allow-plugins": {
-      "dealerdirect/phpcodesniffer-composer-installer": true
+    "require-dev": {
+        "squizlabs/php_codesniffer": "^3.13",
+        "wp-coding-standards/wpcs": "^3.2"
+    },
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
     }
-  },
-  "scripts": {
-    "phpcs:list": "@php vendor/bin/phpcs -i",
-    "phpcs": "@php vendor/bin/phpcs --standard=WordPress --extensions=php --report=full --parallel=4 --ignore=vendor/*,node_modules/*,build/* ."
-  }
 }

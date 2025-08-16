@@ -12,7 +12,7 @@
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
-    exit; // Exit if accessed directly.
+	exit; // Exit if accessed directly.
 }
 
 /**
@@ -20,202 +20,211 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 final class RS_Elementor_Widgets {
 
-    /**
-     * Plugin Version
-     */
-    const VERSION = '1.0.0';
 
-    /**
-     * Minimum Elementor Version
-     */
-    const MINIMUM_ELEMENTOR_VERSION = '3.0.0';
+	/**
+	 * Plugin Version
+	 */
+	const VERSION = '1.0.0';
 
-    /**
-     * Minimum PHP Version
-     */
-    const MINIMUM_PHP_VERSION = '7.0';
+	/**
+	 * Minimum Elementor Version
+	 */
+	const MINIMUM_ELEMENTOR_VERSION = '3.0.0';
 
-    /**
-     * Instance
-     */
-    private static $_instance = null;
+	/**
+	 * Minimum PHP Version
+	 */
+	const MINIMUM_PHP_VERSION = '7.0';
 
-    /**
-     * Instance
-     */
-    public static function instance() {
-        if ( is_null( self::$_instance ) ) {
-            self::$_instance = new self();
-        }
-        return self::$_instance;
-    }
+	/**
+	 * Instance
+	 */
+	private static $_instance = null;
 
-    /**
-     * Constructor
-     */
-    public function __construct() {
-        add_action( 'plugins_loaded', [ $this, 'init' ] );
-    }
+	/**
+	 * Instance
+	 */
+	public static function instance() {
+		if ( is_null( self::$_instance ) ) {
+			self::$_instance = new self();
+		}
+		return self::$_instance;
+	}
 
-    /**
-     * Initialize the plugin
-     */
-    public function init() {
-        // Check if Elementor is installed and activated
-        if ( ! did_action( 'elementor/loaded' ) ) {
-            add_action( 'admin_notices', [ $this, 'admin_notice_missing_elementor' ] );
-            return;
-        }
+	/**
+	 * Constructor
+	 */
+	public function __construct() {
+		add_action( 'plugins_loaded', array( $this, 'init' ) );
+	}
 
-        // Check if WooCommerce is installed and activated
-        if ( ! class_exists( 'WooCommerce' ) ) {
-            add_action( 'admin_notices', [ $this, 'admin_notice_missing_woocommerce' ] );
-            return;
-        }
+	/**
+	 * Initialize the plugin
+	 */
+	public function init() {
+		// Check if Elementor is installed and activated
+		if ( ! did_action( 'elementor/loaded' ) ) {
+			add_action( 'admin_notices', array( $this, 'admin_notice_missing_elementor' ) );
+			return;
+		}
 
-        // Check for required Elementor version
-        if ( ! version_compare( ELEMENTOR_VERSION, self::MINIMUM_ELEMENTOR_VERSION, '>=' ) ) {
-            add_action( 'admin_notices', [ $this, 'admin_notice_minimum_elementor_version' ] );
-            return;
-        }
+		// Check if WooCommerce is installed and activated
+		if ( ! class_exists( 'WooCommerce' ) ) {
+			add_action( 'admin_notices', array( $this, 'admin_notice_missing_woocommerce' ) );
+			return;
+		}
 
-        // Check for required PHP version
-        if ( version_compare( PHP_VERSION, self::MINIMUM_PHP_VERSION, '<' ) ) {
-            add_action( 'admin_notices', [ $this, 'admin_notice_minimum_php_version' ] );
-            return;
-        }
+		// Check for required Elementor version
+		if ( ! version_compare( ELEMENTOR_VERSION, self::MINIMUM_ELEMENTOR_VERSION, '>=' ) ) {
+			add_action( 'admin_notices', array( $this, 'admin_notice_minimum_elementor_version' ) );
+			return;
+		}
 
-        // Register widgets
-        add_action( 'elementor/widgets/register', [ $this, 'register_widgets' ] );
-        
-        // Register widget categories
-        add_action( 'elementor/elements/categories_registered', [ $this, 'add_elementor_widget_categories' ] );
-        
-        // Register widget styles
-        add_action( 'elementor/frontend/after_enqueue_styles', [ $this, 'widget_styles' ] );
-        
-        // Register widget scripts
-        add_action( 'elementor/frontend/after_register_scripts', [ $this, 'widget_scripts' ] );
-    }
+		// Check for required PHP version
+		if ( version_compare( PHP_VERSION, self::MINIMUM_PHP_VERSION, '<' ) ) {
+			add_action( 'admin_notices', array( $this, 'admin_notice_minimum_php_version' ) );
+			return;
+		}
 
-    /**
-     * Admin notice for missing Elementor
-     */
-    public function admin_notice_missing_elementor() {
-        if ( isset( $_GET['activate'] ) ) unset( $_GET['activate'] );
+		// Register widgets
+		add_action( 'elementor/widgets/register', array( $this, 'register_widgets' ) );
 
-        $message = sprintf(
-            /* translators: 1: Plugin name 2: Elementor */
-            esc_html__( '"%1$s" requires "%2$s" to be installed and activated.', 'rs-elementor-widgets' ),
-            '<strong>' . esc_html__( 'RS Elementor Widgets', 'rs-elementor-widgets' ) . '</strong>',
-            '<strong>' . esc_html__( 'Elementor', 'rs-elementor-widgets' ) . '</strong>'
-        );
+		// Register widget categories
+		add_action( 'elementor/elements/categories_registered', array( $this, 'add_elementor_widget_categories' ) );
 
-        printf( '<div class="notice notice-warning is-dismissible"><p>%1$s</p></div>', $message );
-    }
+		// Register widget styles
+		add_action( 'elementor/frontend/after_enqueue_styles', array( $this, 'widget_styles' ) );
 
-    /**
-     * Admin notice for missing WooCommerce
-     */
-    public function admin_notice_missing_woocommerce() {
-        if ( isset( $_GET['activate'] ) ) unset( $_GET['activate'] );
+		// Register widget scripts
+		add_action( 'elementor/frontend/after_register_scripts', array( $this, 'widget_scripts' ) );
+	}
 
-        $message = sprintf(
-            /* translators: 1: Plugin name 2: WooCommerce */
-            esc_html__( '"%1$s" requires "%2$s" to be installed and activated.', 'rs-elementor-widgets' ),
-            '<strong>' . esc_html__( 'RS Elementor Widgets', 'rs-elementor-widgets' ) . '</strong>',
-            '<strong>' . esc_html__( 'WooCommerce', 'rs-elementor-widgets' ) . '</strong>'
-        );
+	/**
+	 * Admin notice for missing Elementor
+	 */
+	public function admin_notice_missing_elementor() {
+		if ( isset( $_GET['activate'] ) ) {
+			unset( $_GET['activate'] );
+		}
 
-        printf( '<div class="notice notice-warning is-dismissible"><p>%1$s</p></div>', $message );
-    }
+		$message = sprintf(
+			/* translators: 1: Plugin name 2: Elementor */
+			esc_html__( '"%1$s" requires "%2$s" to be installed and activated.', 'rs-elementor-widgets' ),
+			'<strong>' . esc_html__( 'RS Elementor Widgets', 'rs-elementor-widgets' ) . '</strong>',
+			'<strong>' . esc_html__( 'Elementor', 'rs-elementor-widgets' ) . '</strong>'
+		);
 
-    /**
-     * Admin notice for minimum Elementor version
-     */
-    public function admin_notice_minimum_elementor_version() {
-        if ( isset( $_GET['activate'] ) ) unset( $_GET['activate'] );
+		printf( '<div class="notice notice-warning is-dismissible"><p>%1$s</p></div>', $message );
+	}
 
-        $message = sprintf(
-            /* translators: 1: Plugin name 2: Elementor 3: Required Elementor version */
-            esc_html__( '"%1$s" requires "%2$s" version %3$s or greater.', 'rs-elementor-widgets' ),
-            '<strong>' . esc_html__( 'RS Elementor Widgets', 'rs-elementor-widgets' ) . '</strong>',
-            '<strong>' . esc_html__( 'Elementor', 'rs-elementor-widgets' ) . '</strong>',
-            self::MINIMUM_ELEMENTOR_VERSION
-        );
+	/**
+	 * Admin notice for missing WooCommerce
+	 */
+	public function admin_notice_missing_woocommerce() {
+		if ( isset( $_GET['activate'] ) ) {
+			unset( $_GET['activate'] );
+		}
 
-        printf( '<div class="notice notice-warning is-dismissible"><p>%1$s</p></div>', $message );
-    }
+		$message = sprintf(
+			/* translators: 1: Plugin name 2: WooCommerce */
+			esc_html__( '"%1$s" requires "%2$s" to be installed and activated.', 'rs-elementor-widgets' ),
+			'<strong>' . esc_html__( 'RS Elementor Widgets', 'rs-elementor-widgets' ) . '</strong>',
+			'<strong>' . esc_html__( 'WooCommerce', 'rs-elementor-widgets' ) . '</strong>'
+		);
 
-    /**
-     * Admin notice for minimum PHP version
-     */
-    public function admin_notice_minimum_php_version() {
-        if ( isset( $_GET['activate'] ) ) unset( $_GET['activate'] );
+		printf( '<div class="notice notice-warning is-dismissible"><p>%1$s</p></div>', $message );
+	}
 
-        $message = sprintf(
-            /* translators: 1: Plugin name 2: PHP 3: Required PHP version */
-            esc_html__( '"%1$s" requires "%2$s" version %3$s or greater.', 'rs-elementor-widgets' ),
-            '<strong>' . esc_html__( 'RS Elementor Widgets', 'rs-elementor-widgets' ) . '</strong>',
-            '<strong>' . esc_html__( 'PHP', 'rs-elementor-widgets' ) . '</strong>',
-            self::MINIMUM_PHP_VERSION
-        );
+	/**
+	 * Admin notice for minimum Elementor version
+	 */
+	public function admin_notice_minimum_elementor_version() {
+		if ( isset( $_GET['activate'] ) ) {
+			unset( $_GET['activate'] );
+		}
 
-        printf( '<div class="notice notice-warning is-dismissible"><p>%1$s</p></div>', $message );
-    }
+		$message = sprintf(
+			/* translators: 1: Plugin name 2: Elementor 3: Required Elementor version */
+			esc_html__( '"%1$s" requires "%2$s" version %3$s or greater.', 'rs-elementor-widgets' ),
+			'<strong>' . esc_html__( 'RS Elementor Widgets', 'rs-elementor-widgets' ) . '</strong>',
+			'<strong>' . esc_html__( 'Elementor', 'rs-elementor-widgets' ) . '</strong>',
+			self::MINIMUM_ELEMENTOR_VERSION
+		);
 
-    /**
-     * Add Elementor widget category
-     */
-    public function add_elementor_widget_categories( $elements_manager ) {
-        $elements_manager->add_category(
-            'rs-woocommerce',
-            [
-                'title' => esc_html__( 'RS WooCommerce', 'rs-elementor-widgets' ),
-                'icon' => 'fa fa-shopping-cart',
-            ]
-        );
-    }
+		printf( '<div class="notice notice-warning is-dismissible"><p>%1$s</p></div>', $message );
+	}
 
-    /**
-     * Register widgets
-     */
-    public function register_widgets( $widgets_manager ) {
-        // Include Widget files
-        require_once( __DIR__ . '/widgets/product-reviews.php' );
-        require_once( __DIR__ . '/widgets/advanced-product-images.php' );
-        require_once( __DIR__ . '/widgets/variation-chooser.php' );
-        require_once( __DIR__ . '/widgets/advanced-add-to-cart.php' );
-        require_once( __DIR__ . '/widgets/advanced-info-table.php' );
-        
-        // Register widgets
-        $widgets_manager->register( new \RS_Elementor_Widget_Product_Reviews() );
-        $widgets_manager->register( new \RS_Elementor_Widget_Advanced_Product_Images() );
-        $widgets_manager->register( new \RS_Elementor_Widget_Variation_Chooser() );
-        $widgets_manager->register( new \RS_Elementor_Widget_Advanced_Add_To_Cart() );
-        $widgets_manager->register( new \RS_Elementor_Widget_Advanced_Info_Table() );
-    }
+	/**
+	 * Admin notice for minimum PHP version
+	 */
+	public function admin_notice_minimum_php_version() {
+		if ( isset( $_GET['activate'] ) ) {
+			unset( $_GET['activate'] );
+		}
 
-    /**
-     * Register widget styles
-     */
-    public function widget_styles() {
-        // Per-widget styles (registered only; enqueued via get_style_depends on widgets)
-        wp_register_style( 'rs-advanced-product-images', plugins_url( 'assets/css/advanced-product-images.css', __FILE__ ), [], self::VERSION );
-        wp_register_style( 'rs-product-reviews', plugins_url( 'assets/css/product-reviews.css', __FILE__ ), [], self::VERSION );
-        wp_register_style( 'rs-variation-chooser', plugins_url( 'assets/css/variation-chooser.css', __FILE__ ), [], self::VERSION );
-        wp_register_style( 'rs-advanced-info-table', plugins_url( 'assets/css/advanced-info-table.css', __FILE__ ), [], self::VERSION );
-    }
+		$message = sprintf(
+			/* translators: 1: Plugin name 2: PHP 3: Required PHP version */
+			esc_html__( '"%1$s" requires "%2$s" version %3$s or greater.', 'rs-elementor-widgets' ),
+			'<strong>' . esc_html__( 'RS Elementor Widgets', 'rs-elementor-widgets' ) . '</strong>',
+			'<strong>' . esc_html__( 'PHP', 'rs-elementor-widgets' ) . '</strong>',
+			self::MINIMUM_PHP_VERSION
+		);
 
-    /**
-     * Register widget scripts
-     */
-    public function widget_scripts() {
-        // Per-widget scripts (registered only; enqueued via get_script_depends on widgets)
-        wp_register_script( 'rs-advanced-product-images', plugins_url( 'assets/js/advanced-product-images.js', __FILE__ ), [], self::VERSION, true );
-        wp_register_script( 'rs-product-reviews', plugins_url( 'assets/js/product-reviews.js', __FILE__ ), [], self::VERSION, true );
-        wp_register_script( 'rs-variation-chooser', plugins_url( 'assets/js/variation-chooser.js', __FILE__ ), [ 'jquery' ], self::VERSION, true );
-    }
+		printf( '<div class="notice notice-warning is-dismissible"><p>%1$s</p></div>', $message );
+	}
+
+	/**
+	 * Add Elementor widget category
+	 */
+	public function add_elementor_widget_categories( $elements_manager ) {
+		$elements_manager->add_category(
+			'rs-woocommerce',
+			array(
+				'title' => esc_html__( 'RS WooCommerce', 'rs-elementor-widgets' ),
+				'icon'  => 'fa fa-shopping-cart',
+			)
+		);
+	}
+
+	/**
+	 * Register widgets
+	 */
+	public function register_widgets( $widgets_manager ) {
+		// Include Widget files
+		include_once __DIR__ . '/widgets/product-reviews.php';
+		include_once __DIR__ . '/widgets/advanced-product-images.php';
+		include_once __DIR__ . '/widgets/variation-chooser.php';
+		include_once __DIR__ . '/widgets/advanced-add-to-cart.php';
+		include_once __DIR__ . '/widgets/advanced-info-table.php';
+
+		// Register widgets
+		$widgets_manager->register( new \RS_Elementor_Widget_Product_Reviews() );
+		$widgets_manager->register( new \RS_Elementor_Widget_Advanced_Product_Images() );
+		$widgets_manager->register( new \RS_Elementor_Widget_Variation_Chooser() );
+		$widgets_manager->register( new \RS_Elementor_Widget_Advanced_Add_To_Cart() );
+		$widgets_manager->register( new \RS_Elementor_Widget_Advanced_Info_Table() );
+	}
+
+	/**
+	 * Register widget styles
+	 */
+	public function widget_styles() {
+		// Per-widget styles (registered only; enqueued via get_style_depends on widgets)
+		wp_register_style( 'rs-advanced-product-images', plugins_url( 'assets/css/advanced-product-images.css', __FILE__ ), array(), self::VERSION );
+		wp_register_style( 'rs-product-reviews', plugins_url( 'assets/css/product-reviews.css', __FILE__ ), array(), self::VERSION );
+		wp_register_style( 'rs-variation-chooser', plugins_url( 'assets/css/variation-chooser.css', __FILE__ ), array(), self::VERSION );
+		wp_register_style( 'rs-advanced-info-table', plugins_url( 'assets/css/advanced-info-table.css', __FILE__ ), array(), self::VERSION );
+	}
+
+	/**
+	 * Register widget scripts
+	 */
+	public function widget_scripts() {
+		// Per-widget scripts (registered only; enqueued via get_script_depends on widgets)
+		wp_register_script( 'rs-advanced-product-images', plugins_url( 'assets/js/advanced-product-images.js', __FILE__ ), array(), self::VERSION, true );
+		wp_register_script( 'rs-product-reviews', plugins_url( 'assets/js/product-reviews.js', __FILE__ ), array(), self::VERSION, true );
+		wp_register_script( 'rs-variation-chooser', plugins_url( 'assets/js/variation-chooser.js', __FILE__ ), array( 'jquery' ), self::VERSION, true );
+	}
 }
 
 // Initialize the plugin

@@ -27,7 +27,6 @@ jobs:
 
       - name: PHP syntax check (php -l)
         run: |
-          set -euo pipefail
           find . -type f -name '*.php' \
             -not -path './vendor/*' \
             -not -path './node_modules/*' \
@@ -36,22 +35,9 @@ jobs:
 
       - name: Install Composer dependencies
         run: |
-          set -euo pipefail
           composer install --no-interaction --no-progress --prefer-dist
-
-      - name: Configure PHPCS installed_paths
-        run: |
-          set -euo pipefail
-          vendor/bin/phpcs --config-set installed_paths vendor/wp-coding-standards/wpcs
-          vendor/bin/phpcs -i
 
       - name: Run PHPCS
         run: |
-          set -euo pipefail
-          vendor/bin/phpcs \
-            --standard=WordPress \
-            --extensions=php \
-            --report=full \
-            --parallel=4 \
-            --ignore=vendor/*,node_modules/*,build/* .
+          vendor/bin/phpcs --standard=WordPress ./widgets/* ./rs-elementor-widgets.php
 
