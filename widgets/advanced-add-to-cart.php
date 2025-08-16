@@ -147,6 +147,25 @@ class RS_Elementor_Widget_Advanced_Add_To_Cart extends \Elementor\Widget_Base {
 			)
 		);
 
+		// Option: Hide "View cart" notice link after AJAX add-to-cart success.
+		$this->add_control(
+			'hide_view_cart_notice',
+			array(
+				'label'        => esc_html__( 'Hide "View cart" Notice Link', 'rs-elementor-widgets' ),
+				'description'  => esc_html__( 'Hides the "View cart" link that appears in WooCommerce notices after a successful AJAX add to cart triggered from this widget.', 'rs-elementor-widgets' ),
+				'type'         => \Elementor\Controls_Manager::SWITCHER,
+				'label_on'     => esc_html__( 'Hide', 'rs-elementor-widgets' ),
+				'label_off'    => esc_html__( 'Show', 'rs-elementor-widgets' ),
+				'return_value' => 'yes',
+				'default'      => '',
+				'selectors'    => array(
+					// Hide common WooCommerce "View cart" links that appear next to the button after AJAX add.
+					'{{WRAPPER}} .rs-advanced-add-to-cart a.added_to_cart' => 'display: none !important;',
+					'{{WRAPPER}} .rs-advanced-add-to-cart a.wc-forward' => 'display: none !important;',
+				),
+			)
+		);
+
 		$this->end_controls_section();
 
 		// Style: Alignment.
@@ -481,5 +500,7 @@ class RS_Elementor_Widget_Advanced_Add_To_Cart extends \Elementor\Widget_Base {
 		}
 
 		echo '</div>';
+
+		// CSS-only approach handled via control selectors above.
 	}
 }
