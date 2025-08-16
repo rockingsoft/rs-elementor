@@ -132,6 +132,19 @@ class RS_Elementor_Widget_Advanced_Product_Images extends \Elementor\Widget_Base
 		);
 
 		$this->add_control(
+			'hide_thumbnails',
+			array(
+				'label'        => esc_html__( 'Hide Thumbnails', 'rs-elementor-widgets' ),
+				'type'         => \Elementor\Controls_Manager::SWITCHER,
+				'label_on'     => esc_html__( 'Yes', 'rs-elementor-widgets' ),
+				'label_off'    => esc_html__( 'No', 'rs-elementor-widgets' ),
+				'return_value' => 'yes',
+				'default'      => 'no',
+				'description'  => esc_html__( 'Hide the thumbnails strip. Main image remains and stays in sync with variations.', 'rs-elementor-widgets' ),
+			)
+		);
+
+		$this->add_control(
 			'include_variation_images',
 			array(
 				'label'        => esc_html__( 'Include Variation Images', 'rs-elementor-widgets' ),
@@ -141,6 +154,129 @@ class RS_Elementor_Widget_Advanced_Product_Images extends \Elementor\Widget_Base
 				'return_value' => 'yes',
 				'default'      => 'yes',
 				'description'  => esc_html__( 'If enabled, adds each variation image to the gallery and syncs selection to show that image.', 'rs-elementor-widgets' ),
+			)
+		);
+
+		$this->add_control(
+			'inline_navigation',
+			array(
+				'label'        => esc_html__( 'Inline Navigation (Prev/Next)', 'rs-elementor-widgets' ),
+				'type'         => \Elementor\Controls_Manager::SWITCHER,
+				'label_on'     => esc_html__( 'Show', 'rs-elementor-widgets' ),
+				'label_off'    => esc_html__( 'Hide', 'rs-elementor-widgets' ),
+				'return_value' => 'yes',
+				'default'      => 'no',
+				'description'  => esc_html__( 'Show small Previous/Next arrows alongside the main image (outside the image).', 'rs-elementor-widgets' ),
+			)
+		);
+
+		$this->end_controls_section();
+
+		// Behavior: Click action for main image.
+		$this->start_controls_section(
+			'section_behaviour',
+			array(
+				'label' => esc_html__( 'Behavior', 'rs-elementor-widgets' ),
+				'tab'   => \Elementor\Controls_Manager::TAB_CONTENT,
+			)
+		);
+
+		$this->add_control(
+			'click_action',
+			array(
+				'label'   => esc_html__( 'On Click', 'rs-elementor-widgets' ),
+				'type'    => \Elementor\Controls_Manager::SELECT,
+				'default' => 'modal',
+				'options' => array(
+					'modal' => esc_html__( 'Open Modal (default)', 'rs-elementor-widgets' ),
+					'link'  => esc_html__( 'Go to URL', 'rs-elementor-widgets' ),
+				),
+			)
+		);
+
+		$this->add_control(
+			'click_link',
+			array(
+				'label'       => esc_html__( 'Click URL', 'rs-elementor-widgets' ),
+				'type'        => \Elementor\Controls_Manager::URL,
+				'placeholder' => 'https://example.com',
+				'dynamic'     => array( 'active' => true ),
+				'condition'   => array( 'click_action' => 'link' ),
+			)
+		);
+
+		$this->end_controls_section();
+
+		// Styles: Inline navigation.
+		$this->start_controls_section(
+			'section_style_inline_nav',
+			array(
+				'label' => esc_html__( 'Inline Navigation', 'rs-elementor-widgets' ),
+				'tab'   => \Elementor\Controls_Manager::TAB_STYLE,
+			)
+		);
+
+		$this->add_control(
+			'inline_prev_icon_class',
+			array(
+				'label'       => esc_html__( 'Prev Icon Class', 'rs-elementor-widgets' ),
+				'type'        => \Elementor\Controls_Manager::TEXT,
+				'placeholder' => 'fas fa-chevron-left',
+				'default'     => 'fas fa-chevron-left',
+			)
+		);
+
+		$this->add_control(
+			'inline_next_icon_class',
+			array(
+				'label'       => esc_html__( 'Next Icon Class', 'rs-elementor-widgets' ),
+				'type'        => \Elementor\Controls_Manager::TEXT,
+				'placeholder' => 'fas fa-chevron-right',
+				'default'     => 'fas fa-chevron-right',
+			)
+		);
+
+		$this->add_control(
+			'inline_nav_bg',
+			array(
+				'label'     => esc_html__( 'Button Background', 'rs-elementor-widgets' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}} .rs-adv-inline-btn' => 'background-color: {{VALUE}};',
+				),
+			)
+		);
+
+		$this->add_control(
+			'inline_nav_color',
+			array(
+				'label'     => esc_html__( 'Icon Color', 'rs-elementor-widgets' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}} .rs-adv-inline-btn' => 'color: {{VALUE}};',
+				),
+			)
+		);
+
+		$this->add_control(
+			'inline_nav_bg_disabled',
+			array(
+				'label'     => esc_html__( 'Disabled Background', 'rs-elementor-widgets' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}} .rs-adv-inline-btn.is-disabled' => 'background-color: {{VALUE}};',
+				),
+			)
+		);
+
+		$this->add_control(
+			'inline_nav_color_disabled',
+			array(
+				'label'     => esc_html__( 'Disabled Icon Color', 'rs-elementor-widgets' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}} .rs-adv-inline-btn.is-disabled' => 'color: {{VALUE}};',
+				),
 			)
 		);
 
@@ -307,6 +443,7 @@ class RS_Elementor_Widget_Advanced_Product_Images extends \Elementor\Widget_Base
 		$thumb_size               = isset( $settings['thumb_size'] ) ? (int) $settings['thumb_size'] : 80;
 		$thumb_gap                = isset( $settings['thumb_gap'] ) ? (int) $settings['thumb_gap'] : 8;
 		$include_variation_images = ( ! isset( $settings['include_variation_images'] ) ) || ( 'yes' === $settings['include_variation_images'] );
+		$hide_thumbnails          = isset( $settings['hide_thumbnails'] ) && 'yes' === $settings['hide_thumbnails'];
 
 		// Resolve product in both frontend and Elementor editor preview.
 		global $product;
@@ -411,12 +548,38 @@ class RS_Elementor_Widget_Advanced_Product_Images extends \Elementor\Widget_Base
 		$widget_id         = 'rs-adv-images-' . $this->get_id();
 		$allowed_positions = array( 'left', 'right', 'top', 'bottom' );
 		$pos               = in_array( $thumbs_position, $allowed_positions, true ) ? $thumbs_position : 'left';
-		$container_classes = 'rs-adv-images layout-' . $pos;
+		$container_classes = 'rs-adv-images layout-' . $pos . ( $hide_thumbnails ? ' hide-thumbs' : '' );
 		$var_map_json      = wp_json_encode( $variation_index_map );
+		$click_action      = isset( $settings['click_action'] ) ? $settings['click_action'] : 'modal';
+		$click_url         = '';
+		$click_new_tab     = '0';
+		$click_nofollow    = '0';
+		if ( isset( $settings['click_link'] ) && is_array( $settings['click_link'] ) ) {
+			$click_url      = ! empty( $settings['click_link']['url'] ) ? $settings['click_link']['url'] : '';
+			$click_new_tab  = ( ! empty( $settings['click_link']['is_external'] ) ) ? '1' : '0';
+			$click_nofollow = ( ! empty( $settings['click_link']['nofollow'] ) ) ? '1' : '0';
+		}
+		// Backward compatibility with previous fields if present.
+		if ( empty( $click_url ) && ! empty( $settings['click_url'] ) ) {
+			$click_url = trim( $settings['click_url'] );
+		}
+		if ( '0' === $click_new_tab && isset( $settings['click_new_tab'] ) && 'yes' === $settings['click_new_tab'] ) {
+			$click_new_tab = '1';
+		}
+		// Build rel attribute value safely.
+		$rel_parts = array();
+		if ( '1' === $click_new_tab ) {
+			$rel_parts[] = 'noopener';
+			$rel_parts[] = 'noreferrer';
+		}
+		if ( '1' === $click_nofollow ) {
+			$rel_parts[] = 'nofollow';
+		}
+		$rel_attr = implode( ' ', array_unique( $rel_parts ) );
 		?>
-		<div id="<?php echo esc_attr( $widget_id ); ?>" class="<?php echo esc_attr( $container_classes ); ?>" data-variation-map="<?php echo esc_attr( $var_map_json ); ?>">
+		<div id="<?php echo esc_attr( $widget_id ); ?>" class="<?php echo esc_attr( $container_classes ); ?>" data-variation-map="<?php echo esc_attr( $var_map_json ); ?>" data-click-action="<?php echo esc_attr( $click_action ); ?>" data-click-url="<?php echo esc_url( $click_url ); ?>" data-click-new-tab="<?php echo esc_attr( $click_new_tab ); ?>">
 			<div class="rs-adv-images-inner">
-				<div class="rs-adv-thumbs" style="--thumb-size: <?php echo (int) $thumb_size; ?>px; --thumb-gap: <?php echo (int) $thumb_gap; ?>px;">
+				<div class="rs-adv-thumbs" style="--thumb-size: <?php echo (int) $thumb_size; ?>px; --thumb-gap: <?php echo (int) $thumb_gap; ?>px;"<?php echo $hide_thumbnails ? ' aria-hidden="true"' : ''; ?>>
 					<?php foreach ( $images as $index => $img ) : ?>
 						<button type="button" class="rs-adv-thumb<?php echo ( 0 === (int) $index ) ? ' is-active' : ''; ?>" data-index="<?php echo (int) $index; ?>" data-full="<?php echo esc_url( $img['full'] ); ?>" data-large="<?php echo esc_url( $img['large'] ); ?>">
 							<?php
@@ -426,12 +589,41 @@ class RS_Elementor_Widget_Advanced_Product_Images extends \Elementor\Widget_Base
 						</button>
 					<?php endforeach; ?>
 				</div>
-				<div class="rs-adv-main" role="button" tabindex="0" aria-label="<?php echo esc_attr__( 'Open image in fullscreen', 'rs-elementor-widgets' ); ?>">
-					<?php
-					$main_src = $images[0]['large'] ? $images[0]['large'] : $images[0]['full'];
-					?>
-					<img class="rs-adv-main-img" src="<?php echo esc_url( $main_src ); ?>" alt="<?php echo esc_attr( $images[0]['alt'] ); ?>"/>
-				</div>
+				<?php if ( ! empty( $settings['inline_navigation'] ) && 'yes' === $settings['inline_navigation'] ) : ?>
+					<div class="rs-adv-main-wrap">
+						<button type="button" class="rs-adv-inline-btn rs-adv-inline-prev" aria-label="<?php echo esc_attr__( 'Previous image', 'rs-elementor-widgets' ); ?>" aria-disabled="true">
+							<i class="<?php echo esc_attr( $settings['inline_prev_icon_class'] ?? 'fas fa-chevron-left' ); ?>" aria-hidden="true"></i>
+						</button>
+						<div class="rs-adv-main" role="button" tabindex="0" aria-label="<?php echo esc_attr__( 'Open image in fullscreen', 'rs-elementor-widgets' ); ?>">
+							<?php
+							$main_src = $images[0]['large'] ? $images[0]['large'] : $images[0]['full'];
+							?>
+							<?php if ( 'link' === $click_action && ! empty( $click_url ) ) : ?>
+								<a class="rs-adv-main-link" href="<?php echo esc_url( $click_url ); ?>"<?php echo ( '1' === $click_new_tab ) ? ' target="_blank"' : ''; ?><?php echo ( '' !== $rel_attr ) ? ' rel="' . esc_attr( $rel_attr ) . '"' : ''; ?>>
+									<img class="rs-adv-main-img" src="<?php echo esc_url( $main_src ); ?>" alt="<?php echo esc_attr( $images[0]['alt'] ); ?>"/>
+								</a>
+							<?php else : ?>
+								<img class="rs-adv-main-img" src="<?php echo esc_url( $main_src ); ?>" alt="<?php echo esc_attr( $images[0]['alt'] ); ?>"/>
+							<?php endif; ?>
+						</div>
+						<button type="button" class="rs-adv-inline-btn rs-adv-inline-next" aria-label="<?php echo esc_attr__( 'Next image', 'rs-elementor-widgets' ); ?>" aria-disabled="<?php echo count( $images ) > 1 ? 'false' : 'true'; ?>">
+							<i class="<?php echo esc_attr( $settings['inline_next_icon_class'] ?? 'fas fa-chevron-right' ); ?>" aria-hidden="true"></i>
+						</button>
+					</div>
+				<?php else : ?>
+					<div class="rs-adv-main" role="button" tabindex="0" aria-label="<?php echo esc_attr__( 'Open image in fullscreen', 'rs-elementor-widgets' ); ?>">
+						<?php
+						$main_src = $images[0]['large'] ? $images[0]['large'] : $images[0]['full'];
+						?>
+						<?php if ( 'link' === $click_action && ! empty( $click_url ) ) : ?>
+							<a class="rs-adv-main-link" href="<?php echo esc_url( $click_url ); ?>"<?php echo ( '1' === $click_new_tab ) ? ' target="_blank"' : ''; ?><?php echo ( '' !== $rel_attr ) ? ' rel="' . esc_attr( $rel_attr ) . '"' : ''; ?>>
+								<img class="rs-adv-main-img" src="<?php echo esc_url( $main_src ); ?>" alt="<?php echo esc_attr( $images[0]['alt'] ); ?>"/>
+							</a>
+						<?php else : ?>
+							<img class="rs-adv-main-img" src="<?php echo esc_url( $main_src ); ?>" alt="<?php echo esc_attr( $images[0]['alt'] ); ?>"/>
+						<?php endif; ?>
+					</div>
+				<?php endif; ?>
 			</div>
 
 			<div class="rs-adv-modal" aria-hidden="true">
