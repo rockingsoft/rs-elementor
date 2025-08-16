@@ -28,6 +28,7 @@
       var clickAction = (root.getAttribute('data-click-action') || 'modal');
       var clickUrl = (root.getAttribute('data-click-url') || '').trim();
       var clickNewTab = root.getAttribute('data-click-new-tab') === '1';
+      var mainLink = root.querySelector('.rs-adv-main .rs-adv-main-link');
       function handleNavigate(){
         if (!clickUrl) { openModal(current); return; }
         if (clickNewTab) { window.open(clickUrl, '_blank', 'noopener'); }
@@ -99,8 +100,12 @@
       thumbs.forEach(function(btn, idx){
         btn.addEventListener('click', function(){
           if (idx === current) {
-            if (clickAction === 'link') { handleNavigate(); }
-            else { openModal(current); }
+            if (clickAction === 'link') {
+              if (mainLink) { mainLink.click(); }
+              else { handleNavigate(); }
+            } else {
+              openModal(current);
+            }
           } else {
             setCurrent(idx);
           }
@@ -108,17 +113,20 @@
       });
 
       if (mainArea) {
-        mainArea.addEventListener('click', function(){
-          if (clickAction === 'link') { handleNavigate(); }
-          else { openModal(current); }
-        });
-        mainArea.addEventListener('keypress', function(e){
-          if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
+        // In link mode with an anchor, let the anchor handle interactions natively
+        if (!(clickAction === 'link' && mainLink)) {
+          mainArea.addEventListener('click', function(){
             if (clickAction === 'link') { handleNavigate(); }
             else { openModal(current); }
-          }
-        });
+          });
+          mainArea.addEventListener('keypress', function(e){
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              if (clickAction === 'link') { handleNavigate(); }
+              else { openModal(current); }
+            }
+          });
+        }
       }
 
       if (btnClose) btnClose.addEventListener('click', closeModal);

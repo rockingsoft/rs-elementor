@@ -195,25 +195,13 @@ class RS_Elementor_Widget_Advanced_Product_Images extends \Elementor\Widget_Base
 		);
 
 		$this->add_control(
-			'click_url',
+			'click_link',
 			array(
 				'label'       => esc_html__( 'Click URL', 'rs-elementor-widgets' ),
-				'type'        => \Elementor\Controls_Manager::TEXT,
+				'type'        => \Elementor\Controls_Manager::URL,
 				'placeholder' => 'https://example.com',
+				'dynamic'     => array( 'active' => true ),
 				'condition'   => array( 'click_action' => 'link' ),
-			)
-		);
-
-		$this->add_control(
-			'click_new_tab',
-			array(
-				'label'        => esc_html__( 'Open in new tab', 'rs-elementor-widgets' ),
-				'type'         => \Elementor\Controls_Manager::SWITCHER,
-				'label_on'     => esc_html__( 'Yes', 'rs-elementor-widgets' ),
-				'label_off'    => esc_html__( 'No', 'rs-elementor-widgets' ),
-				'return_value' => 'yes',
-				'default'      => 'no',
-				'condition'    => array( 'click_action' => 'link' ),
 			)
 		);
 
@@ -563,8 +551,21 @@ class RS_Elementor_Widget_Advanced_Product_Images extends \Elementor\Widget_Base
 		$container_classes = 'rs-adv-images layout-' . $pos . ( $hide_thumbnails ? ' hide-thumbs' : '' );
 		$var_map_json      = wp_json_encode( $variation_index_map );
 		$click_action      = isset( $settings['click_action'] ) ? $settings['click_action'] : 'modal';
-		$click_url         = isset( $settings['click_url'] ) ? trim( $settings['click_url'] ) : '';
-		$click_new_tab     = ( isset( $settings['click_new_tab'] ) && 'yes' === $settings['click_new_tab'] ) ? '1' : '0';
+		$click_url         = '';
+		$click_new_tab     = '0';
+		$click_nofollow    = '0';
+		if ( isset( $settings['click_link'] ) && is_array( $settings['click_link'] ) ) {
+			$click_url      = ! empty( $settings['click_link']['url'] ) ? $settings['click_link']['url'] : '';
+			$click_new_tab  = ( ! empty( $settings['click_link']['is_external'] ) ) ? '1' : '0';
+			$click_nofollow = ( ! empty( $settings['click_link']['nofollow'] ) ) ? '1' : '0';
+		}
+		// Backward compatibility with previous fields if present.
+		if ( empty( $click_url ) && ! empty( $settings['click_url'] ) ) {
+			$click_url = trim( $settings['click_url'] );
+		}
+		if ( '0' === $click_new_tab && isset( $settings['click_new_tab'] ) && 'yes' === $settings['click_new_tab'] ) {
+			$click_new_tab = '1';
+		}
 		?>
 		<div id="<?php echo esc_attr( $widget_id ); ?>" class="<?php echo esc_attr( $container_classes ); ?>" data-variation-map="<?php echo esc_attr( $var_map_json ); ?>" data-click-action="<?php echo esc_attr( $click_action ); ?>" data-click-url="<?php echo esc_url( $click_url ); ?>" data-click-new-tab="<?php echo esc_attr( $click_new_tab ); ?>">
 			<div class="rs-adv-images-inner">
@@ -587,7 +588,13 @@ class RS_Elementor_Widget_Advanced_Product_Images extends \Elementor\Widget_Base
 							<?php
 							$main_src = $images[0]['large'] ? $images[0]['large'] : $images[0]['full'];
 							?>
-							<img class="rs-adv-main-img" src="<?php echo esc_url( $main_src ); ?>" alt="<?php echo esc_attr( $images[0]['alt'] ); ?>"/>
+							<?php if ( 'link' === $click_action && ! empty( $click_url ) ) : ?>
+								<a class="rs-adv-main-link" href="<?php echo esc_url( $click_url ); ?>"<?php echo ( '1' === $click_new_tab ) ? ' target="_blank"' : ''; ?><?php echo ( '1' === $click_new_tab || '1' === $click_nofollow ) ? ' rel="' . trim( ( '1' === $click_new_tab ? 'noopener noreferrer' : '' ) . ( '1' === $click_nofollow ? ' nofollow' : '' ) ) . '"' : ''; ?>>
+									<img class="rs-adv-main-img" src="<?php echo esc_url( $main_src ); ?>" alt="<?php echo esc_attr( $images[0]['alt'] ); ?>"/>
+								</a>
+							<?php else : ?>
+								<img class="rs-adv-main-img" src="<?php echo esc_url( $main_src ); ?>" alt="<?php echo esc_attr( $images[0]['alt'] ); ?>"/>
+							<?php endif; ?>
 						</div>
 						<button type="button" class="rs-adv-inline-btn rs-adv-inline-next" aria-label="<?php echo esc_attr__( 'Next image', 'rs-elementor-widgets' ); ?>" aria-disabled="<?php echo count( $images ) > 1 ? 'false' : 'true'; ?>">
 							<i class="<?php echo esc_attr( $settings['inline_next_icon_class'] ?? 'fas fa-chevron-right' ); ?>" aria-hidden="true"></i>
@@ -598,7 +605,13 @@ class RS_Elementor_Widget_Advanced_Product_Images extends \Elementor\Widget_Base
 						<?php
 						$main_src = $images[0]['large'] ? $images[0]['large'] : $images[0]['full'];
 						?>
-						<img class="rs-adv-main-img" src="<?php echo esc_url( $main_src ); ?>" alt="<?php echo esc_attr( $images[0]['alt'] ); ?>"/>
+						<?php if ( 'link' === $click_action && ! empty( $click_url ) ) : ?>
+							<a class="rs-adv-main-link" href="<?php echo esc_url( $click_url ); ?>"<?php echo ( '1' === $click_new_tab ) ? ' target="_blank"' : ''; ?><?php echo ( '1' === $click_new_tab || '1' === $click_nofollow ) ? ' rel="' . trim( ( '1' === $click_new_tab ? 'noopener noreferrer' : '' ) . ( '1' === $click_nofollow ? ' nofollow' : '' ) ) . '"' : ''; ?>>
+								<img class="rs-adv-main-img" src="<?php echo esc_url( $main_src ); ?>" alt="<?php echo esc_attr( $images[0]['alt'] ); ?>"/>
+							</a>
+						<?php else : ?>
+							<img class="rs-adv-main-img" src="<?php echo esc_url( $main_src ); ?>" alt="<?php echo esc_attr( $images[0]['alt'] ); ?>"/>
+						<?php endif; ?>
 					</div>
 				<?php endif; ?>
 			</div>
