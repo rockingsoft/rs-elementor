@@ -81,7 +81,8 @@ class RS_Elementor_Widget_Advanced_Add_To_Cart extends \Elementor\Widget_Base {
 	 * @return string[]
 	 */
 	public function get_script_depends() {
-		return array();
+		// Load our helper which depends on WooCommerce core scripts for AJAX & variations.
+		return array( 'rs-advanced-add-to-cart' );
 	}
 
 	/**
@@ -141,8 +142,8 @@ class RS_Elementor_Widget_Advanced_Add_To_Cart extends \Elementor\Widget_Base {
 				'return_value' => 'yes',
 				'default'      => 'yes',
 				'selectors'    => array(
-					'{{WRAPPER}} .rs-advanced-add-to-cart .variations' => 'display: none !important;',
-					'{{WRAPPER}} .rs-advanced-add-to-cart .reset_variations' => 'display: none !important;',
+					'{{WRAPPER}} .rs-advanced-add-to-cart.rs-hide-wc-variations .variations' => 'display: none !important;',
+					'{{WRAPPER}} .rs-advanced-add-to-cart.rs-hide-wc-variations .reset_variations' => 'display: none !important;',
 				),
 			)
 		);
@@ -464,6 +465,11 @@ class RS_Elementor_Widget_Advanced_Add_To_Cart extends \Elementor\Widget_Base {
 		// Ensure we have a product context.
 		global $product;
 
+		// Failsafe: ensure our JS is enqueued when this widget renders (Elementor should handle via get_script_depends, but this guards against edge cases).
+		if ( function_exists( 'wp_enqueue_script' ) ) {
+			wp_enqueue_script( 'rs-advanced-add-to-cart' );
+		}
+
 		if ( ! $product || ! is_a( $product, 'WC_Product' ) ) {
 			// Try to get from the main query (single product).
 			if ( function_exists( 'wc_get_product' ) ) {
@@ -480,21 +486,35 @@ class RS_Elementor_Widget_Advanced_Add_To_Cart extends \Elementor\Widget_Base {
 
 		// Visibility of Woo native variations is now handled by the 'hide_wc_variations' control via dynamic CSS.
 
-		echo '<div class="rs-advanced-add-to-cart">';
+		// Build wrapper classes. Only hide native variations on single product if requested,
+		// so that loop items can show selectors for variable products.
+		$settings            = $this->get_settings_for_display();
+		$hide_wc_variations  = isset( $settings['hide_wc_variations'] ) && 'yes' === $settings['hide_wc_variations'];
+		$wrapper_classes     = 'rs-advanced-add-to-cart';
+		$wrapper_classes    .= ( function_exists( 'is_product' ) && is_product() ) ? ' rs-context-single' : ' rs-context-loop';
+		if ( function_exists( 'is_product' ) && is_product() && $hide_wc_variations ) {
+			$wrapper_classes .= ' rs-hide-wc-variations';
+		}
 
-		// Use the appropriate WooCommerce template depending on context so 3rd-party AJAX carts (e.g., FunnelKit) can hook into
-		// the expected markup/classes on archives.
+		echo '<div class="' . esc_attr( $wrapper_classes ) . '">';
+
+		// Use the appropriate WooCommerce template depending on context so 3rd-party AJAX carts (e.g., FunnelKit)
+		// can hook into expected markup/classes and open their slide cart on success.
 		if ( function_exists( 'is_product' ) && is_product() ) {
-			// Single product context.
+			// Single product context: keep native behavior.
 			if ( function_exists( 'woocommerce_template_single_add_to_cart' ) ) {
 				woocommerce_template_single_add_to_cart();
 			}
 		} else {
-			// Archive/loop context: output the standard loop add-to-cart markup so plugins can intercept clicks.
-			if ( function_exists( 'woocommerce_template_loop_add_to_cart' ) ) {
+			// Loop/archive context.
+			if ( $product && is_a( $product, 'WC_Product' ) && $product->is_type( 'variable' ) && function_exists( 'woocommerce_variable_add_to_cart' ) ) {
+				// Render full variations form so users can pick variation and add via AJAX inline.
+				woocommerce_variable_add_to_cart();
+			} elseif ( function_exists( 'woocommerce_template_loop_add_to_cart' ) ) {
+				// Simple/other types: use standard loop add-to-cart (already AJAX-enabled for simples).
 				woocommerce_template_loop_add_to_cart();
 			} elseif ( function_exists( 'woocommerce_template_single_add_to_cart' ) ) {
-				// Fallback in case loop template is unavailable for some reason.
+				// Fallback.
 				woocommerce_template_single_add_to_cart();
 			}
 		}
