@@ -1,35 +1,67 @@
 <?php
 /**
- * Advanced Product Images Widget
+ * Advanced Product Images Widget.
+ *
+ * @package RS_Elementor_Widgets
+ *
+ * phpcs:disable WordPress.Files.FileName
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
-// Bail if Elementor isn't loaded
+// Bail if Elementor isn't loaded.
 if ( ! class_exists( '\\Elementor\\Widget_Base' ) ) {
 	return;
 }
 
+/**
+ * Advanced Product Images widget.
+ */
 class RS_Elementor_Widget_Advanced_Product_Images extends \Elementor\Widget_Base {
 
+	/**
+	 * Widget slug.
+	 *
+	 * @return string
+	 */
 	public function get_name() {
 		return 'rs_advanced_product_images';
 	}
 
+	/**
+	 * Widget title.
+	 *
+	 * @return string
+	 */
 	public function get_title() {
 		return esc_html__( 'Advanced Product Images', 'rs-elementor-widgets' );
 	}
 
+	/**
+	 * Widget icon.
+	 *
+	 * @return string
+	 */
 	public function get_icon() {
 		return 'eicon-gallery-grid';
 	}
 
+	/**
+	 * Widget categories.
+	 *
+	 * @return string[]
+	 */
 	public function get_categories() {
 		return array( 'rs-woocommerce' );
 	}
 
+	/**
+	 * Keywords.
+	 *
+	 * @return string[]
+	 */
 	public function get_keywords() {
 		return array( 'woocommerce', 'product', 'gallery', 'images', 'thumbnails', 'lightbox' );
 	}
@@ -48,6 +80,9 @@ class RS_Elementor_Widget_Advanced_Product_Images extends \Elementor\Widget_Base
 		return array( 'rs-advanced-product-images' );
 	}
 
+	/**
+	 * Register widget controls.
+	 */
 	protected function register_controls() {
 		$this->start_controls_section(
 			'section_layout',
@@ -111,7 +146,7 @@ class RS_Elementor_Widget_Advanced_Product_Images extends \Elementor\Widget_Base
 
 		$this->end_controls_section();
 
-		// Styles: Main Image
+		// Styles: Main Image.
 		$this->start_controls_section(
 			'section_style_main',
 			array(
@@ -209,7 +244,7 @@ class RS_Elementor_Widget_Advanced_Product_Images extends \Elementor\Widget_Base
 
 		$this->end_controls_section();
 
-		// Styles: Thumbnails
+		// Styles: Thumbnails.
 		$this->start_controls_section(
 			'section_style_thumbs',
 			array(
@@ -258,6 +293,9 @@ class RS_Elementor_Widget_Advanced_Product_Images extends \Elementor\Widget_Base
 		$this->end_controls_section();
 	}
 
+	/**
+	 * Render widget.
+	 */
 	protected function render() {
 		if ( ! class_exists( 'WooCommerce' ) ) {
 			echo '<div class="elementor-alert elementor-alert-warning">' . esc_html__( 'WooCommerce is required for this widget.', 'rs-elementor-widgets' ) . '</div>';
@@ -268,9 +306,9 @@ class RS_Elementor_Widget_Advanced_Product_Images extends \Elementor\Widget_Base
 		$thumbs_position          = $settings['thumbs_position'];
 		$thumb_size               = isset( $settings['thumb_size'] ) ? (int) $settings['thumb_size'] : 80;
 		$thumb_gap                = isset( $settings['thumb_gap'] ) ? (int) $settings['thumb_gap'] : 8;
-		$include_variation_images = ( ! isset( $settings['include_variation_images'] ) ) || ( $settings['include_variation_images'] === 'yes' );
+		$include_variation_images = ( ! isset( $settings['include_variation_images'] ) ) || ( 'yes' === $settings['include_variation_images'] );
 
-		// Resolve product in both frontend and Elementor editor preview
+		// Resolve product in both frontend and Elementor editor preview.
 		global $product;
 		if ( ! $product || ! is_a( $product, 'WC_Product' ) ) {
 			$maybe_product = wc_get_product( get_the_ID() );
@@ -286,30 +324,35 @@ class RS_Elementor_Widget_Advanced_Product_Images extends \Elementor\Widget_Base
 		$main_id     = $product->get_image_id();
 		$gallery_ids = $product->get_gallery_image_ids();
 
-		// Build images array: put main image first if exists
+		// Build images array: put main image first if exists.
 		$image_ids = array();
 		if ( $main_id ) {
 			$image_ids[] = $main_id;
 		}
 		if ( ! empty( $gallery_ids ) ) {
 			foreach ( $gallery_ids as $gid ) {
-				// Avoid duplicates
+				// Avoid duplicates.
 				if ( $gid && $gid !== $main_id ) {
 					$image_ids[] = $gid;
 				}
 			}
 		}
 
-		// Include variation images if enabled
+		// Include variation images if enabled.
 		$variation_index_map = array();
 		if ( $include_variation_images && $product && $product->is_type( 'variable' ) ) {
-			/** @var WC_Product_Variable $product */
+			/**
+			 * Product variable instance.
+			 *
+			 * @var WC_Product_Variable $product
+			 */
 			$avail = $product->get_available_variations();
 			if ( ! empty( $avail ) && is_array( $avail ) ) {
 				foreach ( $avail as $var ) {
 					$vid = isset( $var['variation_id'] ) ? (int) $var['variation_id'] : 0;
 					if ( ! $vid ) {
-						continue; }
+						continue;
+					}
 					$img_id = 0;
 					if ( ! empty( $var['image_id'] ) ) {
 						$img_id = (int) $var['image_id'];
@@ -317,17 +360,18 @@ class RS_Elementor_Widget_Advanced_Product_Images extends \Elementor\Widget_Base
 						$img_id = (int) $var['image']['id'];
 					}
 					if ( $img_id ) {
-						// Ensure image id is present in gallery list
+						// Ensure image id is present in gallery list.
 						if ( ! in_array( $img_id, $image_ids, true ) ) {
 							$image_ids[] = $img_id;
 						}
 					}
 				}
-				// After finalizing image_ids, compute index map (variation_id -> index in $image_ids)
+				// After finalizing image_ids, compute index map (variation_id -> index in $image_ids).
 				foreach ( $avail as $var ) {
 					$vid = isset( $var['variation_id'] ) ? (int) $var['variation_id'] : 0;
 					if ( ! $vid ) {
-						continue; }
+						continue;
+					}
 					$img_id = 0;
 					if ( ! empty( $var['image_id'] ) ) {
 						$img_id = (int) $var['image_id'];
@@ -349,7 +393,7 @@ class RS_Elementor_Widget_Advanced_Product_Images extends \Elementor\Widget_Base
 			return;
 		}
 
-		// Prepare URLs
+		// Prepare URLs.
 		$images = array();
 		foreach ( $image_ids as $aid ) {
 			$full     = wp_get_attachment_image_src( $aid, 'full' );
@@ -368,19 +412,25 @@ class RS_Elementor_Widget_Advanced_Product_Images extends \Elementor\Widget_Base
 		$allowed_positions = array( 'left', 'right', 'top', 'bottom' );
 		$pos               = in_array( $thumbs_position, $allowed_positions, true ) ? $thumbs_position : 'left';
 		$container_classes = 'rs-adv-images layout-' . $pos;
-		$var_map_json      = esc_attr( wp_json_encode( $variation_index_map ) );
+		$var_map_json      = wp_json_encode( $variation_index_map );
 		?>
-		<div id="<?php echo esc_attr( $widget_id ); ?>" class="<?php echo esc_attr( $container_classes ); ?>" data-variation-map="<?php echo $var_map_json; ?>">
+		<div id="<?php echo esc_attr( $widget_id ); ?>" class="<?php echo esc_attr( $container_classes ); ?>" data-variation-map="<?php echo esc_attr( $var_map_json ); ?>">
 			<div class="rs-adv-images-inner">
 				<div class="rs-adv-thumbs" style="--thumb-size: <?php echo (int) $thumb_size; ?>px; --thumb-gap: <?php echo (int) $thumb_gap; ?>px;">
 					<?php foreach ( $images as $index => $img ) : ?>
-						<button type="button" class="rs-adv-thumb<?php echo $index === 0 ? ' is-active' : ''; ?>" data-index="<?php echo (int) $index; ?>" data-full="<?php echo esc_url( $img['full'] ); ?>" data-large="<?php echo esc_url( $img['large'] ); ?>">
-							<img src="<?php echo esc_url( $img['thumb'] ?: $img['large'] ?: $img['full'] ); ?>" alt="<?php echo esc_attr( $img['alt'] ); ?>"/>
+						<button type="button" class="rs-adv-thumb<?php echo ( 0 === (int) $index ) ? ' is-active' : ''; ?>" data-index="<?php echo (int) $index; ?>" data-full="<?php echo esc_url( $img['full'] ); ?>" data-large="<?php echo esc_url( $img['large'] ); ?>">
+							<?php
+							$thumb_src = $img['thumb'] ? $img['thumb'] : ( $img['large'] ? $img['large'] : $img['full'] );
+							?>
+							<img src="<?php echo esc_url( $thumb_src ); ?>" alt="<?php echo esc_attr( $img['alt'] ); ?>"/>
 						</button>
 					<?php endforeach; ?>
 				</div>
 				<div class="rs-adv-main" role="button" tabindex="0" aria-label="<?php echo esc_attr__( 'Open image in fullscreen', 'rs-elementor-widgets' ); ?>">
-					<img class="rs-adv-main-img" src="<?php echo esc_url( $images[0]['large'] ?: $images[0]['full'] ); ?>" alt="<?php echo esc_attr( $images[0]['alt'] ); ?>"/>
+					<?php
+					$main_src = $images[0]['large'] ? $images[0]['large'] : $images[0]['full'];
+					?>
+					<img class="rs-adv-main-img" src="<?php echo esc_url( $main_src ); ?>" alt="<?php echo esc_attr( $images[0]['alt'] ); ?>"/>
 				</div>
 			</div>
 

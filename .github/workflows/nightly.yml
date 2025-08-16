@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       PLUGIN_SLUG: rs-elementor-widgets
-      MAIN_PLUGIN_FILE: rs-elementor-widgets.php
+      MAIN_PLUGIN_FILE: class-rs-elementor-widgets.php
     steps:
       - name: Checkout
         uses: actions/checkout@v4

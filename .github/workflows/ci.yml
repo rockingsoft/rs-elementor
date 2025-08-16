@@ -39,5 +39,5 @@ jobs:
 
       - name: Run PHPCS
         run: |
-          vendor/bin/phpcs --standard=WordPress ./widgets/* ./rs-elementor-widgets.php
+          vendor/bin/phpcs --standard=WordPress ./widgets/* ./class-rs-elementor-widgets.php
 

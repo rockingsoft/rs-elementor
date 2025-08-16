@@ -3,7 +3,7 @@ set -euo pipefail
 
 # Bump the MINOR version in the main plugin file, commit, tag, and optionally push.
 # - Expects to be run from the repository root.
-# - Targets: rs-elementor-widgets.php header `Version: X.Y.Z` and `const VERSION = 'X.Y.Z';`
+# - Targets: class-rs-elementor-widgets.php header `Version: X.Y.Z` and `const VERSION = 'X.Y.Z';`
 #
 # Usage:
 #   scripts/release-bump.sh                 # bump, commit, tag, push
@@ -14,7 +14,7 @@ set -euo pipefail
 #
 # Notes (macOS compatible): uses `sed -i ''` for in-place edits.
 
-PLUGIN_FILE="rs-elementor-widgets.php"
+PLUGIN_FILE="class-rs-elementor-widgets.php"
 PUSH=true
 DRY_RUN=false
 NO_BUMP=false

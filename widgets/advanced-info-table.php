@@ -1,49 +1,96 @@
 <?php
 /**
- * Advanced Info Table Widget
+ * Advanced Info Table Widget.
+ *
+ * @package RS_Elementor_Widgets
+ *
+ * phpcs:disable WordPress.Files.FileName
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
-// Bail if Elementor isn't loaded yet to avoid fatals
-if ( ! class_exists( '\\Elementor\\Widget_Base' ) ) {
+// Bail if Elementor isn't loaded yet to avoid fatals.
+if ( ! class_exists( '\lementor\\Widget_Base' ) ) {
 	return;
 }
 
+/**
+ * Advanced Info Table widget.
+ */
 class RS_Elementor_Widget_Advanced_Info_Table extends \Elementor\Widget_Base {
 
+	/**
+	 * Widget slug.
+	 *
+	 * @return string
+	 */
 	public function get_name() {
 		return 'rs_advanced_info_table';
 	}
 
+	/**
+	 * Widget title.
+	 *
+	 * @return string
+	 */
 	public function get_title() {
 		return esc_html__( 'Advanced Info Table', 'rs-elementor-widgets' );
 	}
 
+	/**
+	 * Widget icon.
+	 *
+	 * @return string
+	 */
 	public function get_icon() {
 		return 'eicon-table';
 	}
 
+	/**
+	 * Widget categories.
+	 *
+	 * @return string[]
+	 */
 	public function get_categories() {
 		return array( 'rs-woocommerce' );
 	}
 
+	/**
+	 * Keywords.
+	 *
+	 * @return string[]
+	 */
 	public function get_keywords() {
 		return array( 'woocommerce', 'product', 'attributes', 'table', 'specs', 'details' );
 	}
 
+	/**
+	 * Styles this widget depends on.
+	 *
+	 * @return string[]
+	 */
 	public function get_style_depends() {
 		return array( 'rs-advanced-info-table' );
 	}
 
+	/**
+	 * Scripts this widget depends on.
+	 *
+	 * @return string[]
+	 */
 	public function get_script_depends() {
 		return array();
 	}
 
+	/**
+	 * Register widget controls.
+	 *
+	 * @return void
+	 */
 	protected function register_controls() {
-		// Content settings
+		// Content settings.
 		$this->start_controls_section(
 			'section_content',
 			array(
@@ -115,7 +162,7 @@ class RS_Elementor_Widget_Advanced_Info_Table extends \Elementor\Widget_Base {
 
 		$this->end_controls_section();
 
-		// Style: Table
+		// Style: Table.
 		$this->start_controls_section(
 			'section_style_table',
 			array(
@@ -167,7 +214,7 @@ class RS_Elementor_Widget_Advanced_Info_Table extends \Elementor\Widget_Base {
 
 		$this->end_controls_section();
 
-		// Style: Labels
+		// Style: Labels.
 		$this->start_controls_section(
 			'section_style_labels',
 			array(
@@ -197,7 +244,7 @@ class RS_Elementor_Widget_Advanced_Info_Table extends \Elementor\Widget_Base {
 
 		$this->end_controls_section();
 
-		// Style: Values
+		// Style: Values.
 		$this->start_controls_section(
 			'section_style_values',
 			array(
@@ -228,8 +275,13 @@ class RS_Elementor_Widget_Advanced_Info_Table extends \Elementor\Widget_Base {
 		$this->end_controls_section();
 	}
 
+	/**
+	 * Render widget output.
+	 *
+	 * @return void
+	 */
 	protected function render() {
-		// Ensure product context
+		// Ensure product context.
 		global $product;
 
 		if ( ! $product || ! is_a( $product, 'WC_Product' ) ) {
@@ -242,7 +294,7 @@ class RS_Elementor_Widget_Advanced_Info_Table extends \Elementor\Widget_Base {
 		}
 
 		if ( ! $product || ! is_a( $product, 'WC_Product' ) ) {
-			return; // No product
+			return; // No product.
 		}
 
 		$settings           = $this->get_settings_for_display();
@@ -253,13 +305,13 @@ class RS_Elementor_Widget_Advanced_Info_Table extends \Elementor\Widget_Base {
 
 		$items = array();
 
-		// 1) Product attributes (honor visibility)
+		// 1) Product attributes (honor visibility).
 		$attributes = $product->get_attributes();
 		if ( ! empty( $attributes ) ) {
 			foreach ( $attributes as $attribute ) {
-				// WC_Product_Attribute
+				// WC_Product_Attribute.
 				if ( ! $attribute->get_visible() ) {
-					continue; // honor "Visible on the product page"
+					continue; // Honor "Visible on the product page".
 				}
 
 				$name  = $attribute->get_name();
@@ -276,7 +328,7 @@ class RS_Elementor_Widget_Advanced_Info_Table extends \Elementor\Widget_Base {
 					}
 					$value = implode( ', ', $term_names );
 				} else {
-					// Custom product attribute (pipe-separated)
+					// Custom product attribute (pipe-separated).
 					$options = $attribute->get_options();
 					if ( is_array( $options ) ) {
 						$clean = array_map( 'wp_kses_post', $options );
@@ -297,7 +349,7 @@ class RS_Elementor_Widget_Advanced_Info_Table extends \Elementor\Widget_Base {
 			}
 		}
 
-		// 2) Shipping Weight
+		// 2) Shipping Weight.
 		if ( $include_weight ) {
 			$weight_html = wc_format_weight( $product->get_weight() );
 			if ( $weight_html || $show_empty ) {
@@ -308,7 +360,7 @@ class RS_Elementor_Widget_Advanced_Info_Table extends \Elementor\Widget_Base {
 			}
 		}
 
-		// 3) Shipping Dimensions
+		// 3) Shipping Dimensions.
 		if ( $include_dimensions ) {
 			$dimensions_html = wc_format_dimensions( $product->get_dimensions( false ) );
 			if ( $dimensions_html || $show_empty ) {
@@ -327,7 +379,7 @@ class RS_Elementor_Widget_Advanced_Info_Table extends \Elementor\Widget_Base {
 		$wrapper_id = 'rs-adv-info-' . $this->get_id();
 		$alt_rows   = ! empty( $settings['alt_rows'] );
 		$classes    = 'rs-adv-info-table' . ( $alt_rows ? ' has-alt-rows' : '' );
-		// Output
+		// Output.
 		?>
 		<div id="<?php echo esc_attr( $wrapper_id ); ?>" class="<?php echo esc_attr( $classes ); ?>" style="--rs-columns: <?php echo (int) $columns; ?>;">
 			<?php foreach ( $items as $index => $row ) : ?>
@@ -337,7 +389,7 @@ class RS_Elementor_Widget_Advanced_Info_Table extends \Elementor\Widget_Base {
 				</div>
 			<?php endforeach; ?>
 		</div>
-		
+
 		<?php
 	}
 }

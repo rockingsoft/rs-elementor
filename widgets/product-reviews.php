@@ -1,17 +1,30 @@
 <?php
 /**
- * Product Reviews Widget
+ * Product Reviews Widget.
+ *
+ * @package RS_Elementor_Widgets
+ *
+ * phpcs:disable WordPress.Files.FileName
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
-// Bail out early if Elementor isn't loaded yet to avoid fatal errors
+// Bail out early if Elementor isn't loaded yet to avoid fatal errors.
 if ( ! class_exists( '\\Elementor\\Widget_Base' ) ) {
 	return;
 }
 
+/**
+ * Elementor widget to display WooCommerce product reviews.
+ *
+ * Provides configurable display of initial reviews and a modal with all reviews.
+ *
+ * @package RS_Elementor_Widgets
+ * @since 1.0.0
+ * @extends \Elementor\Widget_Base
+ */
 class RS_Elementor_Widget_Product_Reviews extends \Elementor\Widget_Base {
 
 	/**
@@ -68,7 +81,7 @@ class RS_Elementor_Widget_Product_Reviews extends \Elementor\Widget_Base {
 	 */
 	protected function register_controls() {
 
-		// Content Section
+		// Content section.
 		$this->start_controls_section(
 			'section_content',
 			array(
@@ -102,7 +115,7 @@ class RS_Elementor_Widget_Product_Reviews extends \Elementor\Widget_Base {
 			)
 		);
 
-		// Note: Product selection has been removed as the widget now always uses the current product
+		// Note: Product selection has been removed as the widget now always uses the current product.
 
 		$this->add_control(
 			'initial_reviews',
@@ -211,7 +224,7 @@ class RS_Elementor_Widget_Product_Reviews extends \Elementor\Widget_Base {
 
 		$this->end_controls_section();
 
-		// Modal Style Section
+		// Modal style section.
 		$this->start_controls_section(
 			'section_modal_style',
 			array(
@@ -290,7 +303,7 @@ class RS_Elementor_Widget_Product_Reviews extends \Elementor\Widget_Base {
 
 		$this->end_controls_section();
 
-		// Style Section - Title
+		// Style section - Title.
 		$this->start_controls_section(
 			'section_title_style',
 			array(
@@ -332,7 +345,7 @@ class RS_Elementor_Widget_Product_Reviews extends \Elementor\Widget_Base {
 
 		$this->end_controls_section();
 
-		// Style Section - Reviews
+		// Style section - Reviews.
 		$this->start_controls_section(
 			'section_reviews_style',
 			array(
@@ -476,7 +489,7 @@ class RS_Elementor_Widget_Product_Reviews extends \Elementor\Widget_Base {
 
 		$this->end_controls_section();
 
-		// Style Section - Avatar
+		// Style section - Avatar.
 		$this->start_controls_section(
 			'section_avatar_style',
 			array(
@@ -552,7 +565,7 @@ class RS_Elementor_Widget_Product_Reviews extends \Elementor\Widget_Base {
 
 		$this->end_controls_section();
 
-		// Style Section - Verified Badge
+		// Style section - Verified Badge.
 		$this->start_controls_section(
 			'section_verified_style',
 			array(
@@ -682,7 +695,7 @@ class RS_Elementor_Widget_Product_Reviews extends \Elementor\Widget_Base {
 	 * Render widget output on the frontend.
 	 */
 	protected function render() {
-		// Dashicons not needed; Elementor includes Font Awesome
+		// Dashicons not needed; Elementor includes Font Awesome.
 
 		if ( ! class_exists( 'WooCommerce' ) ) {
 			echo '<div class="elementor-alert elementor-alert-warning">';
@@ -693,34 +706,34 @@ class RS_Elementor_Widget_Product_Reviews extends \Elementor\Widget_Base {
 
 		$settings = $this->get_settings_for_display();
 
-		$show_title           = $settings['show_title'] === 'yes';
+		$show_title           = 'yes' === $settings['show_title'];
 		$title                = $settings['title'];
 		$initial_reviews      = $settings['initial_reviews'];
 		$show_all_button_text = $settings['show_all_button_text'];
 		$modal_title          = $settings['modal_title'];
 		$order_by             = $settings['order_by'];
 		$order                = $settings['order'];
-		$show_rating          = $settings['show_rating'] === 'yes';
-		$show_date            = $settings['show_date'] === 'yes';
-		$show_avatar          = $settings['show_avatar'] === 'yes';
-		$show_verified        = $settings['show_verified'] === 'yes';
+		$show_rating          = 'yes' === $settings['show_rating'];
+		$show_date            = 'yes' === $settings['show_date'];
+		$show_avatar          = 'yes' === $settings['show_avatar'];
+		$show_verified        = 'yes' === $settings['show_verified'];
 
-		// Generate a unique ID for this widget instance
+		// Generate a unique ID for this widget instance.
 		$widget_id = 'rs-reviews-' . $this->get_id();
 
-		// Get the current product
+		// Get the current product.
 		$product_id = 0;
 		if ( is_product() ) {
 			global $product;
 			$product_id = $product->get_id();
 		}
 
-		// If we don't have a product ID, try to provide a preview in Elementor editor mode
+		// If we don't have a product ID, try to provide a preview in Elementor editor mode.
 		if ( empty( $product_id ) ) {
 			$is_editor = class_exists( '\\Elementor\\Plugin' ) && \Elementor\Plugin::$instance->editor->is_edit_mode();
 
 			if ( $is_editor ) {
-				// Fallback to a recent published product for preview
+				// Fallback to a recent published product for preview.
 				if ( function_exists( 'wc_get_products' ) ) {
 					$sample_ids = wc_get_products(
 						array(
@@ -736,7 +749,7 @@ class RS_Elementor_Widget_Product_Reviews extends \Elementor\Widget_Base {
 					}
 				}
 
-				// If we still couldn't find a product, inform the user in the editor
+				// If we still couldn't find a product, inform the user in the editor.
 				if ( empty( $product_id ) ) {
 					echo '<div class="elementor-alert elementor-alert-info">';
 					echo esc_html__( 'No products found to preview. Please create a WooCommerce product or place this widget on a product template.', 'rs-elementor-widgets' );
@@ -744,7 +757,7 @@ class RS_Elementor_Widget_Product_Reviews extends \Elementor\Widget_Base {
 					return;
 				}
 			} else {
-				// Front-end: keep current behavior
+				// Front-end: keep current behavior.
 				echo '<div class="elementor-alert elementor-alert-info">';
 				echo esc_html__( 'This widget can only be used on product pages.', 'rs-elementor-widgets' );
 				echo '</div>';
@@ -752,7 +765,7 @@ class RS_Elementor_Widget_Product_Reviews extends \Elementor\Widget_Base {
 			}
 		}
 
-		// Get the initial reviews
+		// Get the initial reviews.
 		$args = array(
 			'post_type' => 'product',
 			'post_id'   => $product_id,
@@ -760,9 +773,9 @@ class RS_Elementor_Widget_Product_Reviews extends \Elementor\Widget_Base {
 			'status'    => 'approve',
 		);
 
-		// Set the order
-		if ( $order_by === 'rating' ) {
-			$args['meta_key'] = 'rating';
+		// Set the order.
+		if ( 'rating' === $order_by ) {
+			$args['meta_key'] = 'rating'; // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key
 			$args['orderby']  = 'meta_value_num';
 		} else {
 			$args['orderby'] = 'date';
@@ -772,7 +785,7 @@ class RS_Elementor_Widget_Product_Reviews extends \Elementor\Widget_Base {
 
 		$initial_comments = get_comments( $args );
 
-		// Get all reviews for the modal
+		// Get all reviews for the modal.
 		$all_args     = array(
 			'post_type' => 'product',
 			'post_id'   => $product_id,
@@ -780,7 +793,7 @@ class RS_Elementor_Widget_Product_Reviews extends \Elementor\Widget_Base {
 		);
 		$all_comments = get_comments( $all_args );
 
-		// If no reviews, show a message
+		// If no reviews, show a message.
 		if ( empty( $all_comments ) ) {
 			echo '<div class="rs-product-reviews">';
 			if ( $title ) {
@@ -791,7 +804,7 @@ class RS_Elementor_Widget_Product_Reviews extends \Elementor\Widget_Base {
 			return;
 		}
 
-		// Display the reviews
+		// Display the reviews.
 		?>
 		<div class="rs-product-reviews" id="<?php echo esc_attr( $widget_id ); ?>">
 			<?php if ( $show_title && $title ) : ?>
@@ -828,14 +841,14 @@ class RS_Elementor_Widget_Product_Reviews extends \Elementor\Widget_Base {
 								
 								<?php if ( $show_rating && $rating ) : ?>
 									<div class="rs-review-rating">
-										<?php echo wc_get_rating_html( $rating ); ?>
+										<?php echo wc_get_rating_html( $rating ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 									</div>
 								<?php endif; ?>
 							</div>
 						</div>
 
 						<div class="rs-review-content">
-							<?php echo wpautop( wp_kses_post( $comment->comment_content ) ); ?>
+							<?php echo wpautop( wp_kses_post( $comment->comment_content ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 						</div>
 					</div>
 						<?php
@@ -867,7 +880,7 @@ class RS_Elementor_Widget_Product_Reviews extends \Elementor\Widget_Base {
 					
 					<div class="rs-reviews-modal-list">
 						<?php
-						// Render all reviews in the modal on initial load (no AJAX)
+						// Render all reviews in the modal on initial load (no AJAX).
 						foreach ( $all_comments as $comment ) :
 							$rating   = get_comment_meta( $comment->comment_ID, 'rating', true );
 							$verified = wc_review_is_from_verified_owner( $comment->comment_ID );
@@ -881,7 +894,17 @@ class RS_Elementor_Widget_Product_Reviews extends \Elementor\Widget_Base {
 	}
 
 	/**
-	 * Generate HTML for a single review
+	 * Generate HTML for a single review.
+	 *
+	 * @param WP_Comment $comment       The comment object for the review.
+	 * @param int|string $rating        The numeric rating (1-5) stored in comment meta.
+	 * @param bool       $verified      Whether the reviewer is a verified owner.
+	 * @param bool       $show_avatar   Whether to show the avatar.
+	 * @param bool       $show_verified Whether to show the verified badge.
+	 * @param bool       $show_date     Whether to show the review date.
+	 * @param bool       $show_rating   Whether to show the star rating.
+	 *
+	 * @return string The rendered review HTML.
 	 */
 	private function get_review_html( $comment, $rating, $verified, $show_avatar, $show_verified, $show_date, $show_rating ) {
 		ob_start();
@@ -909,14 +932,14 @@ class RS_Elementor_Widget_Product_Reviews extends \Elementor\Widget_Base {
 					
 					<?php if ( $show_rating && $rating ) : ?>
 						<div class="rs-review-rating">
-							<?php echo wc_get_rating_html( $rating ); ?>
+							<?php echo wc_get_rating_html( $rating ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 						</div>
 					<?php endif; ?>
 				</div>
 			</div>
 
 			<div class="rs-review-content">
-				<?php echo wpautop( wp_kses_post( $comment->comment_content ) ); ?>
+				<?php echo wpautop( wp_kses_post( $comment->comment_content ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 			</div>
 		</div>
 		<?php

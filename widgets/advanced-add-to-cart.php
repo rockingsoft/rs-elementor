@@ -1,49 +1,96 @@
 <?php
 /**
- * Advanced Add To Cart Widget (initial minimal wrapper)
+ * Advanced Add To Cart Widget (initial minimal wrapper).
+ *
+ * @package RS_Elementor_Widgets
+ *
+ * phpcs:disable WordPress.Files.FileName
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
-// Bail if Elementor isn't loaded yet to avoid fatals
-if ( ! class_exists( '\\Elementor\\Widget_Base' ) ) {
+// Bail if Elementor isn't loaded yet to avoid fatals.
+if ( ! class_exists( '\lementor\\Widget_Base' ) ) {
 	return;
 }
 
+/**
+ * Advanced Add To Cart widget.
+ */
 class RS_Elementor_Widget_Advanced_Add_To_Cart extends \Elementor\Widget_Base {
 
+	/**
+	 * Widget slug.
+	 *
+	 * @return string
+	 */
 	public function get_name() {
 		return 'rs_advanced_add_to_cart';
 	}
 
+	/**
+	 * Widget title.
+	 *
+	 * @return string
+	 */
 	public function get_title() {
 		return esc_html__( 'Advanced Add To Cart', 'rs-elementor-widgets' );
 	}
 
+	/**
+	 * Widget icon.
+	 *
+	 * @return string
+	 */
 	public function get_icon() {
 		return 'eicon-cart-medium';
 	}
 
+	/**
+	 * Widget categories.
+	 *
+	 * @return string[]
+	 */
 	public function get_categories() {
 		return array( 'rs-woocommerce' );
 	}
 
+	/**
+	 * Keywords.
+	 *
+	 * @return string[]
+	 */
 	public function get_keywords() {
 		return array( 'woocommerce', 'product', 'cart', 'add to cart', 'button' );
 	}
 
+	/**
+	 * Styles this widget depends on.
+	 *
+	 * @return string[]
+	 */
 	public function get_style_depends() {
 		return array();
 	}
 
+	/**
+	 * Scripts this widget depends on.
+	 *
+	 * @return string[]
+	 */
 	public function get_script_depends() {
 		return array();
 	}
 
+	/**
+	 * Register widget controls.
+	 *
+	 * @return void
+	 */
 	protected function register_controls() {
-		// Content controls
+		// Content controls.
 		$this->start_controls_section(
 			'section_content',
 			array(
@@ -84,7 +131,7 @@ class RS_Elementor_Widget_Advanced_Add_To_Cart extends \Elementor\Widget_Base {
 
 		$this->end_controls_section();
 
-		// Style: Alignment
+		// Style: Alignment.
 		$this->start_controls_section(
 			'section_style_alignment',
 			array(
@@ -119,16 +166,16 @@ class RS_Elementor_Widget_Advanced_Add_To_Cart extends \Elementor\Widget_Base {
 					'right'  => 'flex-end',
 				),
 				'selectors'            => array(
-					// Simple products container
+					// Simple products container.
 					'{{WRAPPER}} .rs-advanced-add-to-cart form.cart' => 'display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; justify-content: {{VALUE}};',
-					// Variable products button row
+					// Variable products button row.
 					'{{WRAPPER}} .rs-advanced-add-to-cart .woocommerce-variation-add-to-cart' => 'display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; justify-content: {{VALUE}};',
-					// Variation wrap (contains price/stock and button row)
+					// Variation wrap (contains price/stock and button row).
 					'{{WRAPPER}} .rs-advanced-add-to-cart .single_variation_wrap' => 'display: flex; flex-direction: column; align-items: {{VALUE}}; width: 100%;',
-					// Variation details (price/stock area) alignment
-					'{{WRAPPER}} .rs-advanced-add-to-cart .single_variation' => 'display: flex; width: 100%; justify-content: {{VALUE}};',
+					// Variation details (price/stock area) alignment.
+					'{{WRAPPER}} .rs-advanced-add-to-cart .single_variation' => 'align-self: stretch; text-align: {{VALUE}}; width: 100%;',
 					'{{WRAPPER}} .rs-advanced-add-to-cart .woocommerce-variation' => 'display: flex; width: 100%; justify-content: {{VALUE}};',
-					// Stock message alignment
+					// Stock message alignment.
 					'{{WRAPPER}} .rs-advanced-add-to-cart .stock' => 'width: 100%; justify-content: {{VALUE}};',
 				),
 			)
@@ -151,7 +198,7 @@ class RS_Elementor_Widget_Advanced_Add_To_Cart extends \Elementor\Widget_Base {
 
 		$this->end_controls_section();
 
-		// Style: Button
+		// Style: Button.
 		$this->start_controls_section(
 			'section_style_button',
 			array(
@@ -170,7 +217,7 @@ class RS_Elementor_Widget_Advanced_Add_To_Cart extends \Elementor\Widget_Base {
 
 		$this->start_controls_tabs( 'tabs_button_style' );
 
-		// Normal
+		// Normal.
 		$this->start_controls_tab(
 			'tab_button_normal',
 			array( 'label' => esc_html__( 'Normal', 'rs-elementor-widgets' ) )
@@ -240,7 +287,7 @@ class RS_Elementor_Widget_Advanced_Add_To_Cart extends \Elementor\Widget_Base {
 
 		$this->end_controls_tab();
 
-		// Hover
+		// Hover.
 		$this->start_controls_tab(
 			'tab_button_hover',
 			array( 'label' => esc_html__( 'Hover', 'rs-elementor-widgets' ) )
@@ -286,7 +333,7 @@ class RS_Elementor_Widget_Advanced_Add_To_Cart extends \Elementor\Widget_Base {
 
 		$this->end_controls_tab();
 
-		// Active
+		// Active.
 		$this->start_controls_tab(
 			'tab_button_active',
 			array( 'label' => esc_html__( 'Active', 'rs-elementor-widgets' ) )
@@ -337,12 +384,17 @@ class RS_Elementor_Widget_Advanced_Add_To_Cart extends \Elementor\Widget_Base {
 		$this->end_controls_section();
 	}
 
+	/**
+	 * Render widget output.
+	 *
+	 * @return void
+	 */
 	protected function render() {
-		// Ensure we have a product context
+		// Ensure we have a product context.
 		global $product;
 
 		if ( ! $product || ! is_a( $product, 'WC_Product' ) ) {
-			// Try to get from the main query (single product)
+			// Try to get from the main query (single product).
 			if ( function_exists( 'wc_get_product' ) ) {
 				$queried = get_queried_object_id();
 				if ( $queried ) {
@@ -352,12 +404,12 @@ class RS_Elementor_Widget_Advanced_Add_To_Cart extends \Elementor\Widget_Base {
 		}
 
 		if ( ! $product || ! is_a( $product, 'WC_Product' ) ) {
-			return; // No product context available
+			return; // No product context available.
 		}
 
 		echo '<div class="rs-advanced-add-to-cart">';
 
-		// Render WooCommerce's default add-to-cart area for the current product
+		// Render WooCommerce's default add-to-cart area for the current product.
 		if ( function_exists( 'woocommerce_template_single_add_to_cart' ) ) {
 			woocommerce_template_single_add_to_cart();
 		}

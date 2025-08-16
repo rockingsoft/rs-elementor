@@ -1,47 +1,94 @@
 <?php
 /**
- * Variation Chooser Widget
+ * Variation Chooser Widget.
+ *
+ * @package RS_Elementor_Widgets
+ *
+ * phpcs:disable WordPress.Files.FileName
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
-// Bail if Elementor isn't loaded yet to avoid fatals
+// Bail if Elementor isn't loaded yet to avoid fatals.
 if ( ! class_exists( '\\Elementor\\Widget_Base' ) ) {
 	return;
 }
 
+/**
+ * Variation Chooser widget.
+ */
 class RS_Elementor_Widget_Variation_Chooser extends \Elementor\Widget_Base {
 
+	/**
+	 * Widget slug.
+	 *
+	 * @return string
+	 */
 	public function get_name() {
 		return 'rs_variation_chooser';
 	}
 
+	/**
+	 * Widget title.
+	 *
+	 * @return string
+	 */
 	public function get_title() {
 		return esc_html__( 'Variation Chooser', 'rs-elementor-widgets' );
 	}
 
+	/**
+	 * Widget icon.
+	 *
+	 * @return string
+	 */
 	public function get_icon() {
 		return 'eicon-product-variations';
 	}
 
+	/**
+	 * Widget categories.
+	 *
+	 * @return string[]
+	 */
 	public function get_categories() {
 		return array( 'rs-woocommerce' );
 	}
 
+	/**
+	 * Keywords.
+	 *
+	 * @return string[]
+	 */
 	public function get_keywords() {
 		return array( 'woocommerce', 'product', 'variation', 'attribute', 'dropdown', 'thumbnails' );
 	}
 
+	/**
+	 * Styles this widget depends on.
+	 *
+	 * @return string[]
+	 */
 	public function get_style_depends() {
 		return array( 'rs-variation-chooser' );
 	}
 
+	/**
+	 * Scripts this widget depends on.
+	 *
+	 * @return string[]
+	 */
 	public function get_script_depends() {
 		return array( 'rs-variation-chooser' );
 	}
 
+	/**
+	 * Register widget controls.
+	 *
+	 * @return void
+	 */
 	protected function register_controls() {
 		$this->start_controls_section(
 			'section_content',
@@ -131,7 +178,7 @@ class RS_Elementor_Widget_Variation_Chooser extends \Elementor\Widget_Base {
 			)
 		);
 
-		// Thumbnail appearance
+		// Thumbnail appearance.
 		$this->add_control(
 			'thumb_bg_color',
 			array(
@@ -225,7 +272,7 @@ class RS_Elementor_Widget_Variation_Chooser extends \Elementor\Widget_Base {
 			)
 		);
 
-		// Hover state
+		// Hover state.
 		$this->add_control(
 			'thumb_hover_bg_color',
 			array(
@@ -250,7 +297,7 @@ class RS_Elementor_Widget_Variation_Chooser extends \Elementor\Widget_Base {
 			)
 		);
 
-		// Active state
+		// Active state.
 		$this->add_control(
 			'thumb_active_bg_color',
 			array(
@@ -278,15 +325,21 @@ class RS_Elementor_Widget_Variation_Chooser extends \Elementor\Widget_Base {
 		$this->end_controls_section();
 	}
 
+	/**
+	 * Get product context for rendering in editor and frontend.
+	 *
+	 * @param array $settings Widget settings.
+	 * @return WC_Product|null
+	 */
 	private function get_product_context( $settings ) {
 		global $product;
 
-		// If we are on a single product with a product context
+		// If we are on a single product with a product context.
 		if ( $product instanceof WC_Product ) {
 			return $product;
 		}
 
-		// Otherwise attempt to load preview product
+		// Otherwise attempt to load preview product.
 		$preview_id = ! empty( $settings['preview_product_id'] ) ? absint( $settings['preview_product_id'] ) : 0;
 		if ( $preview_id ) {
 			$prod = wc_get_product( $preview_id );
@@ -298,6 +351,13 @@ class RS_Elementor_Widget_Variation_Chooser extends \Elementor\Widget_Base {
 		return null;
 	}
 
+	/**
+	 * Build a readable variation label.
+	 *
+	 * @param int  $variation_id        Variation ID.
+	 * @param bool $include_product_name Whether to include the product name.
+	 * @return string
+	 */
 	private function get_variation_label( $variation_id, $include_product_name = false ) {
 		$variation = wc_get_product( $variation_id );
 		if ( $variation && $variation instanceof WC_Product_Variation ) {
@@ -314,19 +374,28 @@ class RS_Elementor_Widget_Variation_Chooser extends \Elementor\Widget_Base {
 		return '#' . absint( $variation_id );
 	}
 
+	/**
+	 * Render widget output.
+	 *
+	 * @return void
+	 */
 	protected function render() {
 		$settings = $this->get_settings_for_display();
 		$product  = $this->get_product_context( $settings );
 
 		if ( ! $product || ! $product->is_type( 'variable' ) ) {
-			// Do not render anything when product is not variable
+			// Do not render anything when product is not variable.
 			return;
 		}
 
-		/** @var WC_Product_Variable $product */
+		/**
+		 * Product variable instance.
+		 *
+		 * @var WC_Product_Variable $product
+		 */
 		$available = $product->get_available_variations();
 		if ( empty( $available ) ) {
-			// Do not render anything when there are no variations
+			// Do not render anything when there are no variations.
 			return;
 		}
 
@@ -336,10 +405,10 @@ class RS_Elementor_Widget_Variation_Chooser extends \Elementor\Widget_Base {
 		$show_label   = ( isset( $settings['show_label'] ) && 'yes' === $settings['show_label'] );
 		$style_type   = $settings['style_type'];
 		$include_name = ( isset( $settings['include_product_name'] ) && 'yes' === $settings['include_product_name'] );
-		// Default to syncing ON if control isn't present
+		// Default to syncing ON if control isn't present.
 		$sync_with_form = ( ! isset( $settings['sync_with_variations_form'] ) ) || ( 'yes' === $settings['sync_with_variations_form'] );
 
-		// Build variations mapping for JS syncing
+		// Build variations mapping for JS syncing.
 		$mapping = array();
 		foreach ( $available as $var ) {
 			$vid = isset( $var['variation_id'] ) ? (int) $var['variation_id'] : 0;
@@ -347,20 +416,20 @@ class RS_Elementor_Widget_Variation_Chooser extends \Elementor\Widget_Base {
 				continue; }
 			$mapping[ $vid ] = $var['attributes'];
 		}
-		$mapping_json = esc_attr( wp_json_encode( $mapping ) );
+		$mapping_json = wp_json_encode( $mapping );
 
-		echo '<div id="' . $wrapper_id . '" class="rs-variation-chooser" data-sync="' . ( $sync_with_form ? '1' : '0' ) . '" data-variations="' . $mapping_json . '">';
+		echo '<div id="' . esc_attr( $wrapper_id ) . '" class="rs-variation-chooser" data-sync="' . ( $sync_with_form ? '1' : '0' ) . '" data-variations="' . esc_attr( $mapping_json ) . '">';
 
 		if ( $show_label && $label ) {
-			echo '<label class="rs-varc-label" for="' . $wrapper_id . '-select">' . esc_html( $label ) . '</label>';
+			echo '<label class="rs-varc-label" for="' . esc_attr( $wrapper_id . '-select' ) . '">' . esc_html( $label ) . '</label>';
 		}
 
-		// Hidden input to store the selected value (so other scripts can read it)
+		// Hidden input to store the selected value (so other scripts can read it).
 		echo '<input type="hidden" name="' . esc_attr( $input_name ) . '" class="rs-varc-input" value="" />';
 
 		if ( 'dropdown' === $style_type ) {
-			echo '<select class="rs-varc-select" id="' . $wrapper_id . '-select">';
-			// Placeholder to allow "no selection"
+			echo '<select class="rs-varc-select" id="' . esc_attr( $wrapper_id . '-select' ) . '">';
+			// Placeholder to allow "no selection".
 			echo '<option value="">' . esc_html__( '— Select an option —', 'rs-elementor-widgets' ) . '</option>';
 			foreach ( $available as $var ) {
 				$vid = isset( $var['variation_id'] ) ? (int) $var['variation_id'] : 0;
@@ -388,7 +457,7 @@ class RS_Elementor_Widget_Variation_Chooser extends \Elementor\Widget_Base {
 				}
 				echo '<button type="button" class="rs-varc-thumb" role="listitem" data-value="' . esc_attr( $vid ) . '" aria-pressed="false">';
 				if ( $img ) {
-					echo '<img src="' . $img . '" alt="' . esc_attr( $name ) . '" />';
+					echo '<img src="' . esc_url( $img ) . '" alt="' . esc_attr( $name ) . '" />';
 				} else {
 					echo '<span class="rs-varc-thumb-fallback">' . esc_html( $name ) . '</span>';
 				}
