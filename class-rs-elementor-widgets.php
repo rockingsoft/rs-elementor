@@ -224,11 +224,11 @@ final class RS_Elementor_Widgets {
 	public function widget_styles() {
 		// Per-widget styles (registered only; enqueued via get_style_depends on widgets).
 		$css_files = array(
-			'rs-advanced-add-to-cart'   => 'assets/css/advanced-add-to-cart.css',
+			'rs-advanced-add-to-cart'    => 'assets/css/advanced-add-to-cart.css',
 			'rs-advanced-product-images' => 'assets/css/advanced-product-images.css',
-			'rs-product-reviews'        => 'assets/css/product-reviews.css',
-			'rs-variation-chooser'      => 'assets/css/variation-chooser.css',
-			'rs-advanced-info-table'    => 'assets/css/advanced-info-table.css',
+			'rs-product-reviews'         => 'assets/css/product-reviews.css',
+			'rs-variation-chooser'       => 'assets/css/variation-chooser.css',
+			'rs-advanced-info-table'     => 'assets/css/advanced-info-table.css',
 		);
 		foreach ( $css_files as $handle => $rel ) {
 			$path = plugin_dir_path( __FILE__ ) . $rel;
@@ -243,9 +243,21 @@ final class RS_Elementor_Widgets {
 	public function widget_scripts() {
 		// Per-widget scripts (registered only; enqueued via get_script_depends on widgets).
 		$scripts = array(
-			'rs-advanced-product-images' => array( 'rel' => 'assets/js/advanced-product-images.js', 'deps' => array(), 'in_footer' => true ),
-			'rs-product-reviews'        => array( 'rel' => 'assets/js/product-reviews.js', 'deps' => array(), 'in_footer' => true ),
-			'rs-variation-chooser'      => array( 'rel' => 'assets/js/variation-chooser.js', 'deps' => array( 'jquery' ), 'in_footer' => true ),
+			'rs-advanced-product-images' => array(
+				'rel'       => 'assets/js/advanced-product-images.js',
+				'deps'      => array(),
+				'in_footer' => true,
+			),
+			'rs-product-reviews'         => array(
+				'rel'       => 'assets/js/product-reviews.js',
+				'deps'      => array(),
+				'in_footer' => true,
+			),
+			'rs-variation-chooser'       => array(
+				'rel'       => 'assets/js/variation-chooser.js',
+				'deps'      => array( 'jquery' ),
+				'in_footer' => true,
+			),
 		);
 		foreach ( $scripts as $handle => $data ) {
 			$path = plugin_dir_path( __FILE__ ) . $data['rel'];

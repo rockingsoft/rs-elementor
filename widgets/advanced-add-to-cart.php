@@ -188,9 +188,9 @@ class RS_Elementor_Widget_Advanced_Add_To_Cart extends \Elementor\Widget_Base {
 				'return_value' => 'yes',
 				'default'      => '',
 				'selectors'    => array(
-					// Ensure parent containers span full width
+					// Ensure parent containers span full width.
 					'{{WRAPPER}} .rs-advanced-add-to-cart, {{WRAPPER}} .rs-advanced-add-to-cart .single_variation_wrap, {{WRAPPER}} .rs-advanced-add-to-cart form.cart, {{WRAPPER}} .rs-advanced-add-to-cart .woocommerce-variation-add-to-cart' => 'width: 100%;',
-					// Make button truly full width inside flex rows
+					// Make button truly full width inside flex rows.
 					'{{WRAPPER}} .rs-advanced-add-to-cart .single_add_to_cart_button, {{WRAPPER}} .rs-advanced-add-to-cart a.add_to_cart_button' => 'display: block; width: 100%; flex: 0 0 100%; align-self: stretch;',
 				),
 			)
@@ -236,7 +236,7 @@ class RS_Elementor_Widget_Advanced_Add_To_Cart extends \Elementor\Widget_Base {
 					// Stock message alignment.
 					'{{WRAPPER}} .rs-advanced-add-to-cart .stock' => 'display: flex; width: 100%; justify-content: {{VALUE}};',
 				),
-				'condition'           => array(
+				'condition'            => array(
 					'button_full_width!' => 'yes',
 				),
 			)
@@ -264,9 +264,9 @@ class RS_Elementor_Widget_Advanced_Add_To_Cart extends \Elementor\Widget_Base {
 		$this->add_responsive_control(
 			'button_text_align',
 			array(
-				'label'   => esc_html__( 'Text Align', 'rs-elementor-widgets' ),
-				'type'    => \Elementor\Controls_Manager::CHOOSE,
-				'options' => array(
+				'label'     => esc_html__( 'Text Align', 'rs-elementor-widgets' ),
+				'type'      => \Elementor\Controls_Manager::CHOOSE,
+				'options'   => array(
 					'left'   => array(
 						'title' => esc_html__( 'Left', 'rs-elementor-widgets' ),
 						'icon'  => 'eicon-text-align-left',
@@ -488,10 +488,10 @@ class RS_Elementor_Widget_Advanced_Add_To_Cart extends \Elementor\Widget_Base {
 
 		// Build wrapper classes. Only hide native variations on single product if requested,
 		// so that loop items can show selectors for variable products.
-		$settings            = $this->get_settings_for_display();
-		$hide_wc_variations  = isset( $settings['hide_wc_variations'] ) && 'yes' === $settings['hide_wc_variations'];
-		$wrapper_classes     = 'rs-advanced-add-to-cart';
-		$wrapper_classes    .= ( function_exists( 'is_product' ) && is_product() ) ? ' rs-context-single' : ' rs-context-loop';
+		$settings           = $this->get_settings_for_display();
+		$hide_wc_variations = isset( $settings['hide_wc_variations'] ) && 'yes' === $settings['hide_wc_variations'];
+		$wrapper_classes    = 'rs-advanced-add-to-cart';
+		$wrapper_classes   .= ( function_exists( 'is_product' ) && is_product() ) ? ' rs-context-single' : ' rs-context-loop';
 		if ( function_exists( 'is_product' ) && is_product() && $hide_wc_variations ) {
 			$wrapper_classes .= ' rs-hide-wc-variations';
 		}
@@ -505,18 +505,15 @@ class RS_Elementor_Widget_Advanced_Add_To_Cart extends \Elementor\Widget_Base {
 			if ( function_exists( 'woocommerce_template_single_add_to_cart' ) ) {
 				woocommerce_template_single_add_to_cart();
 			}
-		} else {
-			// Loop/archive context.
-			if ( $product && is_a( $product, 'WC_Product' ) && $product->is_type( 'variable' ) && function_exists( 'woocommerce_variable_add_to_cart' ) ) {
-				// Render full variations form so users can pick variation and add via AJAX inline.
-				woocommerce_variable_add_to_cart();
-			} elseif ( function_exists( 'woocommerce_template_loop_add_to_cart' ) ) {
-				// Simple/other types: use standard loop add-to-cart (already AJAX-enabled for simples).
-				woocommerce_template_loop_add_to_cart();
-			} elseif ( function_exists( 'woocommerce_template_single_add_to_cart' ) ) {
-				// Fallback.
-				woocommerce_template_single_add_to_cart();
-			}
+		} elseif ( $product && is_a( $product, 'WC_Product' ) && $product->is_type( 'variable' ) && function_exists( 'woocommerce_variable_add_to_cart' ) ) {
+			// Render full variations form so users can pick variation and add via AJAX inline.
+			woocommerce_variable_add_to_cart();
+		} elseif ( function_exists( 'woocommerce_template_loop_add_to_cart' ) ) {
+			// Simple/other types: use standard loop add-to-cart (already AJAX-enabled for simples).
+			woocommerce_template_loop_add_to_cart();
+		} elseif ( function_exists( 'woocommerce_template_single_add_to_cart' ) ) {
+			// Fallback.
+			woocommerce_template_single_add_to_cart();
 		}
 
 		echo '</div>';
