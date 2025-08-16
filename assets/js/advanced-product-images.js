@@ -23,6 +23,16 @@
       } catch(e) { /* noop */ }
 
       var current = 0;
+
+      // Click behavior configuration
+      var clickAction = (root.getAttribute('data-click-action') || 'modal');
+      var clickUrl = (root.getAttribute('data-click-url') || '').trim();
+      var clickNewTab = root.getAttribute('data-click-new-tab') === '1';
+      function handleNavigate(){
+        if (!clickUrl) { openModal(current); return; }
+        if (clickNewTab) { window.open(clickUrl, '_blank', 'noopener'); }
+        else { window.location.href = clickUrl; }
+      }
       function setCurrent(index){
         if (index < 0 || index >= thumbs.length) return;
         current = index;
@@ -89,7 +99,8 @@
       thumbs.forEach(function(btn, idx){
         btn.addEventListener('click', function(){
           if (idx === current) {
-            openModal(current);
+            if (clickAction === 'link') { handleNavigate(); }
+            else { openModal(current); }
           } else {
             setCurrent(idx);
           }
@@ -97,11 +108,15 @@
       });
 
       if (mainArea) {
-        mainArea.addEventListener('click', function(){ openModal(current); });
+        mainArea.addEventListener('click', function(){
+          if (clickAction === 'link') { handleNavigate(); }
+          else { openModal(current); }
+        });
         mainArea.addEventListener('keypress', function(e){
           if (e.key === 'Enter' || e.key === ' ') {
             e.preventDefault();
-            openModal(current);
+            if (clickAction === 'link') { handleNavigate(); }
+            else { openModal(current); }
           }
         });
       }

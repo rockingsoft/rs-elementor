@@ -172,6 +172,53 @@ class RS_Elementor_Widget_Advanced_Product_Images extends \Elementor\Widget_Base
 
 		$this->end_controls_section();
 
+		// Behavior: Click action for main image.
+		$this->start_controls_section(
+			'section_behaviour',
+			array(
+				'label' => esc_html__( 'Behavior', 'rs-elementor-widgets' ),
+				'tab'   => \Elementor\Controls_Manager::TAB_CONTENT,
+			)
+		);
+
+		$this->add_control(
+			'click_action',
+			array(
+				'label'   => esc_html__( 'On Click', 'rs-elementor-widgets' ),
+				'type'    => \Elementor\Controls_Manager::SELECT,
+				'default' => 'modal',
+				'options' => array(
+					'modal' => esc_html__( 'Open Modal (default)', 'rs-elementor-widgets' ),
+					'link'  => esc_html__( 'Go to URL', 'rs-elementor-widgets' ),
+				),
+			)
+		);
+
+		$this->add_control(
+			'click_url',
+			array(
+				'label'       => esc_html__( 'Click URL', 'rs-elementor-widgets' ),
+				'type'        => \Elementor\Controls_Manager::TEXT,
+				'placeholder' => 'https://example.com',
+				'condition'   => array( 'click_action' => 'link' ),
+			)
+		);
+
+		$this->add_control(
+			'click_new_tab',
+			array(
+				'label'        => esc_html__( 'Open in new tab', 'rs-elementor-widgets' ),
+				'type'         => \Elementor\Controls_Manager::SWITCHER,
+				'label_on'     => esc_html__( 'Yes', 'rs-elementor-widgets' ),
+				'label_off'    => esc_html__( 'No', 'rs-elementor-widgets' ),
+				'return_value' => 'yes',
+				'default'      => 'no',
+				'condition'    => array( 'click_action' => 'link' ),
+			)
+		);
+
+		$this->end_controls_section();
+
 		// Styles: Inline navigation.
 		$this->start_controls_section(
 			'section_style_inline_nav',
@@ -515,8 +562,11 @@ class RS_Elementor_Widget_Advanced_Product_Images extends \Elementor\Widget_Base
 		$pos               = in_array( $thumbs_position, $allowed_positions, true ) ? $thumbs_position : 'left';
 		$container_classes = 'rs-adv-images layout-' . $pos . ( $hide_thumbnails ? ' hide-thumbs' : '' );
 		$var_map_json      = wp_json_encode( $variation_index_map );
+		$click_action      = isset( $settings['click_action'] ) ? $settings['click_action'] : 'modal';
+		$click_url         = isset( $settings['click_url'] ) ? trim( $settings['click_url'] ) : '';
+		$click_new_tab     = ( isset( $settings['click_new_tab'] ) && 'yes' === $settings['click_new_tab'] ) ? '1' : '0';
 		?>
-		<div id="<?php echo esc_attr( $widget_id ); ?>" class="<?php echo esc_attr( $container_classes ); ?>" data-variation-map="<?php echo esc_attr( $var_map_json ); ?>">
+		<div id="<?php echo esc_attr( $widget_id ); ?>" class="<?php echo esc_attr( $container_classes ); ?>" data-variation-map="<?php echo esc_attr( $var_map_json ); ?>" data-click-action="<?php echo esc_attr( $click_action ); ?>" data-click-url="<?php echo esc_url( $click_url ); ?>" data-click-new-tab="<?php echo esc_attr( $click_new_tab ); ?>">
 			<div class="rs-adv-images-inner">
 				<div class="rs-adv-thumbs" style="--thumb-size: <?php echo (int) $thumb_size; ?>px; --thumb-gap: <?php echo (int) $thumb_gap; ?>px;"<?php echo $hide_thumbnails ? ' aria-hidden="true"' : ''; ?>>
 					<?php foreach ( $images as $index => $img ) : ?>
