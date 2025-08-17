@@ -138,6 +138,10 @@
   align-items: center;
   justify-content: center;
   background: #fff;
+  /* Establish a responsive sizing context so the image can object-fit reliably.
+     If the widget sets an explicit height via control, it overrides this. */
+  width: 100%;
+  aspect-ratio: var(--rs-main-ar, 1 / 1);
   min-height: 300px;
   max-height: var(--rs-main-max, none);
 }
@@ -147,6 +151,9 @@
   width: 100%;
   height: 100%;
   max-width: 100%;
+  /* Sensible defaults that can be overridden by Elementor's inline selectors */
+  object-fit: var(--rs-main-fit, contain);
+  object-position: var(--rs-main-pos, center center);
   display: block;
 }
 

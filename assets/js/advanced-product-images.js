@@ -24,6 +24,23 @@
 
       var current = 0;
 
+      // Keep main container aspect-ratio in sync with current image
+      function updateAspectFrom(img){
+        try {
+          if (!img) return;
+          // If image already loaded, natural sizes are available
+          var w = img.naturalWidth;
+          var h = img.naturalHeight;
+          if (w && h && mainArea && mainArea.style) {
+            mainArea.style.setProperty('--rs-main-ar', w + ' / ' + h);
+          }
+        } catch(_e) { /* noop */ }
+      }
+      if (mainImg) {
+        // Update AR on load and also if the same src reloads
+        mainImg.addEventListener('load', function(){ updateAspectFrom(mainImg); });
+      }
+
       // Click behavior configuration
       var clickAction = (root.getAttribute('data-click-action') || 'modal');
       var clickUrl = (root.getAttribute('data-click-url') || '').trim();
@@ -42,6 +59,7 @@
         active.classList.add('is-active');
         var large = active.getAttribute('data-large') || active.getAttribute('data-full');
         if (large && mainImg) { mainImg.src = large; }
+        // Aspect ratio will update on image load event
         if (modal && modal.classList.contains('is-open')) updateNavVisibility();
       }
 
@@ -178,6 +196,8 @@
 
       setCurrent(0);
       updateNavVisibility();
+      // Initialize aspect ratio from the initial image (in case it's cached and load doesn't fire)
+      updateAspectFrom(mainImg);
 
       // --- Variation sync via events ---
       function handleVariationSelection(variationId){
