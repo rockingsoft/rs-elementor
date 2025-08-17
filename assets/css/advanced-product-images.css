@@ -23,7 +23,8 @@
 }
 
 .rs-adv-images.layout-bottom .rs-adv-images-inner {
-  flex-direction: column;
+  /* Place thumbs after the main image */
+  flex-direction: column-reverse;
 }
 
 /* Thumbs sizing and flow */
@@ -142,9 +143,10 @@
 }
 
 .rs-adv-main-img {
+  /* Constrain both dimensions so object-fit (set via widget control) is effective */
   width: 100%;
-  height: auto;
-  max-height: 100%;
+  height: 100%;
+  max-width: 100%;
   display: block;
 }
 
