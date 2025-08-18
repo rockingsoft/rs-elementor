@@ -1,238 +1,217 @@
-/* Advanced Product Images - styles */
+/* ===== Scoped styles – ONLY inside .rs-adv-images ===== */
 .rs-adv-images {
   width: 100%;
+  max-width: 100%;
 }
 
+/* Layout (the HTML ya trae layout-top) */
 .rs-adv-images .rs-adv-images-inner {
   display: flex;
+  flex-direction: column;
   gap: 12px;
-  align-items: stretch;
 }
 
-/* Flex layouts per side */
-.rs-adv-images.layout-left .rs-adv-images-inner {
-  flex-direction: row;
-}
-
-.rs-adv-images.layout-right .rs-adv-images-inner {
-  flex-direction: row-reverse;
-}
-
-.rs-adv-images.layout-top .rs-adv-images-inner {
-  flex-direction: column;
-}
-
-.rs-adv-images.layout-bottom .rs-adv-images-inner {
-  /* Place thumbs after the main image */
-  flex-direction: column-reverse;
-}
-
-/* Thumbs sizing and flow */
-.rs-adv-thumbs {
+/* Thumbs (ocultas si existe .hide-thumbs) */
+.rs-adv-images .rs-adv-thumbs {
   display: flex;
-  gap: var(--thumb-gap);
-}
-
-.rs-adv-main {
-  flex: 1 1 auto;
-  min-width: 0;
-}
-
-/* Vertical thumbs for left/right */
-.rs-adv-images.layout-left .rs-adv-thumbs,
-.rs-adv-images.layout-right .rs-adv-thumbs {
-  flex: 0 0 auto;
-  flex-direction: column;
-  max-height: 480px;
-  overflow-y: auto;
-}
-
-.rs-adv-images.layout-left .rs-adv-thumbs {
-  margin-right: 0;
-}
-
-.rs-adv-images.layout-right .rs-adv-thumbs {
-  margin-left: 0;
-}
-
-/* Horizontal thumbs for top/bottom */
-.rs-adv-images.layout-top .rs-adv-thumbs,
-.rs-adv-images.layout-bottom .rs-adv-thumbs {
-  flex-direction: row;
-  overflow-x: auto;
-}
-
-.rs-adv-thumb {
-  padding: 0;
-  border: 0;
-  border-radius: 4px;
-  background: #fff;
-  cursor: pointer;
-  width: var(--thumb-size);
-  height: var(--thumb-size);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  box-sizing: border-box;
-  line-height: 0;
-}
-
-.rs-adv-thumb img {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
-  display: block;
-  border-radius: inherit;
-}
-
-.rs-adv-thumb.is-active {
-  box-shadow: none;
-}
-
-/* Hide thumbnails option */
-.rs-adv-images.hide-thumbs .rs-adv-thumbs {
-  display: none !important;
-}
-
-.rs-adv-main-wrap {
-  display: flex;
-  align-items: center;
   gap: 8px;
+  flex-wrap: wrap;
+}
+
+.rs-adv-images.hide-thumbs .rs-adv-thumbs {
+  display: none;
+}
+
+.rs-adv-images .rs-adv-thumb {
+  appearance: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  width: var(--thumb-size, 64px);
+  height: var(--thumb-size, 64px);
+  border-radius: 10px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, .08);
+}
+
+.rs-adv-images .rs-adv-thumb img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+.rs-adv-images .rs-adv-thumb.is-active {
+  outline: 2px solid #2F6E63;
+  outline-offset: 2px
+}
+
+/* Main viewer */
+.rs-adv-images .rs-adv-main-wrap {
+  position: relative;
   width: 100%;
 }
 
-.rs-adv-inline-btn {
-  flex: 0 0 auto;
-  width: 32px;
-  height: 32px;
-  border-radius: 999px;
-  border: 0;
-  background: rgba(0, 0, 0, 0.08);
-  color: #333;
-  display: inline-flex;
-  align-items: center;
+.rs-adv-images .rs-adv-main {
+  width: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #fff;
+  display: flex;
   justify-content: center;
+  align-items: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, .06);
+}
+
+.rs-adv-images .rs-adv-main>a.rs-adv-main-link {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+.rs-adv-images .rs-adv-main-img {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  object-position: center;
+  display: block;
+  background: #fff;
+}
+
+/* Inline arrows (tipo “pill” redondas a los lados) */
+.rs-adv-images .rs-adv-inline-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 0;
+  display: grid;
+  place-items: center;
   cursor: pointer;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  background: #2F6E63;
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, .18);
+  opacity: .95;
 }
 
-.rs-adv-inline-btn i {
-  font-size: 14px;
-  line-height: 1;
+.rs-adv-images .rs-adv-inline-btn:hover {
+  opacity: 1;
+  background: #255A52
 }
 
-.rs-adv-inline-btn.is-disabled {
-  opacity: 0.5;
+.rs-adv-images .rs-adv-inline-prev {
+  left: 8px;
+}
+
+.rs-adv-images .rs-adv-inline-next {
+  right: 8px;
+}
+
+.rs-adv-images .rs-adv-inline-btn[aria-disabled="true"],
+.rs-adv-images .rs-adv-inline-btn.is-disabled {
+  opacity: .45;
   cursor: default;
   pointer-events: none;
 }
 
-.rs-adv-main {
-  position: relative;
-  border: 1px solid #eee;
-  border-radius: 6px;
-  overflow: hidden;
-  cursor: zoom-in;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #fff;
-  /* Establish a responsive sizing context so the image can object-fit reliably.
-     If the widget sets an explicit height via control, it overrides this. */
-  width: 100%;
-  aspect-ratio: var(--rs-main-ar, 1 / 1);
-  min-height: 300px;
-  max-height: var(--rs-main-max, none);
-}
-
-.rs-adv-main-img {
-  /* Constrain both dimensions so object-fit (set via widget control) is effective */
-  width: 100%;
-  height: 100%;
-  max-width: 100%;
-  /* Sensible defaults that can be overridden by Elementor's inline selectors */
-  object-fit: var(--rs-main-fit, contain);
-  object-position: var(--rs-main-pos, center center);
-  display: block;
-}
-
-/* Modal */
-.rs-adv-modal {
+/* Modal (fullscreen viewer) */
+.rs-adv-images .rs-adv-modal[aria-hidden="true"] {
   display: none;
+}
+
+.rs-adv-images .rs-adv-modal {
   position: fixed;
   inset: 0;
   z-index: 9999;
+  display: grid;
+  place-items: center;
 }
 
-.rs-adv-modal.is-open {
+.rs-adv-images .rs-adv-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, .6);
+}
+
+.rs-adv-images .rs-adv-modal-content {
+  position: relative;
+  z-index: 1;
+  width: min(96vw, 1024px);
+  max-width: 96vw;
+}
+
+.rs-adv-images .rs-adv-modal-img {
+  max-width: 100%;
+  max-height: 90vh;
   display: block;
+  margin: auto;
+  object-fit: contain;
+  background: #fff;
+  border-radius: 12px;
 }
 
-.rs-adv-modal-backdrop {
+.rs-adv-images .rs-adv-modal-close {
   position: absolute;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.8);
-}
-
-.rs-adv-modal-content {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 24px;
-}
-
-.rs-adv-modal-img {
-  max-width: 90vw;
-  max-height: 85vh;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
-  border-radius: 6px;
-  background: #000;
-}
-
-.rs-adv-modal-close {
-  position: absolute;
-  top: 12px;
-  right: 18px;
-  font-size: 28px;
-  color: #fff;
-  background: transparent;
+  top: 8px;
+  right: 8px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
   border: 0;
+  background: #fff;
+  color: #111827;
   cursor: pointer;
-  line-height: 1;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, .18);
 }
 
-.rs-adv-nav {
+.rs-adv-images .rs-adv-nav {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  padding: 14px;
-  color: #fff;
-  background: rgba(0, 0, 0, 0.6);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
   border: 0;
   cursor: pointer;
-  border-radius: 999px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+  background: #2F6E63;
+  color: #fff;
+  display: grid;
+  place-items: center;
 }
 
-.rs-adv-prev {
-  left: 32px;
+.rs-adv-images .rs-adv-prev {
+  left: -56px;
 }
 
-.rs-adv-next {
-  right: 32px;
+.rs-adv-images .rs-adv-next {
+  right: -56px;
 }
 
-.rs-adv-nav .fa,
-.rs-adv-nav .fas {
-  font-size: 24px;
+.rs-adv-images .rs-adv-nav[aria-hidden="true"],
+.rs-adv-images .rs-adv-nav[aria-disabled="true"] {
+  opacity: .45;
+  pointer-events: none
 }
 
-.rs-adv-nav:hover {
-  background: rgba(0, 0, 0, 0.75);
+/* A11y focus */
+.rs-adv-images .rs-adv-thumb:focus,
+.rs-adv-images .rs-adv-inline-btn:focus,
+.rs-adv-images .rs-adv-modal-close:focus,
+.rs-adv-images .rs-adv-nav:focus {
+  outline: 2px solid #E9F5F1;
+  outline-offset: 2px;
+}
+
+/* Hard limits: nunca modificar ancho del parent */
+.rs-adv-images,
+.rs-adv-images * {
+  box-sizing: border-box;
+  max-width: 100%;
 }
