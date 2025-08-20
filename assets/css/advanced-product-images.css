@@ -8,7 +8,41 @@
 .rs-adv-images .rs-adv-images-inner {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: var(--thumb-gap, 12px);
+}
+
+/* Layout variations */
+.rs-adv-images.layout-top .rs-adv-images-inner {
+  flex-direction: column;
+}
+
+.rs-adv-images.layout-bottom .rs-adv-images-inner {
+  flex-direction: column-reverse;
+}
+
+.rs-adv-images.layout-left .rs-adv-images-inner {
+  flex-direction: row;
+}
+
+.rs-adv-images.layout-right .rs-adv-images-inner {
+  flex-direction: row-reverse;
+}
+
+/* For vertical layouts, thumbs should be a column */
+.rs-adv-images.layout-left .rs-adv-thumbs,
+.rs-adv-images.layout-right .rs-adv-thumbs {
+  flex-direction: column;
+  flex-wrap: nowrap;
+  gap: var(--thumb-gap, 8px);
+}
+
+/* For horizontal layouts, main image takes up remaining space */
+.rs-adv-images.layout-left .rs-adv-main-wrap,
+.rs-adv-images.layout-right .rs-adv-main-wrap,
+.rs-adv-images.layout-left .rs-adv-main,
+.rs-adv-images.layout-right .rs-adv-main {
+  flex: 1;
+  min-width: 0; /* Prevents flexbox overflow */
 }
 
 /* Thumbs (ocultas si existe .hide-thumbs) */
