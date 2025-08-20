@@ -147,6 +147,20 @@ class RS_Elementor_Widget_Advanced_Product_Images extends \Elementor\Widget_Base
 		);
 
 		$this->add_control(
+			'thumbs_nowrap',
+			array(
+				'label'        => esc_html__( 'Single Line Thumbnails', 'rs-elementor-widgets' ),
+				'type'         => \Elementor\Controls_Manager::SWITCHER,
+				'label_on'     => esc_html__( 'Yes', 'rs-elementor-widgets' ),
+				'label_off'    => esc_html__( 'No', 'rs-elementor-widgets' ),
+				'return_value' => 'yes',
+				'default'      => 'no',
+				'description'  => esc_html__( 'If enabled, thumbnails will be displayed in a single, scrollable line instead of wrapping.', 'rs-elementor-widgets' ),
+				'prefix_class' => 'rs-thumbs-nowrap-',
+			)
+		);
+
+		$this->add_control(
 			'hide_thumbnails',
 			array(
 				'label'        => esc_html__( 'Hide Thumbnails', 'rs-elementor-widgets' ),

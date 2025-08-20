@@ -41,6 +41,15 @@
         thumbs.forEach(function (t) { t.classList.remove('is-active'); });
         var active = thumbs[index];
         active.classList.add('is-active');
+
+        // If single-line mode is active, scroll the thumbnail into view.
+        if (root.classList.contains('rs-thumbs-nowrap-yes')) {
+          active.scrollIntoView({
+            behavior: 'smooth',
+            block: 'nearest',
+            inline: 'center'
+          });
+        }
         var large = active.getAttribute('data-large') || active.getAttribute('data-full');
         if (large && mainImg) { mainImg.src = large; }
         // Aspect ratio will update on image load event
