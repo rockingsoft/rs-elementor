@@ -146,7 +146,7 @@
   overflow-x: auto;
   overflow-y: hidden;
   /* Hide vertical scrollbar if it appears */
-  padding-bottom: 8px;
+  padding: 4px 4px 8px;
   /* Space for scrollbar */
   scrollbar-width: thin;
   /* Firefox */
