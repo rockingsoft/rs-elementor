@@ -92,18 +92,33 @@ class RS_Elementor_Widget_Advanced_Product_Images extends \Elementor\Widget_Base
 			)
 		);
 
-		$this->add_control(
+		$this->add_responsive_control(
 			'thumbs_position',
 			array(
-				'label'   => esc_html__( 'Thumbnails Position', 'rs-elementor-widgets' ),
-				'type'    => \Elementor\Controls_Manager::SELECT,
-				'default' => 'left',
-				'options' => array(
-					'left'   => esc_html__( 'Left', 'rs-elementor-widgets' ),
-					'right'  => esc_html__( 'Right', 'rs-elementor-widgets' ),
-					'top'    => esc_html__( 'Top', 'rs-elementor-widgets' ),
-					'bottom' => esc_html__( 'Bottom', 'rs-elementor-widgets' ),
+				'label'     => esc_html__( 'Thumbnails Position', 'rs-elementor-widgets' ),
+				'type'      => \Elementor\Controls_Manager::CHOOSE,
+				'options'   => array(
+					'left'   => array(
+						'title' => esc_html__( 'Left', 'rs-elementor-widgets' ),
+						'icon'  => 'eicon-h-align-left',
+					),
+					'top'    => array(
+						'title' => esc_html__( 'Top', 'rs-elementor-widgets' ),
+						'icon'  => 'eicon-v-align-top',
+					),
+					'right'  => array(
+						'title' => esc_html__( 'Right', 'rs-elementor-widgets' ),
+						'icon'  => 'eicon-h-align-right',
+					),
+					'bottom' => array(
+						'title' => esc_html__( 'Bottom', 'rs-elementor-widgets' ),
+						'icon'  => 'eicon-v-align-bottom',
+					),
 				),
+				'default'   => 'left',
+				'tablet_default' => 'bottom',
+				'mobile_default' => 'bottom',
+				'toggle'    => false,
 			)
 		);
 
@@ -439,7 +454,6 @@ class RS_Elementor_Widget_Advanced_Product_Images extends \Elementor\Widget_Base
 		}
 
 		$settings                 = $this->get_settings_for_display();
-		$thumbs_position          = $settings['thumbs_position'];
 		$thumb_size               = isset( $settings['thumb_size'] ) ? (int) $settings['thumb_size'] : 80;
 		$thumb_gap                = isset( $settings['thumb_gap'] ) ? (int) $settings['thumb_gap'] : 8;
 		$include_variation_images = ( ! isset( $settings['include_variation_images'] ) ) || ( 'yes' === $settings['include_variation_images'] );
@@ -546,9 +560,27 @@ class RS_Elementor_Widget_Advanced_Product_Images extends \Elementor\Widget_Base
 		}
 
 		$widget_id         = 'rs-adv-images-' . $this->get_id();
-		$allowed_positions = array( 'left', 'right', 'top', 'bottom' );
-		$pos               = in_array( $thumbs_position, $allowed_positions, true ) ? $thumbs_position : 'left';
-		$container_classes = 'rs-adv-images layout-' . $pos . ( $hide_thumbnails ? ' hide-thumbs' : '' );
+		$container_classes = array( 'rs-adv-images' );
+		if ( $hide_thumbnails ) {
+			$container_classes[] = 'hide-thumbs';
+		}
+
+		// Responsive classes for thumbnail position.
+		$positions = array(
+			'desktop' => ! empty( $settings['thumbs_position'] ) ? $settings['thumbs_position'] : 'left',
+			'tablet'  => ! empty( $settings['thumbs_position_tablet'] ) ? $settings['thumbs_position_tablet'] : '',
+			'mobile'  => ! empty( $settings['thumbs_position_mobile'] ) ? $settings['thumbs_position_mobile'] : '',
+		);
+
+		$container_classes[] = 'layout-desktop-' . $positions['desktop'];
+		if ( $positions['tablet'] ) {
+			$container_classes[] = 'layout-tablet-' . $positions['tablet'];
+		}
+		if ( $positions['mobile'] ) {
+			$container_classes[] = 'layout-mobile-' . $positions['mobile'];
+		}
+
+		$container_classes = implode( ' ', $container_classes );
 		$var_map_json      = wp_json_encode( $variation_index_map );
 		$click_action      = isset( $settings['click_action'] ) ? $settings['click_action'] : 'modal';
 		$click_url         = '';
