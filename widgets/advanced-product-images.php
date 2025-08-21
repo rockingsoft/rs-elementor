@@ -337,30 +337,7 @@ class RS_Elementor_Widget_Advanced_Product_Images extends \Elementor\Widget_Base
 					),
 				),
 				'selectors'  => array(
-					'{{WRAPPER}} .rs-adv-main' => 'height: {{SIZE}}{{UNIT}};',
-					'{{WRAPPER}} .rs-adv-main .rs-adv-main-img' => 'height: 100%;',
-				),
-			)
-		);
-
-		$this->add_responsive_control(
-			'main_max_height',
-			array(
-				'label'      => esc_html__( 'Max Height', 'rs-elementor-widgets' ),
-				'type'       => \Elementor\Controls_Manager::SLIDER,
-				'size_units' => array( 'px', 'vh' ),
-				'range'      => array(
-					'px' => array(
-						'min' => 100,
-						'max' => 1200,
-					),
-					'vh' => array(
-						'min' => 10,
-						'max' => 100,
-					),
-				),
-				'selectors'  => array(
-					'{{WRAPPER}} .rs-adv-main' => '--rs-main-max: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}}' => '--rs-main-image-height: {{SIZE}}{{UNIT}};',
 				),
 			)
 		);
