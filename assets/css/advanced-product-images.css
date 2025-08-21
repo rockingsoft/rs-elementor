@@ -2,6 +2,8 @@
 .rs-adv-images {
   width: 100%;
   max-width: 100%;
+  border-radius: inherit;
+  overflow: hidden;
 }
 
 /* Layout (the HTML ya trae layout-top) */
@@ -207,18 +209,18 @@
 .rs-adv-images .rs-adv-main-wrap {
   position: relative;
   width: 100%;
+  overflow: hidden;
+  border-radius: inherit;
 }
 
 .rs-adv-images .rs-adv-main {
   min-width: 0;
   width: 100%;
-  border-radius: 12px;
   overflow: hidden;
-  background: #fff;
+  border-radius: inherit;
   display: flex;
   justify-content: center;
   align-items: center;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, .06);
 }
 
 .rs-adv-images .rs-adv-main>a.rs-adv-main-link {
