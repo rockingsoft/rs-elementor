@@ -36,6 +36,9 @@
 .rs-adv-images.layout-desktop-left .rs-adv-thumbs,
 .rs-adv-images.layout-desktop-right .rs-adv-thumbs {
   flex-direction: column;
+  height: var(--rs-main-image-height);
+  width: var(--thumb-size);
+  overflow: auto;
 }
 
 .rs-adv-images.layout-desktop-left .rs-adv-main-wrap,
