@@ -207,6 +207,13 @@
         var pos = vertical ? thumbsContainer.scrollTop : thumbsContainer.scrollLeft;
         var size = vertical ? thumbsContainer.clientHeight : thumbsContainer.clientWidth;
         var scrollSize = vertical ? thumbsContainer.scrollHeight : thumbsContainer.scrollWidth;
+
+        // If content fits entirely, hide both buttons
+        var scrollable = scrollSize > size + 1;
+        thumbsPrev.classList.toggle('is-hidden', !scrollable);
+        thumbsNext.classList.toggle('is-hidden', !scrollable);
+        if (!scrollable) return;
+
         var atStart = pos <= 0;
         var atEnd = (pos + size) >= (scrollSize - 1);
         thumbsPrev.classList.toggle('is-disabled', atStart);

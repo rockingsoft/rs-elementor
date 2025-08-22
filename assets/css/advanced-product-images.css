@@ -395,8 +395,11 @@
   background: var(--rs-thumb-nav-bg, var(--e-global-color-primary));
   color: var(--rs-thumb-nav-color, #fff);
   opacity: .95;
-  line-height: 0;
-  /* prevent baseline offset */
+  line-height: 0; /* prevent baseline offset */
+}
+
+.rs-adv-images .rs-adv-thumbs-nav.is-hidden {
+  display: none !important;
 }
 
 /* Ensure inner icon is perfectly centered */
