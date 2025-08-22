@@ -1051,7 +1051,6 @@ class RS_Elementor_Widget_Advanced_Product_Images extends \Elementor\Widget_Base
 		?>
 		<div id="<?php echo esc_attr( $widget_id ); ?>" class="<?php echo esc_attr( $container_classes ); ?>" data-variation-map="<?php echo esc_attr( $var_map_json ); ?>" data-click-action="<?php echo esc_attr( $click_action ); ?>" data-click-url="<?php echo esc_url( $click_url ); ?>" data-click-new-tab="<?php echo esc_attr( $click_new_tab ); ?>">
 			<div class="rs-adv-images-inner">
-				<?php if ( ! $hide_thumbnails ) : ?>
 				<div class="rs-adv-thumbs-wrap">
 					<button type="button" class="rs-adv-thumbs-nav rs-adv-thumbs-prev" aria-label="<?php echo esc_attr__( 'Scroll thumbnails previous', 'rs-elementor-widgets' ); ?>" tabindex="0">
 						<i class="fas fa-chevron-left icon-h" aria-hidden="true"></i>
@@ -1072,7 +1071,6 @@ class RS_Elementor_Widget_Advanced_Product_Images extends \Elementor\Widget_Base
 						<i class="fas fa-chevron-down icon-v" aria-hidden="true"></i>
 					</button>
 				</div>
-				<?php endif; ?>
 				<?php if ( ! empty( $settings['inline_navigation'] ) && 'yes' === $settings['inline_navigation'] ) : ?>
 					<div class="rs-adv-main-wrap">
 						<button type="button" class="rs-adv-inline-btn rs-adv-inline-prev" aria-label="<?php echo esc_attr__( 'Previous image', 'rs-elementor-widgets' ); ?>" aria-disabled="true">

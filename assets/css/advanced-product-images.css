@@ -40,6 +40,10 @@
   flex-direction: row-reverse;
 }
 
+.rs-adv-images.hide-thumbs .rs-adv-thumbs-wrap {
+  display: none !important;
+}
+
 @media (min-width: 1025px) {
 
   .rs-adv-images.layout-desktop-left .rs-adv-thumbs,

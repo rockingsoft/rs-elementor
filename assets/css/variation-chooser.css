@@ -1,4 +1,18 @@
-/* RS Variation Chooser */
+/* RS Variation Chooser
+   ------------------------------------------------------------------
+   Sections
+   1) Base / Resets
+   2) Parent container helpers (Elementor/Woo)
+   3) Basic controls (label/select)
+   4) Thumbnails grid and items
+   5) Single-line carousel mode (arrows)
+   6) Uniform sizing mode
+   7) Accessibility and tooltip overrides
+   8) Fallbacks
+   9) Notices / Woo defaults / Editor-only
+------------------------------------------------------------------- */
+
+/* 1) Base / Resets ------------------------------------------------ */
 .rs-variation-chooser {
   display: block;
   max-width: 100%;
@@ -14,7 +28,8 @@
   box-sizing: border-box;
 }
 
-/* Help parent containers (Elementor/WooCommerce) allow shrinking when this widget is inside */
+/* 2) Parent container helpers (Elementor/Woo) --------------------- */
+/* Help parent containers allow shrinking when this widget is inside */
 .elementor-widget:has(.rs-variation-chooser),
 .elementor-widget-container:has(.rs-variation-chooser),
 .elementor-column:has(.rs-variation-chooser),
@@ -26,6 +41,7 @@
   width: auto !important;
 }
 
+/* 3) Basic controls (label/select) -------------------------------- */
 .rs-variation-chooser .rs-varc-label {
   display: block;
   margin-bottom: 6px;
@@ -38,7 +54,8 @@
   padding: 6px 8px;
 }
 
-/* Thumbnails layout */
+/* 4) Thumbnails grid and items ----------------------------------- */
+/* Grid */
 .rs-variation-chooser .rs-varc-thumbs {
   display: flex;
   flex-wrap: wrap;
@@ -47,11 +64,12 @@
   min-width: 0;
 }
 
+/* Item */
 .rs-variation-chooser .rs-varc-thumb {
-  border: 1px solid #ddd;
+  border: 1px solid #e3e6ea;
   background: #fff;
   padding: 6px;
-  border-radius: 6px;
+  border-radius: 10px;
   cursor: pointer;
   outline: none;
   display: flex;
@@ -61,24 +79,31 @@
   appearance: none;
 }
 
-.rs-variation-chooser .rs-varc-thumb:hover {
+/* Interactive states */
+.rs-variation-chooser .rs-varc-thumb:hover,
+.rs-variation-chooser .rs-varc-thumb:focus,
+.rs-variation-chooser .rs-varc-thumb:focus-visible,
+.rs-variation-chooser .rs-varc-thumb:active {
   background: #fff;
+  outline: none;
+}
+
+.rs-variation-chooser .rs-varc-thumb:hover {
   color: inherit;
-  border-color: #bbb;
+  border-color: #c9ced6;
 }
 
 .rs-variation-chooser .rs-varc-thumb.is-active {
   border-color: #2271b1;
 }
 
-.rs-variation-chooser .rs-varc-thumb:focus,
-.rs-variation-chooser .rs-varc-thumb:focus-visible,
-.rs-variation-chooser .rs-varc-thumb:active,
-.rs-variation-chooser .rs-varc-thumb:hover {
-  background: #fff;
+/* Focus ring color unified for all variants */
+.rs-variation-chooser .rs-varc-thumb:focus-visible {
   outline: none;
+  border-color: #2271b1;
 }
 
+/* Image */
 .rs-variation-chooser .rs-varc-thumb img {
   display: block;
   width: 56px;
@@ -88,12 +113,14 @@
   border-radius: 4px;
 }
 
+/* Fallback content (when no image) */
 .rs-variation-chooser .rs-varc-thumb-fallback {
   display: inline-block;
   padding: 8px 10px;
   font-size: 13px;
 }
 
+/* Name label below image */
 .rs-variation-chooser .rs-varc-thumb-name {
   display: block;
   margin-top: 6px;
@@ -105,7 +132,7 @@
   overflow-wrap: anywhere;
 }
 
-/* Single-line thumbnails with arrows */
+/* 5) Single-line carousel mode (arrows) --------------------------- */
 .rs-variation-chooser .rs-varc-thumbs-wrap.rs-varc-singleline {
   position: relative;
   display: block;
@@ -127,6 +154,7 @@
   -webkit-overflow-scrolling: touch;
   -ms-overflow-style: none;
   scrollbar-width: none;
+  padding: 5px;
 }
 
 /* Hide scrollbar in WebKit */
@@ -140,6 +168,7 @@
   flex: 0 0 auto;
 }
 
+/* Arrow buttons */
 .rs-variation-chooser .rs-varc-thumbs-wrap.rs-varc-singleline .rs-varc-nav {
   position: absolute;
   top: 50%;
@@ -185,7 +214,7 @@
 }
 
 .rs-variation-chooser .rs-varc-thumbs-wrap.rs-varc-singleline .rs-varc-nav:active {
-  transform: translateY(1px);
+  transform: translateY(-50%) translateY(1px);
 }
 
 /* Disabled state */
@@ -198,7 +227,8 @@
   opacity: .6;
 }
 
-/* Uniform sizing mode: keep all thumbs same width & height, and gracefully clamp labels */
+/* 6) Uniform sizing mode ----------------------------------------- */
+/* Keep all thumbs same width/height and clamp labels gracefully */
 .rs-variation-chooser.rs-varc-uniform .rs-varc-thumbs {
   align-items: stretch;
 }
@@ -212,9 +242,6 @@
   position: relative;
   aspect-ratio: 1 / 1;
   padding: 8px;
-  border-radius: 10px;
-  border: 1px solid #e3e6ea;
-  background: #fff;
 }
 
 .rs-variation-chooser.rs-varc-uniform .rs-varc-thumb img {
@@ -225,19 +252,13 @@
   display: block;
 }
 
-.rs-variation-chooser.rs-varc-uniform .rs-varc-thumb.is-active {
-  border-color: #2271b1;
-}
+/* relies on base .rs-varc-thumb.is-active */
 
 .rs-variation-chooser.rs-varc-uniform .rs-varc-thumb:hover {
-  border-color: #c9ced6;
   transform: translateY(-1px);
 }
 
-.rs-variation-chooser.rs-varc-uniform .rs-varc-thumb:focus-visible {
-  outline: none;
-  border-color: #2271b1;
-}
+/* relies on base :focus-visible styling */
 
 /* Bottom caption overlay */
 .rs-variation-chooser.rs-varc-uniform .rs-varc-thumb .rs-varc-thumb-name {
@@ -264,6 +285,7 @@
   /* ~3 lines */
 }
 
+/* 7) Accessibility and tooltip overrides ------------------------- */
 /* Tooltips disabled intentionally */
 .rs-variation-chooser .rs-varc-thumb:hover::after,
 .rs-variation-chooser .rs-varc-thumb:focus-visible::after,
@@ -274,6 +296,7 @@
   content: none !important;
 }
 
+/* 8) Fallbacks ---------------------------------------------------- */
 /* Fallback single-line ellipsis if multi-line clamp unsupported */
 @supports not (-webkit-line-clamp: 2) {
   .rs-variation-chooser.rs-varc-uniform .rs-varc-thumb .rs-varc-thumb-name {
@@ -285,6 +308,7 @@
   }
 }
 
+/* 9) Notices / Woo defaults / Editor-only ------------------------ */
 /* Notices */
 .rs-varc-notice {
   padding: 10px;
