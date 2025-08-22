@@ -517,6 +517,159 @@ class RS_Elementor_Widget_Advanced_Product_Images extends \Elementor\Widget_Base
 
 		$this->end_controls_section();
 
+		// Styles: Thumbnails.
+		$this->start_controls_section(
+			'section_style_thumbs',
+			array(
+				'label' => esc_html__( 'Thumbnails', 'rs-elementor-widgets' ),
+				'tab'   => \Elementor\Controls_Manager::TAB_STYLE,
+			)
+		);
+
+		$this->add_group_control(
+			\Elementor\Group_Control_Border::get_type(),
+			array(
+				'name'     => 'thumb_border',
+				'label'    => esc_html__( 'Border', 'rs-elementor-widgets' ),
+				'selector' => '{{WRAPPER}} .rs-adv-thumb',
+			)
+		);
+
+		$this->add_control(
+			'thumb_border_radius',
+			array(
+				'label'      => esc_html__( 'Border Radius', 'rs-elementor-widgets' ),
+				'type'       => \Elementor\Controls_Manager::DIMENSIONS,
+				'size_units' => array( 'px', '%', 'em', 'rem' ),
+				'selectors'  => array(
+					'{{WRAPPER}} .rs-adv-thumb'     => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} .rs-adv-modal-img' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				),
+			)
+		);
+
+		$this->add_control(
+			'thumb_active_border_color',
+			array(
+				'label'     => esc_html__( 'Border Color (Active)', 'rs-elementor-widgets' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'default'   => '#0073aa',
+				'selectors' => array(
+					'{{WRAPPER}} .rs-adv-thumb.is-active' => 'border-color: {{VALUE}};',
+				),
+				'condition' => array(
+					'thumb_border_border!' => '',
+				),
+			)
+		);
+
+		$this->end_controls_section();
+
+		// Styles: Thumbnails Navigation (scroll arrows next to thumbs).
+		$this->start_controls_section(
+			'section_style_thumbs_nav',
+			array(
+				'label' => esc_html__( 'Thumbnails Navigation', 'rs-elementor-widgets' ),
+				'tab'   => \Elementor\Controls_Manager::TAB_STYLE,
+			)
+		);
+
+		$this->add_control(
+			'thumbs_nav_buttons_heading',
+			array(
+				'label'     => esc_html__( 'Thumbs Nav Buttons', 'rs-elementor-widgets' ),
+				'type'      => \Elementor\Controls_Manager::HEADING,
+				'separator' => 'before',
+			)
+		);
+
+		$this->start_controls_tabs( 'tabs_thumbs_nav_buttons' );
+
+		// Normal state.
+		$this->start_controls_tab(
+			'tab_thumbs_nav_buttons_normal',
+			array( 'label' => esc_html__( 'Normal', 'rs-elementor-widgets' ) )
+		);
+		$this->add_control(
+			'thumbs_nav_bg',
+			array(
+				'label'     => esc_html__( 'Background', 'rs-elementor-widgets' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}}' => '--rs-thumb-nav-bg: {{VALUE}};',
+				),
+			)
+		);
+		$this->add_control(
+			'thumbs_nav_color',
+			array(
+				'label'     => esc_html__( 'Text/Icon', 'rs-elementor-widgets' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}}' => '--rs-thumb-nav-color: {{VALUE}};',
+				),
+			)
+		);
+		$this->end_controls_tab();
+
+		// Hover state.
+		$this->start_controls_tab(
+			'tab_thumbs_nav_buttons_hover',
+			array( 'label' => esc_html__( 'Hover', 'rs-elementor-widgets' ) )
+		);
+		$this->add_control(
+			'thumbs_nav_bg_hover',
+			array(
+				'label'     => esc_html__( 'Background', 'rs-elementor-widgets' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}}' => '--rs-thumb-nav-bg-hover: {{VALUE}};',
+				),
+			)
+		);
+		$this->add_control(
+			'thumbs_nav_color_hover',
+			array(
+				'label'     => esc_html__( 'Text/Icon', 'rs-elementor-widgets' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}}' => '--rs-thumb-nav-color-hover: {{VALUE}};',
+				),
+			)
+		);
+		$this->end_controls_tab();
+
+		// Disabled state.
+		$this->start_controls_tab(
+			'tab_thumbs_nav_buttons_disabled',
+			array( 'label' => esc_html__( 'Disabled', 'rs-elementor-widgets' ) )
+		);
+		$this->add_control(
+			'thumbs_nav_bg_disabled',
+			array(
+				'label'     => esc_html__( 'Background', 'rs-elementor-widgets' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}}' => '--rs-thumb-nav-bg-disabled: {{VALUE}};',
+				),
+			)
+		);
+		$this->add_control(
+			'thumbs_nav_color_disabled',
+			array(
+				'label'     => esc_html__( 'Text/Icon', 'rs-elementor-widgets' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}}' => '--rs-thumb-nav-color-disabled: {{VALUE}};',
+				),
+			)
+		);
+		$this->end_controls_tab();
+
+		$this->end_controls_tabs();
+
+		$this->end_controls_section();
+
 		// Styles: Main Image.
 		$this->start_controls_section(
 			'section_style_main',

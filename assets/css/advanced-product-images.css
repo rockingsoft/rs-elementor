@@ -303,7 +303,7 @@
   transform: translateY(-50%);
   width: 40px;
   height: 40px;
-  border-radius: 50%;
+  border-radius: var(--rs-inline-btn-radius, 50%);
   border: 0;
   display: grid;
   place-items: center;
@@ -393,7 +393,7 @@
 .rs-adv-images .rs-adv-thumbs-nav {
   width: 36px;
   height: 36px;
-  border-radius: 50%;
+  border-radius: var(--rs-thumb-nav-radius, 50%);
   border: 0;
   padding: 0;
   display: flex;
@@ -476,7 +476,7 @@
 .rs-adv-images .rs-adv-modal .rs-adv-modal-close {
   width: 44px;
   height: 44px;
-  border-radius: 50%;
+  border-radius: var(--rs-modal-btn-radius, 50%);
   border: 0;
   cursor: pointer;
   /* Use widget CSS vars with Elementor/theme fallbacks */
