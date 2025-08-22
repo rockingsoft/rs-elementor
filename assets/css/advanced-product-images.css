@@ -36,8 +36,10 @@
 .rs-adv-images.layout-desktop-left .rs-adv-thumbs,
 .rs-adv-images.layout-desktop-right .rs-adv-thumbs {
   flex-direction: column;
+  flex-wrap: nowrap;
   height: var(--rs-main-image-height);
-  width: var(--thumb-size);
+  width: calc(var(--thumb-size) + var(--thumb-gap) * 2);
+  padding: 5px;
   overflow: auto;
 }
 
@@ -190,10 +192,8 @@
   cursor: pointer;
   width: var(--thumb-size, 64px);
   height: var(--thumb-size, 64px);
-  border-radius: 10px;
   overflow: hidden;
   background: #fff;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, .08);
 }
 
 .rs-adv-images .rs-adv-thumb img {
@@ -201,11 +201,6 @@
   height: 100%;
   display: block;
   object-fit: cover;
-}
-
-.rs-adv-images .rs-adv-thumb.is-active {
-  outline: 2px solid #2F6E63;
-  outline-offset: 2px
 }
 
 /* Main viewer */
@@ -360,15 +355,6 @@
 .rs-adv-images .rs-adv-nav[aria-disabled="true"] {
   opacity: .45;
   pointer-events: none
-}
-
-/* A11y focus */
-.rs-adv-images .rs-adv-thumb:focus,
-.rs-adv-images .rs-adv-inline-btn:focus,
-.rs-adv-images .rs-adv-modal-close:focus,
-.rs-adv-images .rs-adv-nav:focus {
-  outline: 2px solid #E9F5F1;
-  outline-offset: 2px;
 }
 
 /* Hard limits: nunca modificar ancho del parent */
