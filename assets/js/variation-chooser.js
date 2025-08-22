@@ -105,14 +105,39 @@
 			if ($singleLineWrap.length) {
 				var $prev = $singleLineWrap.find('.rs-varc-prev');
 				var $next = $singleLineWrap.find('.rs-varc-next');
+				var el = $thumbs.get(0);
 				var scrollBy = function (dir) {
-					var el = $thumbs.get(0);
 					if (!el) return;
 					var amount = Math.max(el.clientWidth * 0.8, 80);
 					el.scrollBy({ left: dir * amount, behavior: 'smooth' });
 				};
-				$prev.on('click', function () { scrollBy(-1); });
-				$next.on('click', function () { scrollBy(1); });
+
+				// Update nav visibility and disabled state
+				var updateNav = function () {
+					if (!el) return;
+					var canScroll = el.scrollWidth > el.clientWidth + 1; // tolerance
+					if (!canScroll) {
+						$prev.addClass('is-hidden').attr('aria-disabled', 'true');
+						$next.addClass('is-hidden').attr('aria-disabled', 'true');
+						return;
+					}
+					$prev.removeClass('is-hidden');
+					$next.removeClass('is-hidden');
+					var maxScrollLeft = el.scrollWidth - el.clientWidth - 1;
+					var atStart = el.scrollLeft <= 1;
+					var atEnd = el.scrollLeft >= maxScrollLeft;
+					$prev.attr('aria-disabled', atStart ? 'true' : 'false');
+					$next.attr('aria-disabled', atEnd ? 'true' : 'false');
+				};
+
+				$prev.on('click', function () { if ($prev.attr('aria-disabled') !== 'true') scrollBy(-1); });
+				$next.on('click', function () { if ($next.attr('aria-disabled') !== 'true') scrollBy(1); });
+
+				// Listeners
+				$thumbs.on('scroll', updateNav);
+				$(window).on('resize', updateNav);
+				// Initial after layout
+				setTimeout(updateNav, 0);
 			}
 		}
 
@@ -142,12 +167,14 @@
 						var isMatch = String($b.data('value')) === String(vid);
 						$b.toggleClass('is-active', isMatch).attr('aria-pressed', isMatch ? 'true' : 'false');
 					});
-					// ensure active visible in single-line
+						// ensure active visible in single-line and refresh nav state
 					if ($singleLineWrap.length) {
 						var $active = $thumbs.find('.rs-varc-thumb.is-active');
 						if ($active.length) {
 							try { $active[0].scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' }); } catch (e) { }
 						}
+						// update nav after scrolling
+						setTimeout(function(){ $thumbs.trigger('scroll'); }, 50);
 					}
 				}
 			};
