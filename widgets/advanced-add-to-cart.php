@@ -109,9 +109,6 @@ class RS_Elementor_Widget_Advanced_Add_To_Cart extends \Elementor\Widget_Base {
 				'label_off'    => esc_html__( 'No', 'rs-elementor-widgets' ),
 				'return_value' => 'yes',
 				'default'      => '',
-				'selectors'    => array(
-					'{{WRAPPER}} .rs-advanced-add-to-cart .quantity' => 'display: none !important;',
-				),
 			)
 		);
 
@@ -138,10 +135,6 @@ class RS_Elementor_Widget_Advanced_Add_To_Cart extends \Elementor\Widget_Base {
 				'label_off'    => esc_html__( 'Show', 'rs-elementor-widgets' ),
 				'return_value' => 'yes',
 				'default'      => 'yes',
-				'selectors'    => array(
-					'{{WRAPPER}} .rs-advanced-add-to-cart.rs-hide-wc-variations .variations' => 'display: none !important;',
-					'{{WRAPPER}} .rs-advanced-add-to-cart.rs-hide-wc-variations .reset_variations' => 'display: none !important;',
-				),
 			)
 		);
 
@@ -156,11 +149,6 @@ class RS_Elementor_Widget_Advanced_Add_To_Cart extends \Elementor\Widget_Base {
 				'label_off'    => esc_html__( 'Show', 'rs-elementor-widgets' ),
 				'return_value' => 'yes',
 				'default'      => '',
-				'selectors'    => array(
-					// Hide common WooCommerce "View cart" links that appear next to the button after AJAX add.
-					'{{WRAPPER}} .rs-advanced-add-to-cart a.added_to_cart' => 'display: none !important;',
-					'{{WRAPPER}} .rs-advanced-add-to-cart a.wc-forward' => 'display: none !important;',
-				),
 			)
 		);
 
@@ -184,12 +172,6 @@ class RS_Elementor_Widget_Advanced_Add_To_Cart extends \Elementor\Widget_Base {
 				'label_off'    => esc_html__( 'No', 'rs-elementor-widgets' ),
 				'return_value' => 'yes',
 				'default'      => '',
-				'selectors'    => array(
-					// Ensure parent containers span full width.
-					'{{WRAPPER}} .rs-advanced-add-to-cart, {{WRAPPER}} .rs-advanced-add-to-cart .single_variation_wrap, {{WRAPPER}} .rs-advanced-add-to-cart form.cart, {{WRAPPER}} .rs-advanced-add-to-cart .woocommerce-variation-add-to-cart' => 'width: 100%;',
-					// Make button truly full width inside flex rows.
-					'{{WRAPPER}} .rs-advanced-add-to-cart .single_add_to_cart_button, {{WRAPPER}} .rs-advanced-add-to-cart a.add_to_cart_button' => 'display: block; width: 100%; flex: 0 0 100%; align-self: stretch;',
-				),
 			)
 		);
 
@@ -219,19 +201,7 @@ class RS_Elementor_Widget_Advanced_Add_To_Cart extends \Elementor\Widget_Base {
 					'right'  => 'flex-end',
 				),
 				'selectors'            => array(
-					// Simple products container.
-					'{{WRAPPER}} .rs-advanced-add-to-cart form.cart' => 'display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; width: 100%; justify-content: {{VALUE}};',
-					// Variable products button row.
-					'{{WRAPPER}} .rs-advanced-add-to-cart .woocommerce-variation-add-to-cart' => 'display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; width: 100%; justify-content: {{VALUE}};',
-					// Loop context: align single anchor/button inside our wrapper.
-					'{{WRAPPER}} .rs-advanced-add-to-cart' => 'display: flex; width: 100%; justify-content: {{VALUE}};',
-					// Variation wrap (contains price/stock and button row).
-					'{{WRAPPER}} .rs-advanced-add-to-cart .single_variation_wrap' => 'display: flex; flex-direction: column; align-items: {{VALUE}}; width: 100%;',
-					// Variation details (price/stock area) alignment.
-					'{{WRAPPER}} .rs-advanced-add-to-cart .single_variation' => 'align-self: stretch; text-align: {{VALUE}}; width: 100%;',
-					'{{WRAPPER}} .rs-advanced-add-to-cart .woocommerce-variation' => 'display: flex; width: 100%; justify-content: {{VALUE}};',
-					// Stock message alignment.
-					'{{WRAPPER}} .rs-advanced-add-to-cart .stock' => 'display: flex; width: 100%; justify-content: {{VALUE}};',
+					'{{WRAPPER}} .rs-advanced-add-to-cart' => '--rs-aac-justify: {{VALUE}};',
 				),
 				'condition'            => array(
 					'button_full_width!' => 'yes',
@@ -254,7 +224,7 @@ class RS_Elementor_Widget_Advanced_Add_To_Cart extends \Elementor\Widget_Base {
 			\Elementor\Group_Control_Typography::get_type(),
 			array(
 				'name'     => 'button_typography',
-				'selector' => '{{WRAPPER}} .rs-advanced-add-to-cart .single_add_to_cart_button, {{WRAPPER}} .rs-advanced-add-to-cart a.add_to_cart_button',
+				'selector' => '{{WRAPPER}} .rs-advanced-add-to-cart',
 			)
 		);
 
@@ -279,7 +249,7 @@ class RS_Elementor_Widget_Advanced_Add_To_Cart extends \Elementor\Widget_Base {
 				),
 				'default'   => 'center',
 				'selectors' => array(
-					'{{WRAPPER}} .rs-advanced-add-to-cart .single_add_to_cart_button, {{WRAPPER}} .rs-advanced-add-to-cart a.add_to_cart_button' => 'text-align: {{VALUE}};',
+					'{{WRAPPER}} .rs-advanced-add-to-cart' => '--rs-aac-button-text-align: {{VALUE}};',
 				),
 			)
 		);
@@ -298,7 +268,7 @@ class RS_Elementor_Widget_Advanced_Add_To_Cart extends \Elementor\Widget_Base {
 				'label'     => esc_html__( 'Text Color', 'rs-elementor-widgets' ),
 				'type'      => \Elementor\Controls_Manager::COLOR,
 				'selectors' => array(
-					'{{WRAPPER}} .rs-advanced-add-to-cart .single_add_to_cart_button, {{WRAPPER}} .rs-advanced-add-to-cart a.add_to_cart_button' => 'color: {{VALUE}};',
+					'{{WRAPPER}} .rs-advanced-add-to-cart' => '--rs-aac-button-text-color: {{VALUE}};',
 				),
 			)
 		);
@@ -309,7 +279,7 @@ class RS_Elementor_Widget_Advanced_Add_To_Cart extends \Elementor\Widget_Base {
 				'label'     => esc_html__( 'Background Color', 'rs-elementor-widgets' ),
 				'type'      => \Elementor\Controls_Manager::COLOR,
 				'selectors' => array(
-					'{{WRAPPER}} .rs-advanced-add-to-cart .single_add_to_cart_button, {{WRAPPER}} .rs-advanced-add-to-cart a.add_to_cart_button' => 'background-color: {{VALUE}};',
+					'{{WRAPPER}} .rs-advanced-add-to-cart' => '--rs-aac-button-bg: {{VALUE}};',
 				),
 			)
 		);
@@ -318,7 +288,7 @@ class RS_Elementor_Widget_Advanced_Add_To_Cart extends \Elementor\Widget_Base {
 			\Elementor\Group_Control_Border::get_type(),
 			array(
 				'name'     => 'button_border',
-				'selector' => '{{WRAPPER}} .rs-advanced-add-to-cart .single_add_to_cart_button, {{WRAPPER}} .rs-advanced-add-to-cart a.add_to_cart_button',
+				'selector' => '{{WRAPPER}} .rs-advanced-add-to-cart',
 			)
 		);
 
@@ -329,7 +299,7 @@ class RS_Elementor_Widget_Advanced_Add_To_Cart extends \Elementor\Widget_Base {
 				'type'       => \Elementor\Controls_Manager::DIMENSIONS,
 				'size_units' => array( 'px', '%' ),
 				'selectors'  => array(
-					'{{WRAPPER}} .rs-advanced-add-to-cart .single_add_to_cart_button, {{WRAPPER}} .rs-advanced-add-to-cart a.add_to_cart_button' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} .rs-advanced-add-to-cart' => '--rs-aac-button-border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
 			)
 		);
@@ -338,7 +308,7 @@ class RS_Elementor_Widget_Advanced_Add_To_Cart extends \Elementor\Widget_Base {
 			\Elementor\Group_Control_Box_Shadow::get_type(),
 			array(
 				'name'     => 'button_box_shadow',
-				'selector' => '{{WRAPPER}} .rs-advanced-add-to-cart .single_add_to_cart_button, {{WRAPPER}} .rs-advanced-add-to-cart a.add_to_cart_button',
+				'selector' => '{{WRAPPER}} .rs-advanced-add-to-cart',
 			)
 		);
 
@@ -349,7 +319,7 @@ class RS_Elementor_Widget_Advanced_Add_To_Cart extends \Elementor\Widget_Base {
 				'type'       => \Elementor\Controls_Manager::DIMENSIONS,
 				'size_units' => array( 'px', 'em', 'rem' ),
 				'selectors'  => array(
-					'{{WRAPPER}} .rs-advanced-add-to-cart .single_add_to_cart_button, {{WRAPPER}} .rs-advanced-add-to-cart a.add_to_cart_button' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} .rs-advanced-add-to-cart' => '--rs-aac-button-padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
 			)
 		);
@@ -368,7 +338,7 @@ class RS_Elementor_Widget_Advanced_Add_To_Cart extends \Elementor\Widget_Base {
 				'label'     => esc_html__( 'Text Color', 'rs-elementor-widgets' ),
 				'type'      => \Elementor\Controls_Manager::COLOR,
 				'selectors' => array(
-					'{{WRAPPER}} .rs-advanced-add-to-cart .single_add_to_cart_button:hover, {{WRAPPER}} .rs-advanced-add-to-cart a.add_to_cart_button:hover' => 'color: {{VALUE}};',
+					'{{WRAPPER}} .rs-advanced-add-to-cart' => '--rs-aac-button-text-color-hover: {{VALUE}};',
 				),
 			)
 		);
@@ -379,7 +349,7 @@ class RS_Elementor_Widget_Advanced_Add_To_Cart extends \Elementor\Widget_Base {
 				'label'     => esc_html__( 'Background Color', 'rs-elementor-widgets' ),
 				'type'      => \Elementor\Controls_Manager::COLOR,
 				'selectors' => array(
-					'{{WRAPPER}} .rs-advanced-add-to-cart .single_add_to_cart_button:hover, {{WRAPPER}} .rs-advanced-add-to-cart a.add_to_cart_button:hover' => 'background-color: {{VALUE}};',
+					'{{WRAPPER}} .rs-advanced-add-to-cart' => '--rs-aac-button-bg-hover: {{VALUE}};',
 				),
 			)
 		);
@@ -388,7 +358,7 @@ class RS_Elementor_Widget_Advanced_Add_To_Cart extends \Elementor\Widget_Base {
 			\Elementor\Group_Control_Border::get_type(),
 			array(
 				'name'     => 'button_border_hover',
-				'selector' => '{{WRAPPER}} .rs-advanced-add-to-cart .single_add_to_cart_button:hover, {{WRAPPER}} .rs-advanced-add-to-cart a.add_to_cart_button:hover',
+				'selector' => '{{WRAPPER}} .rs-advanced-add-to-cart',
 			)
 		);
 
@@ -396,7 +366,7 @@ class RS_Elementor_Widget_Advanced_Add_To_Cart extends \Elementor\Widget_Base {
 			\Elementor\Group_Control_Box_Shadow::get_type(),
 			array(
 				'name'     => 'button_box_shadow_hover',
-				'selector' => '{{WRAPPER}} .rs-advanced-add-to-cart .single_add_to_cart_button:hover, {{WRAPPER}} .rs-advanced-add-to-cart a.add_to_cart_button:hover	',
+				'selector' => '{{WRAPPER}} .rs-advanced-add-to-cart',
 			)
 		);
 
@@ -414,7 +384,7 @@ class RS_Elementor_Widget_Advanced_Add_To_Cart extends \Elementor\Widget_Base {
 				'label'     => esc_html__( 'Text Color', 'rs-elementor-widgets' ),
 				'type'      => \Elementor\Controls_Manager::COLOR,
 				'selectors' => array(
-					'{{WRAPPER}} .rs-advanced-add-to-cart .single_add_to_cart_button:active, {{WRAPPER}} .rs-advanced-add-to-cart a.add_to_cart_button:active, {{WRAPPER}} .rs-advanced-add-to-cart .single_add_to_cart_button:focus, {{WRAPPER}} .rs-advanced-add-to-cart a.add_to_cart_button:focus' => 'color: {{VALUE}};',
+					'{{WRAPPER}} .rs-advanced-add-to-cart' => '--rs-aac-button-text-color-active: {{VALUE}};',
 				),
 			)
 		);
@@ -425,7 +395,7 @@ class RS_Elementor_Widget_Advanced_Add_To_Cart extends \Elementor\Widget_Base {
 				'label'     => esc_html__( 'Background Color', 'rs-elementor-widgets' ),
 				'type'      => \Elementor\Controls_Manager::COLOR,
 				'selectors' => array(
-					'{{WRAPPER}} .rs-advanced-add-to-cart .single_add_to_cart_button:active, {{WRAPPER}} .rs-advanced-add-to-cart a.add_to_cart_button:active, {{WRAPPER}} .rs-advanced-add-to-cart .single_add_to_cart_button:focus, {{WRAPPER}} .rs-advanced-add-to-cart a.add_to_cart_button:focus' => 'background-color: {{VALUE}};',
+					'{{WRAPPER}} .rs-advanced-add-to-cart' => '--rs-aac-button-bg-active: {{VALUE}};',
 				),
 			)
 		);
@@ -434,7 +404,7 @@ class RS_Elementor_Widget_Advanced_Add_To_Cart extends \Elementor\Widget_Base {
 			\Elementor\Group_Control_Border::get_type(),
 			array(
 				'name'     => 'button_border_active',
-				'selector' => '{{WRAPPER}} .rs-advanced-add-to-cart .single_add_to_cart_button:active, {{WRAPPER}} .rs-advanced-add-to-cart a.add_to_cart_button:active, {{WRAPPER}} .rs-advanced-add-to-cart .single_add_to_cart_button:focus, {{WRAPPER}} .rs-advanced-add-to-cart a.add_to_cart_button:focus',
+				'selector' => '{{WRAPPER}} .rs-advanced-add-to-cart',
 			)
 		);
 
@@ -442,7 +412,7 @@ class RS_Elementor_Widget_Advanced_Add_To_Cart extends \Elementor\Widget_Base {
 			\Elementor\Group_Control_Box_Shadow::get_type(),
 			array(
 				'name'     => 'button_box_shadow_active',
-				'selector' => '{{WRAPPER}} .rs-advanced-add-to-cart .single_add_to_cart_button:active, {{WRAPPER}} .rs-advanced-add-to-cart a.add_to_cart_button:active, {{WRAPPER}} .rs-advanced-add-to-cart .single_add_to_cart_button:focus, {{WRAPPER}} .rs-advanced-add-to-cart a.add_to_cart_button:focus',
+				'selector' => '{{WRAPPER}} .rs-advanced-add-to-cart',
 			)
 		);
 
@@ -495,6 +465,15 @@ class RS_Elementor_Widget_Advanced_Add_To_Cart extends \Elementor\Widget_Base {
 		if ( 'yes' === $settings['hide_stock_notices'] ) {
 			$wrapper_classes .= ' rs-hide-stock-notices';
 		}
+		if ( 'yes' === $settings['disable_quantity'] ) {
+			$wrapper_classes .= ' rs-disable-qty';
+		}
+		if ( 'yes' === $settings['hide_view_cart_notice'] ) {
+			$wrapper_classes .= ' rs-hide-view-cart-link';
+		}
+		if ( isset( $settings['button_full_width'] ) && 'yes' === $settings['button_full_width'] ) {
+			$wrapper_classes .= ' rs-full-width';
+		}
 
 		echo '<div class="' . esc_attr( $wrapper_classes ) . '">';
 
@@ -518,6 +497,6 @@ class RS_Elementor_Widget_Advanced_Add_To_Cart extends \Elementor\Widget_Base {
 
 		echo '</div>';
 
-		// CSS-only approach handled via control selectors above.
+		// All styling is handled via classes and CSS variables.
 	}
 }

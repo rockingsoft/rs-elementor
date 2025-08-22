@@ -124,16 +124,7 @@
       jQuery("body").trigger("fkcart_open");
 
 
-      // Visual state
-      // Restore background color before toggling to 'added'
-      try {
-        var node = $button.get(0);
-        var prev = $button.data('rsPrevBg');
-        if (node) {
-          node.style.backgroundColor = (typeof prev === 'string') ? prev : '';
-        }
-        $button.removeData('rsPrevBg');
-      } catch (e) { }
+      // Visual state strictly via classes
       $button.removeClass('loading').addClass('added').prop('disabled', false);
 
       setTimeout(function () {
@@ -141,15 +132,7 @@
       }, 10000);
 
     }).fail(function () {
-      // On failure, just re-enable and restore background
-      try {
-        var node = $button.get(0);
-        var prev = $button.data('rsPrevBg');
-        if (node) {
-          node.style.backgroundColor = (typeof prev === 'string') ? prev : '';
-        }
-        $button.removeData('rsPrevBg');
-      } catch (e) { }
+      // On failure, just re-enable
       $button.removeClass('loading').prop('disabled', false);
     }).always(function () {
       // Restore Woo redirect flag after our flow completes
@@ -164,7 +147,6 @@
       var $form = $(this).find('form.variations_form');
       $form.on('submit', function (e) {
         e.preventDefault();
-        console.log('submit');
         ajaxAddToCart($(this));
       });
     });
