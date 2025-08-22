@@ -408,6 +408,34 @@
   font-size: 16px;
 }
 
+/* Default: horizontal icons (left/right) visible */
+.rs-adv-images .rs-adv-thumbs-nav .icon-h {
+  display: inline-block;
+}
+
+.rs-adv-images .rs-adv-thumbs-nav .icon-v {
+  display: none;
+}
+
+/* Vertical layouts (left/right): show up/down, hide left/right */
+.rs-adv-images.layout-desktop-left .rs-adv-thumbs-nav .icon-h,
+.rs-adv-images.layout-desktop-right .rs-adv-thumbs-nav .icon-h,
+.rs-adv-images.layout-tablet-left .rs-adv-thumbs-nav .icon-h,
+.rs-adv-images.layout-tablet-right .rs-adv-thumbs-nav .icon-h,
+.rs-adv-images.layout-mobile-left .rs-adv-thumbs-nav .icon-h,
+.rs-adv-images.layout-mobile-right .rs-adv-thumbs-nav .icon-h {
+  display: none;
+}
+
+.rs-adv-images.layout-desktop-left .rs-adv-thumbs-nav .icon-v,
+.rs-adv-images.layout-desktop-right .rs-adv-thumbs-nav .icon-v,
+.rs-adv-images.layout-tablet-left .rs-adv-thumbs-nav .icon-v,
+.rs-adv-images.layout-tablet-right .rs-adv-thumbs-nav .icon-v,
+.rs-adv-images.layout-mobile-left .rs-adv-thumbs-nav .icon-v,
+.rs-adv-images.layout-mobile-right .rs-adv-thumbs-nav .icon-v {
+  display: inline-block;
+}
+
 /* Hide native scrollbar */
 .rs-thumbs-nowrap-yes .rs-adv-thumbs::-webkit-scrollbar {
   display: none;

@@ -823,7 +823,8 @@ class RS_Elementor_Widget_Advanced_Product_Images extends \Elementor\Widget_Base
 			<div class="rs-adv-images-inner">
 				<div class="rs-adv-thumbs-wrap"<?php echo $hide_thumbnails ? ' aria-hidden="true"' : ''; ?>>
 					<button type="button" class="rs-adv-thumbs-nav rs-adv-thumbs-prev" aria-label="<?php echo esc_attr__( 'Scroll thumbnails previous', 'rs-elementor-widgets' ); ?>" tabindex="0">
-						<span aria-hidden="true">&#10094;</span>
+						<i class="fas fa-chevron-left icon-h" aria-hidden="true"></i>
+						<i class="fas fa-chevron-up icon-v" aria-hidden="true"></i>
 					</button>
 					<div class="rs-adv-thumbs" style="--thumb-size: <?php echo (int) $thumb_size; ?>px; --thumb-gap: <?php echo (int) $thumb_gap; ?>px;">
 						<?php foreach ( $images as $index => $img ) : ?>
@@ -836,7 +837,8 @@ class RS_Elementor_Widget_Advanced_Product_Images extends \Elementor\Widget_Base
 						<?php endforeach; ?>
 					</div>
 					<button type="button" class="rs-adv-thumbs-nav rs-adv-thumbs-next" aria-label="<?php echo esc_attr__( 'Scroll thumbnails next', 'rs-elementor-widgets' ); ?>" tabindex="0">
-						<span aria-hidden="true">&#10095;</span>
+						<i class="fas fa-chevron-right icon-h" aria-hidden="true"></i>
+						<i class="fas fa-chevron-down icon-v" aria-hidden="true"></i>
 					</button>
 				</div>
 				<?php if ( ! empty( $settings['inline_navigation'] ) && 'yes' === $settings['inline_navigation'] ) : ?>
