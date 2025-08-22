@@ -670,6 +670,16 @@ class RS_Elementor_Widget_Advanced_Product_Images extends \Elementor\Widget_Base
 				),
 			)
 		);
+		$this->add_control(
+			'thumbs_border_color',
+			array(
+				'label'     => esc_html__( 'Border Color', 'rs-elementor-widgets' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}}' => '--rs-thumb-nav-border-color: {{VALUE}};',
+				),
+			)
+		);
 		$this->end_controls_tab();
 
 		// Hover state.
@@ -697,6 +707,16 @@ class RS_Elementor_Widget_Advanced_Product_Images extends \Elementor\Widget_Base
 				),
 			)
 		);
+		$this->add_control(
+			'thumbs_border_color_hover',
+			array(
+				'label'     => esc_html__( 'Border Color', 'rs-elementor-widgets' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}}' => '--rs-thumb-nav-border-color-hover: {{VALUE}};',
+				),
+			)
+		);
 		$this->end_controls_tab();
 
 		// Disabled state.
@@ -721,6 +741,16 @@ class RS_Elementor_Widget_Advanced_Product_Images extends \Elementor\Widget_Base
 				'type'      => \Elementor\Controls_Manager::COLOR,
 				'selectors' => array(
 					'{{WRAPPER}}' => '--rs-thumb-nav-color-disabled: {{VALUE}};',
+				),
+			)
+		);
+		$this->add_control(
+			'thumbs_border_color_disabled',
+			array(
+				'label'     => esc_html__( 'Border Color', 'rs-elementor-widgets' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}}' => '--rs-thumb-nav-border-color-disabled: {{VALUE}};',
 				),
 			)
 		);

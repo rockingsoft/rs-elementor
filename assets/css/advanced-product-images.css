@@ -304,6 +304,9 @@
   width: var(--rs-inline-btn-size, 40px);
   height: var(--rs-inline-btn-size, 40px);
   border-radius: var(--rs-inline-btn-radius, 50%);
+  border-width: var(--rs-inline-btn-border-width, 1px);
+  border-color: var(--rs-inline-btn-border-color, transparent);
+  border-style: solid;
   border: 0;
   display: grid;
   place-items: center;
@@ -373,8 +376,9 @@
 
 .rs-adv-images .rs-adv-thumbs-nav:hover {
   opacity: 1;
-  background: var(--rs-thumb-nav-bg-hover, var(--e-global-color-accent));
-  color: var(--rs-thumb-nav-color-hover, #fff);
+  background: var(--rs-thumb-nav-bg-hover, var(--rs-thumb-nav-bg, var(--e-global-color-primary)));
+  color: var(--rs-thumb-nav-color-hover, var(--rs-thumb-nav-color, #fff));
+  border-color: var(--rs-thumb-nav-border-color-hover, var(--rs-thumb-nav-border-color, transparent));
 }
 
 .rs-adv-images .rs-adv-thumbs-prev {
@@ -392,6 +396,7 @@
   pointer-events: none;
   background: var(--rs-thumb-nav-bg-disabled, var(--rs-thumb-nav-bg, var(--e-global-color-primary)));
   color: var(--rs-thumb-nav-color-disabled, var(--rs-thumb-nav-color, #fff));
+  border-color: var(--rs-thumb-nav-border-color-disabled, var(--rs-thumb-nav-border-color, transparent));
 }
 
 /* Thumbs wrap + nav buttons */
@@ -406,7 +411,10 @@
   height: var(--rs-thumb-nav-size, 36px);
 
   border-radius: var(--rs-thumb-nav-radius, 50%);
-  border: 0;
+  border-width: 1px;
+  border-style: solid;
+  border-color: var(--rs-thumb-nav-border-color, transparent);
+
   padding: 0;
   display: flex;
   align-items: center;
