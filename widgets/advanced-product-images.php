@@ -229,6 +229,26 @@ class RS_Elementor_Widget_Advanced_Product_Images extends \Elementor\Widget_Base
 			)
 		);
 
+        // Modal button size.
+        $this->add_responsive_control(
+            'modal_btn_size',
+            array(
+                'label'      => esc_html__( 'Button Size', 'rs-elementor-widgets' ),
+                'type'       => \Elementor\Controls_Manager::SLIDER,
+                'size_units' => array( 'px' ),
+                'range'      => array(
+                    'px' => array(
+                        'min' => 28,
+                        'max' => 96,
+                    ),
+                ),
+                'default'    => array( 'size' => 44, 'unit' => 'px' ),
+                'selectors'  => array(
+                    '{{WRAPPER}}' => '--rs-modal-btn-size: {{SIZE}}{{UNIT}};',
+                ),
+            )
+        );
+
 		// Modal navigation icons (use Elementor icon chooser).
 		$this->add_control(
 			'modal_prev_icon',
@@ -430,6 +450,26 @@ class RS_Elementor_Widget_Advanced_Product_Images extends \Elementor\Widget_Base
 			)
 		);
 
+        // Inline button size.
+        $this->add_responsive_control(
+            'inline_btn_size',
+            array(
+                'label'      => esc_html__( 'Button Size', 'rs-elementor-widgets' ),
+                'type'       => \Elementor\Controls_Manager::SLIDER,
+                'size_units' => array( 'px' ),
+                'range'      => array(
+                    'px' => array(
+                        'min' => 28,
+                        'max' => 96,
+                    ),
+                ),
+                'default'    => array( 'size' => 40, 'unit' => 'px' ),
+                'selectors'  => array(
+                    '{{WRAPPER}}' => '--rs-inline-btn-size: {{SIZE}}{{UNIT}};',
+                ),
+            )
+        );
+
 		$this->start_controls_tabs( 'tabs_inline_buttons' );
 
 		// Normal state.
@@ -582,6 +622,26 @@ class RS_Elementor_Widget_Advanced_Product_Images extends \Elementor\Widget_Base
 				'separator' => 'before',
 			)
 		);
+
+        // Thumbnails nav button size.
+        $this->add_responsive_control(
+            'thumbs_nav_size',
+            array(
+                'label'      => esc_html__( 'Button Size', 'rs-elementor-widgets' ),
+                'type'       => \Elementor\Controls_Manager::SLIDER,
+                'size_units' => array( 'px' ),
+                'range'      => array(
+                    'px' => array(
+                        'min' => 24,
+                        'max' => 72,
+                    ),
+                ),
+                'default'    => array( 'size' => 36, 'unit' => 'px' ),
+                'selectors'  => array(
+                    '{{WRAPPER}}' => '--rs-thumb-nav-size: {{SIZE}}{{UNIT}};',
+                ),
+            )
+        );
 
 		$this->start_controls_tabs( 'tabs_thumbs_nav_buttons' );
 
