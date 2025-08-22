@@ -201,6 +201,111 @@ class RS_Elementor_Widget_Advanced_Product_Images extends \Elementor\Widget_Base
 
 		$this->end_controls_section();
 
+		// Styles: Modal buttons (colors via CSS variables) with tabs.
+		$this->start_controls_section(
+			'section_style_modal',
+			array(
+				'label' => esc_html__( 'Modal', 'rs-elementor-widgets' ),
+				'tab'   => \Elementor\Controls_Manager::TAB_STYLE,
+			)
+		);
+
+		$this->add_control(
+			'modal_buttons_heading',
+			array(
+				'label'     => esc_html__( 'Modal Buttons', 'rs-elementor-widgets' ),
+				'type'      => \Elementor\Controls_Manager::HEADING,
+				'separator' => 'before',
+			)
+		);
+
+		$this->start_controls_tabs( 'tabs_modal_buttons' );
+
+		// Normal state.
+		$this->start_controls_tab(
+			'tab_modal_buttons_normal',
+			array( 'label' => esc_html__( 'Normal', 'rs-elementor-widgets' ) )
+		);
+		$this->add_control(
+			'modal_btn_bg',
+			array(
+				'label'     => esc_html__( 'Background', 'rs-elementor-widgets' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}}' => '--rs-modal-btn-bg: {{VALUE}};',
+				),
+			)
+		);
+		$this->add_control(
+			'modal_btn_color',
+			array(
+				'label'     => esc_html__( 'Text/Icon', 'rs-elementor-widgets' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}}' => '--rs-modal-btn-color: {{VALUE}};',
+				),
+			)
+		);
+		$this->end_controls_tab();
+
+		// Hover state.
+		$this->start_controls_tab(
+			'tab_modal_buttons_hover',
+			array( 'label' => esc_html__( 'Hover', 'rs-elementor-widgets' ) )
+		);
+		$this->add_control(
+			'modal_btn_bg_hover',
+			array(
+				'label'     => esc_html__( 'Background', 'rs-elementor-widgets' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}}' => '--rs-modal-btn-bg-hover: {{VALUE}};',
+				),
+			)
+		);
+		$this->add_control(
+			'modal_btn_color_hover',
+			array(
+				'label'     => esc_html__( 'Text/Icon', 'rs-elementor-widgets' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}}' => '--rs-modal-btn-color-hover: {{VALUE}};',
+				),
+			)
+		);
+		$this->end_controls_tab();
+
+		// Active state.
+		$this->start_controls_tab(
+			'tab_modal_buttons_active',
+			array( 'label' => esc_html__( 'Active', 'rs-elementor-widgets' ) )
+		);
+		$this->add_control(
+			'modal_btn_bg_active',
+			array(
+				'label'     => esc_html__( 'Background', 'rs-elementor-widgets' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}}' => '--rs-modal-btn-bg-active: {{VALUE}};',
+				),
+			)
+		);
+		$this->add_control(
+			'modal_btn_color_active',
+			array(
+				'label'     => esc_html__( 'Text/Icon', 'rs-elementor-widgets' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}}' => '--rs-modal-btn-color-active: {{VALUE}};',
+				),
+			)
+		);
+		$this->end_controls_tab();
+
+		$this->end_controls_tabs();
+
+		$this->end_controls_section();
+
 		// Behavior: Click action for main image.
 		$this->start_controls_section(
 			'section_behaviour',
@@ -266,48 +371,98 @@ class RS_Elementor_Widget_Advanced_Product_Images extends \Elementor\Widget_Base
 		);
 
 		$this->add_control(
-			'inline_nav_bg',
+			'inline_buttons_heading',
 			array(
-				'label'     => esc_html__( 'Button Background', 'rs-elementor-widgets' ),
-				'type'      => \Elementor\Controls_Manager::COLOR,
-				'selectors' => array(
-					'{{WRAPPER}} .rs-adv-inline-btn' => 'background-color: {{VALUE}};',
-				),
+				'label'     => esc_html__( 'Inline Navigation Buttons', 'rs-elementor-widgets' ),
+				'type'      => \Elementor\Controls_Manager::HEADING,
+				'separator' => 'before',
 			)
 		);
 
+		$this->start_controls_tabs( 'tabs_inline_buttons' );
+
+		// Normal state.
+		$this->start_controls_tab(
+			'tab_inline_buttons_normal',
+			array( 'label' => esc_html__( 'Normal', 'rs-elementor-widgets' ) )
+		);
+		$this->add_control(
+			'inline_nav_bg',
+			array(
+				'label'     => esc_html__( 'Background', 'rs-elementor-widgets' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}}' => '--rs-inline-btn-bg: {{VALUE}};',
+				),
+			)
+		);
 		$this->add_control(
 			'inline_nav_color',
 			array(
-				'label'     => esc_html__( 'Icon Color', 'rs-elementor-widgets' ),
+				'label'     => esc_html__( 'Text/Icon', 'rs-elementor-widgets' ),
 				'type'      => \Elementor\Controls_Manager::COLOR,
 				'selectors' => array(
-					'{{WRAPPER}} .rs-adv-inline-btn' => 'color: {{VALUE}};',
+					'{{WRAPPER}}' => '--rs-inline-btn-color: {{VALUE}};',
 				),
 			)
 		);
+		$this->end_controls_tab();
 
+		// Hover state.
+		$this->start_controls_tab(
+			'tab_inline_buttons_hover',
+			array( 'label' => esc_html__( 'Hover', 'rs-elementor-widgets' ) )
+		);
+		$this->add_control(
+			'inline_nav_bg_hover',
+			array(
+				'label'     => esc_html__( 'Background', 'rs-elementor-widgets' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}}' => '--rs-inline-btn-bg-hover: {{VALUE}};',
+				),
+			)
+		);
+		$this->add_control(
+			'inline_nav_color_hover',
+			array(
+				'label'     => esc_html__( 'Text/Icon', 'rs-elementor-widgets' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}}' => '--rs-inline-btn-color-hover: {{VALUE}};',
+				),
+			)
+		);
+		$this->end_controls_tab();
+
+		// Disabled state.
+		$this->start_controls_tab(
+			'tab_inline_buttons_disabled',
+			array( 'label' => esc_html__( 'Disabled', 'rs-elementor-widgets' ) )
+		);
 		$this->add_control(
 			'inline_nav_bg_disabled',
 			array(
-				'label'     => esc_html__( 'Disabled Background', 'rs-elementor-widgets' ),
+				'label'     => esc_html__( 'Background', 'rs-elementor-widgets' ),
 				'type'      => \Elementor\Controls_Manager::COLOR,
 				'selectors' => array(
-					'{{WRAPPER}} .rs-adv-inline-btn.is-disabled' => 'background-color: {{VALUE}};',
+					'{{WRAPPER}}' => '--rs-inline-btn-bg-disabled: {{VALUE}};',
 				),
 			)
 		);
-
 		$this->add_control(
 			'inline_nav_color_disabled',
 			array(
-				'label'     => esc_html__( 'Disabled Icon Color', 'rs-elementor-widgets' ),
+				'label'     => esc_html__( 'Text/Icon', 'rs-elementor-widgets' ),
 				'type'      => \Elementor\Controls_Manager::COLOR,
 				'selectors' => array(
-					'{{WRAPPER}} .rs-adv-inline-btn.is-disabled' => 'color: {{VALUE}};',
+					'{{WRAPPER}}' => '--rs-inline-btn-color-disabled: {{VALUE}};',
 				),
 			)
 		);
+		$this->end_controls_tab();
+
+		$this->end_controls_tabs();
 
 		$this->end_controls_section();
 
