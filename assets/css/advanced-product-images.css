@@ -341,14 +341,15 @@
   color: #fff;
   display: grid;
   place-items: center;
+  z-index: 2;
 }
 
 .rs-adv-images .rs-adv-prev {
-  left: -56px;
+  left: 8px;
 }
 
 .rs-adv-images .rs-adv-next {
-  right: -56px;
+  right: 8px;
 }
 
 .rs-adv-images .rs-adv-nav[aria-hidden="true"],
