@@ -190,6 +190,11 @@
       setCurrent(0);
       updateNavVisibility();
 
+      // Editor preview: if modal has preview-open class, open it programmatically
+      if (modal && modal.classList.contains('is-preview-open')) {
+        openModal(current);
+      }
+
       // --- Variation sync via events ---
       function handleVariationSelection(variationId) {
         if (!variationId) { setCurrent(0); updateModalImage(); updateNavVisibility(); return; }

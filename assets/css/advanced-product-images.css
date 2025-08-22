@@ -294,6 +294,11 @@
   display: none;
 }
 
+/* Editor preview: force show when class is set */
+.rs-adv-images .rs-adv-modal.is-preview-open {
+  display: block;
+}
+
 .rs-adv-images .rs-adv-modal {
   position: fixed;
   inset: 0;
@@ -369,12 +374,23 @@
   position: absolute;
   top: 8px;
   right: 8px;
-  font-size: 20px;
+  font-size: 18px; /* fallback × size */
   line-height: 1;
   padding: 0;
   text-align: center;
   font-weight: 600;
   z-index: 3;
+}
+
+/* Constrain modal close icon sizes (font icons and SVG) */
+.rs-adv-images .rs-adv-modal-close i {
+  font-size: 18px;
+  font-weight: normal;
+}
+
+.rs-adv-images .rs-adv-modal-close svg {
+  width: 18px;
+  height: 18px;
 }
 
 .rs-adv-images .rs-adv-nav {

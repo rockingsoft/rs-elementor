@@ -95,9 +95,9 @@ class RS_Elementor_Widget_Advanced_Product_Images extends \Elementor\Widget_Base
 		$this->add_responsive_control(
 			'thumbs_position',
 			array(
-				'label'     => esc_html__( 'Thumbnails Position', 'rs-elementor-widgets' ),
-				'type'      => \Elementor\Controls_Manager::CHOOSE,
-				'options'   => array(
+				'label'          => esc_html__( 'Thumbnails Position', 'rs-elementor-widgets' ),
+				'type'           => \Elementor\Controls_Manager::CHOOSE,
+				'options'        => array(
 					'left'   => array(
 						'title' => esc_html__( 'Left', 'rs-elementor-widgets' ),
 						'icon'  => 'eicon-h-align-left',
@@ -115,10 +115,10 @@ class RS_Elementor_Widget_Advanced_Product_Images extends \Elementor\Widget_Base
 						'icon'  => 'eicon-v-align-bottom',
 					),
 				),
-				'default'   => 'left',
+				'default'        => 'left',
 				'tablet_default' => 'bottom',
 				'mobile_default' => 'bottom',
-				'toggle'    => false,
+				'toggle'         => false,
 			)
 		);
 
@@ -210,12 +210,72 @@ class RS_Elementor_Widget_Advanced_Product_Images extends \Elementor\Widget_Base
 			)
 		);
 
+		// Editor preview helpers.
+		$this->add_control(
+			'modal_preview_heading',
+			array(
+				'label'     => esc_html__( 'Editor Preview', 'rs-elementor-widgets' ),
+				'type'      => \Elementor\Controls_Manager::HEADING,
+				'separator' => 'before',
+			)
+		);
+
+		$this->add_control(
+			'modal_preview_open',
+			array(
+				'label'        => esc_html__( 'Force open modal in editor', 'rs-elementor-widgets' ),
+				'description'  => esc_html__( 'Editor-only: opens the modal in the preview so you can style it.', 'rs-elementor-widgets' ),
+				'type'         => \Elementor\Controls_Manager::SWITCHER,
+				'label_on'     => esc_html__( 'Yes', 'rs-elementor-widgets' ),
+				'label_off'    => esc_html__( 'No', 'rs-elementor-widgets' ),
+				'return_value' => 'yes',
+				'default'      => 'no',
+			)
+		);
+
 		$this->add_control(
 			'modal_buttons_heading',
 			array(
 				'label'     => esc_html__( 'Modal Buttons', 'rs-elementor-widgets' ),
 				'type'      => \Elementor\Controls_Manager::HEADING,
 				'separator' => 'before',
+			)
+		);
+
+		// Modal navigation icons (use Elementor icon chooser).
+		$this->add_control(
+			'modal_prev_icon',
+			array(
+				'label'   => esc_html__( 'Previous Icon', 'rs-elementor-widgets' ),
+				'type'    => \Elementor\Controls_Manager::ICONS,
+				'default' => array(
+					'value'   => 'fas fa-chevron-left',
+					'library' => 'fa-solid',
+				),
+			)
+		);
+
+		$this->add_control(
+			'modal_next_icon',
+			array(
+				'label'   => esc_html__( 'Next Icon', 'rs-elementor-widgets' ),
+				'type'    => \Elementor\Controls_Manager::ICONS,
+				'default' => array(
+					'value'   => 'fas fa-chevron-right',
+					'library' => 'fa-solid',
+				),
+			)
+		);
+
+		$this->add_control(
+			'modal_close_icon',
+			array(
+				'label'   => esc_html__( 'Close Icon', 'rs-elementor-widgets' ),
+				'type'    => \Elementor\Controls_Manager::ICONS,
+				'default' => array(
+					'value'   => 'fas fa-times',
+					'library' => 'fa-solid',
+				),
 			)
 		);
 
@@ -822,16 +882,47 @@ class RS_Elementor_Widget_Advanced_Product_Images extends \Elementor\Widget_Base
 				<?php endif; ?>
 			</div>
 
-			<div class="rs-adv-modal" aria-hidden="true">
+			<?php
+			$in_editor = false;
+			if ( class_exists( '\\Elementor\\Plugin' ) && isset( \Elementor\Plugin::$instance ) && \Elementor\Plugin::$instance ) {
+				$editor = \Elementor\Plugin::$instance->editor ?? null;
+				if ( $editor && method_exists( $editor, 'is_edit_mode' ) ) {
+					$in_editor = (bool) $editor->is_edit_mode();
+				}
+			}
+			$force_open = $in_editor && ! empty( $settings['modal_preview_open'] ) && 'yes' === $settings['modal_preview_open'];
+			?>
+		<div class="rs-adv-modal<?php echo $force_open ? ' is-preview-open' : ''; ?>" aria-hidden="<?php echo $force_open ? 'false' : 'true'; ?>">
 				<div class="rs-adv-modal-backdrop"></div>
 				<div class="rs-adv-modal-content" role="dialog" aria-modal="true" aria-label="<?php echo esc_attr__( 'Product image viewer', 'rs-elementor-widgets' ); ?>">
-					<button type="button" class="rs-adv-modal-close" aria-label="<?php echo esc_attr__( 'Close', 'rs-elementor-widgets' ); ?>">&times;</button>
+					<button type="button" class="rs-adv-modal-close" aria-label="<?php echo esc_attr__( 'Close', 'rs-elementor-widgets' ); ?>">
+						<?php
+						if ( ! empty( $settings['modal_close_icon'] ) && ! empty( $settings['modal_close_icon']['value'] ) ) {
+							\Elementor\Icons_Manager::render_icon( $settings['modal_close_icon'], array( 'aria-hidden' => 'true' ) );
+						} else {
+							// Fallback to a default Font Awesome icon or a typographic ×.
+							echo '<i class="fas fa-times" aria-hidden="true"></i>';
+						}
+						?>
+					</button>
 					<button type="button" class="rs-adv-nav rs-adv-prev" aria-label="<?php echo esc_attr__( 'Previous image', 'rs-elementor-widgets' ); ?>">
-						<i class="fas fa-chevron-left" aria-hidden="true"></i>
+						<?php
+						if ( ! empty( $settings['modal_prev_icon'] ) && ! empty( $settings['modal_prev_icon']['value'] ) ) {
+							\Elementor\Icons_Manager::render_icon( $settings['modal_prev_icon'], array( 'aria-hidden' => 'true' ) );
+						} else {
+							echo '<i class="fas fa-chevron-left" aria-hidden="true"></i>';
+						}
+						?>
 					</button>
 					<img class="rs-adv-modal-img" src="<?php echo esc_url( $images[0]['full'] ); ?>" alt=""/>
 					<button type="button" class="rs-adv-nav rs-adv-next" aria-label="<?php echo esc_attr__( 'Next image', 'rs-elementor-widgets' ); ?>">
-						<i class="fas fa-chevron-right" aria-hidden="true"></i>
+						<?php
+						if ( ! empty( $settings['modal_next_icon'] ) && ! empty( $settings['modal_next_icon']['value'] ) ) {
+							\Elementor\Icons_Manager::render_icon( $settings['modal_next_icon'], array( 'aria-hidden' => 'true' ) );
+						} else {
+							echo '<i class="fas fa-chevron-right" aria-hidden="true"></i>';
+						}
+						?>
 					</button>
 				</div>
 			</div>
