@@ -1,5 +1,37 @@
-/* Advanced Add To Cart – loop context fixes
-   Scope narrowly to our widget wrapper to avoid side effects. */
+/* Advanced Add To Cart – styles via classes and CSS variables */
+
+/* Defaults */
+.rs-advanced-add-to-cart {
+  /* alignment */
+  --rs-aac-justify: flex-start;
+  --rs-aac-button-text-align: center;
+  --rs-aac-button-padding: 0.75rem 1rem;
+  --rs-aac-button-border-radius: 4px;
+}
+
+/* Button base styles consume variables */
+.rs-advanced-add-to-cart .single_add_to_cart_button,
+.rs-advanced-add-to-cart a.add_to_cart_button {
+  color: var(--rs-aac-button-text-color, var(--e-global-color-text, inherit)) !important;
+  background-color: var(--rs-aac-button-bg, var(--e-global-color-primary, initial)) !important;
+  padding: var(--rs-aac-button-padding) !important;
+  border-radius: var(--rs-aac-button-border-radius) !important;
+  text-align: var(--rs-aac-button-text-align) !important;
+}
+
+.rs-advanced-add-to-cart .single_add_to_cart_button:hover,
+.rs-advanced-add-to-cart a.add_to_cart_button:hover {
+  color: var(--rs-aac-button-text-color-hover, var(--rs-aac-button-text-color, var(--e-global-color-text, inherit))) !important;
+  background-color: var(--rs-aac-button-bg-hover, var(--e-global-color-accent, var(--rs-aac-button-bg, var(--e-global-color-primary, initial)))) !important;
+}
+
+.rs-advanced-add-to-cart .single_add_to_cart_button:active,
+.rs-advanced-add-to-cart a.add_to_cart_button:active,
+.rs-advanced-add-to-cart .single_add_to_cart_button:focus,
+.rs-advanced-add-to-cart a.add_to_cart_button:focus {
+  color: var(--rs-aac-button-text-color-active, var(--rs-aac-button-text-color, var(--e-global-color-text, inherit))) !important;
+  background-color: var(--rs-aac-button-bg-active, var(--e-global-color-secondary, var(--rs-aac-button-bg, var(--e-global-color-primary, initial)))) !important;
+}
 
 /* Remove unintended bottom spacing in loop cards */
 .rs-advanced-add-to-cart.rs-context-loop form.cart,
@@ -23,5 +55,77 @@
 }
 
 .rs-hide-stock-notices .stock {
+  display: none !important;
+}
+
+/* Hide classes driven by settings */
+.rs-advanced-add-to-cart.rs-hide-wc-variations .variations,
+.rs-advanced-add-to-cart.rs-hide-wc-variations .reset_variations {
+  display: none !important;
+}
+
+.rs-advanced-add-to-cart.rs-disable-qty .quantity {
+  display: none !important;
+}
+
+.rs-advanced-add-to-cart.rs-hide-view-cart-link a.added_to_cart,
+.rs-advanced-add-to-cart.rs-hide-view-cart-link a.wc-forward {
+  display: none !important;
+}
+
+/* Alignment using CSS variable */
+.rs-advanced-add-to-cart form.cart,
+.rs-advanced-add-to-cart .woocommerce-variation-add-to-cart {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .5rem;
+  width: 100%;
+  justify-content: var(--rs-aac-justify);
+}
+
+.rs-advanced-add-to-cart {
+  display: flex;
+  width: 100%;
+  justify-content: var(--rs-aac-justify);
+}
+
+.rs-advanced-add-to-cart .single_variation_wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: var(--rs-aac-justify);
+  width: 100%;
+}
+
+.rs-advanced-add-to-cart .single_variation {
+  align-self: stretch;
+  text-align: var(--rs-aac-button-text-align);
+  width: 100%;
+}
+
+.rs-advanced-add-to-cart .woocommerce-variation,
+.rs-advanced-add-to-cart .stock {
+  display: flex;
+  width: 100%;
+  justify-content: var(--rs-aac-justify);
+}
+
+/* Full width toggle */
+.rs-advanced-add-to-cart.rs-full-width,
+.rs-advanced-add-to-cart.rs-full-width .single_variation_wrap,
+.rs-advanced-add-to-cart.rs-full-width form.cart,
+.rs-advanced-add-to-cart.rs-full-width .woocommerce-variation-add-to-cart {
+  width: 100%;
+}
+
+.rs-advanced-add-to-cart.rs-full-width .single_add_to_cart_button,
+.rs-advanced-add-to-cart.rs-full-width a.add_to_cart_button {
+  display: block;
+  width: 100%;
+  flex: 0 0 100%;
+  align-self: stretch;
+}
+
+.woocommerce-notices-wrapper {
   display: none !important;
 }
