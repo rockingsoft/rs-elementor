@@ -238,7 +238,7 @@ class RS_Elementor_Widget_Advanced_Product_Images extends \Elementor\Widget_Base
                 'size_units' => array( 'px' ),
                 'range'      => array(
                     'px' => array(
-                        'min' => 28,
+                        'min' => 20,
                         'max' => 96,
                     ),
                 ),
@@ -459,7 +459,7 @@ class RS_Elementor_Widget_Advanced_Product_Images extends \Elementor\Widget_Base
                 'size_units' => array( 'px' ),
                 'range'      => array(
                     'px' => array(
-                        'min' => 28,
+                        'min' => 20,
                         'max' => 96,
                     ),
                 ),
@@ -632,7 +632,7 @@ class RS_Elementor_Widget_Advanced_Product_Images extends \Elementor\Widget_Base
                 'size_units' => array( 'px' ),
                 'range'      => array(
                     'px' => array(
-                        'min' => 24,
+                        'min' => 20,
                         'max' => 72,
                     ),
                 ),

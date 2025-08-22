@@ -314,6 +314,17 @@
   opacity: .95;
 }
 
+/* Inline buttons: scale icons with button size */
+.rs-adv-images .rs-adv-inline-btn i {
+  font-size: calc(var(--rs-inline-btn-size, 40px) * var(--rs-inline-icon-scale, 0.45));
+  line-height: 1;
+}
+
+.rs-adv-images .rs-adv-inline-btn svg {
+  width: calc(var(--rs-inline-btn-size, 40px) * var(--rs-inline-icon-scale, 0.45));
+  height: calc(var(--rs-inline-btn-size, 40px) * var(--rs-inline-icon-scale, 0.45));
+}
+
 .rs-adv-images .rs-adv-inline-btn:hover {
   opacity: 1;
   background: var(--rs-inline-btn-bg-hover, var(--e-global-color-accent));
@@ -393,6 +404,7 @@
 .rs-adv-images .rs-adv-thumbs-nav {
   width: var(--rs-thumb-nav-size, 36px);
   height: var(--rs-thumb-nav-size, 36px);
+
   border-radius: var(--rs-thumb-nav-radius, 50%);
   border: 0;
   padding: 0;
@@ -420,7 +432,7 @@
 .rs-adv-images .rs-adv-thumbs-nav>svg {
   display: inline-block;
   line-height: 1;
-  font-size: 16px;
+  font-size: calc(var(--rs-thumb-nav-size, 36px) * var(--rs-thumb-nav-icon-scale, 0.45));
 }
 
 /* Default: horizontal icons (left/right) visible */
@@ -476,6 +488,8 @@
 .rs-adv-images .rs-adv-modal .rs-adv-modal-close {
   width: var(--rs-modal-btn-size, 44px);
   height: var(--rs-modal-btn-size, 44px);
+  min-width: 20px;
+  min-height: 20px;
   border-radius: var(--rs-modal-btn-radius, 50%);
   border: 0;
   cursor: pointer;
@@ -503,19 +517,12 @@
   stroke: currentColor;
 }
 
-/* Modal buttons: active state */
-.rs-adv-images .rs-adv-modal .rs-adv-nav:active,
-.rs-adv-images .rs-adv-modal .rs-adv-modal-close:active {
-  background: var(--rs-modal-btn-bg-active, var(--rs-modal-btn-bg-hover, var(--e-global-color-primary)));
-  color: var(--rs-modal-btn-color-active, var(--rs-modal-btn-color, #fff));
-}
-
 /* Close button specific positioning and typography */
 .rs-adv-images .rs-adv-modal-close {
   position: absolute;
   top: 8px;
   right: 8px;
-  font-size: 18px;
+  font-size: calc(var(--rs-modal-btn-size, 44px) * var(--rs-modal-icon-scale, 0.45));
   /* fallback × size */
   line-height: 1;
   padding: 0;
@@ -525,14 +532,18 @@
 }
 
 /* Constrain modal close icon sizes (font icons and SVG) */
-.rs-adv-images .rs-adv-modal-close i {
-  font-size: 18px;
+/* Modal buttons: scale icons with button size */
+.rs-adv-images .rs-adv-modal .rs-adv-nav i,
+.rs-adv-images .rs-adv-modal .rs-adv-modal-close i {
+  font-size: calc(var(--rs-modal-btn-size, 44px) * var(--rs-modal-icon-scale, 0.45));
   font-weight: normal;
+  line-height: 1;
 }
 
-.rs-adv-images .rs-adv-modal-close svg {
-  width: 18px;
-  height: 18px;
+.rs-adv-images .rs-adv-modal .rs-adv-nav svg,
+.rs-adv-images .rs-adv-modal .rs-adv-modal-close svg {
+  width: calc(var(--rs-modal-btn-size, 44px) * var(--rs-modal-icon-scale, 0.45));
+  height: calc(var(--rs-modal-btn-size, 44px) * var(--rs-modal-icon-scale, 0.45));
 }
 
 .rs-adv-images .rs-adv-nav {
