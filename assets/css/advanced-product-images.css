@@ -41,21 +41,17 @@
   flex-direction: row-reverse;
 }
 
-.rs-adv-images.layout-desktop-left .rs-adv-thumbs,
-.rs-adv-images.layout-desktop-right .rs-adv-thumbs {
-  flex-direction: column;
-  flex-wrap: nowrap;
-  height: var(--rs-main-image-height);
-  width: calc(var(--thumb-size) + var(--thumb-gap) * 2);
-  padding: 5px;
-  overflow: auto;
-}
+@media (min-width: 1025px) {
 
-.rs-adv-images.layout-desktop-left .rs-adv-main-wrap,
-.rs-adv-images.layout-desktop-right .rs-adv-main-wrap,
-.rs-adv-images.layout-desktop-left .rs-adv-main,
-.rs-adv-images.layout-desktop-right .rs-adv-main {
-  flex: 1;
+  .rs-adv-images.layout-desktop-left .rs-adv-thumbs,
+  .rs-adv-images.layout-desktop-right .rs-adv-thumbs {
+    flex-direction: column;
+    flex-wrap: nowrap;
+    height: var(--rs-main-image-height);
+    width: calc(var(--thumb-size) + var(--thumb-gap) * 2);
+    padding: 5px;
+    overflow: auto;
+  }
 }
 
 /* When single-line thumbs are used in a horizontal layout, prevent the main image from being pushed out. */
@@ -96,6 +92,11 @@
   .rs-adv-images.layout-tablet-left .rs-adv-thumbs,
   .rs-adv-images.layout-tablet-right .rs-adv-thumbs {
     flex-direction: column;
+    flex-wrap: nowrap;
+    height: var(--rs-main-image-height);
+    width: calc(var(--thumb-size) + var(--thumb-gap) * 2);
+    padding: 5px;
+    overflow: auto;
   }
 
   .rs-adv-images.layout-tablet-left .rs-adv-main-wrap,
@@ -138,6 +139,11 @@
   .rs-adv-images.layout-mobile-left .rs-adv-thumbs,
   .rs-adv-images.layout-mobile-right .rs-adv-thumbs {
     flex-direction: column;
+    flex-wrap: nowrap;
+    height: var(--rs-main-image-height);
+    width: calc(var(--thumb-size) + var(--thumb-gap) * 2);
+    padding: 5px;
+    overflow: auto;
   }
 
   .rs-adv-images.layout-mobile-left .rs-adv-main-wrap,
@@ -395,7 +401,8 @@
   background: var(--rs-thumb-nav-bg, var(--e-global-color-primary));
   color: var(--rs-thumb-nav-color, #fff);
   opacity: .95;
-  line-height: 0; /* prevent baseline offset */
+  line-height: 0;
+  /* prevent baseline offset */
 }
 
 .rs-adv-images .rs-adv-thumbs-nav.is-hidden {
@@ -420,23 +427,44 @@
   display: none;
 }
 
-/* Vertical layouts (left/right): show up/down, hide left/right */
-.rs-adv-images.layout-desktop-left .rs-adv-thumbs-nav .icon-h,
-.rs-adv-images.layout-desktop-right .rs-adv-thumbs-nav .icon-h,
-.rs-adv-images.layout-tablet-left .rs-adv-thumbs-nav .icon-h,
-.rs-adv-images.layout-tablet-right .rs-adv-thumbs-nav .icon-h,
-.rs-adv-images.layout-mobile-left .rs-adv-thumbs-nav .icon-h,
-.rs-adv-images.layout-mobile-right .rs-adv-thumbs-nav .icon-h {
-  display: none;
+/* Icon swap per breakpoint to avoid cross-scope overrides */
+@media (min-width: 1025px) {
+
+  .rs-adv-images.layout-desktop-left .rs-adv-thumbs-nav .icon-h,
+  .rs-adv-images.layout-desktop-right .rs-adv-thumbs-nav .icon-h {
+    display: none;
+  }
+
+  .rs-adv-images.layout-desktop-left .rs-adv-thumbs-nav .icon-v,
+  .rs-adv-images.layout-desktop-right .rs-adv-thumbs-nav .icon-v {
+    display: inline-block;
+  }
 }
 
-.rs-adv-images.layout-desktop-left .rs-adv-thumbs-nav .icon-v,
-.rs-adv-images.layout-desktop-right .rs-adv-thumbs-nav .icon-v,
-.rs-adv-images.layout-tablet-left .rs-adv-thumbs-nav .icon-v,
-.rs-adv-images.layout-tablet-right .rs-adv-thumbs-nav .icon-v,
-.rs-adv-images.layout-mobile-left .rs-adv-thumbs-nav .icon-v,
-.rs-adv-images.layout-mobile-right .rs-adv-thumbs-nav .icon-v {
-  display: inline-block;
+@media (min-width: 768px) and (max-width: 1024px) {
+
+  .rs-adv-images.layout-tablet-left .rs-adv-thumbs-nav .icon-h,
+  .rs-adv-images.layout-tablet-right .rs-adv-thumbs-nav .icon-h {
+    display: none;
+  }
+
+  .rs-adv-images.layout-tablet-left .rs-adv-thumbs-nav .icon-v,
+  .rs-adv-images.layout-tablet-right .rs-adv-thumbs-nav .icon-v {
+    display: inline-block;
+  }
+}
+
+@media (max-width: 767px) {
+
+  .rs-adv-images.layout-mobile-left .rs-adv-thumbs-nav .icon-h,
+  .rs-adv-images.layout-mobile-right .rs-adv-thumbs-nav .icon-h {
+    display: none;
+  }
+
+  .rs-adv-images.layout-mobile-left .rs-adv-thumbs-nav .icon-v,
+  .rs-adv-images.layout-mobile-right .rs-adv-thumbs-nav .icon-v {
+    display: inline-block;
+  }
 }
 
 /* Hide native scrollbar */
