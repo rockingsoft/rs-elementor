@@ -71,29 +71,6 @@
   .rs-adv-images.layout-desktop-right .rs-adv-thumbs-nav .icon-v {
     display: inline-block;
   }
-
-  /* Custom scrollbar for Webkit browsers */
-  .rs-adv-images.layout-desktop-top .rs-adv-thumbs::-webkit-scrollbar,
-  .rs-adv-images.layout-desktop-bottom .rs-adv-thumbs::-webkit-scrollbar {
-    height: 6px;
-  }
-
-  .rs-adv-images.layout-desktop-top .rs-adv-thumbs::-webkit-scrollbar-track,
-  .rs-adv-images.layout-desktop-bottom .rs-adv-thumbs::-webkit-scrollbar-track {
-    background: #f1f1f1;
-    border-radius: 10px;
-  }
-
-  .rs-adv-images.layout-desktop-top .rs-adv-thumbs::-webkit-scrollbar-thumb,
-  .rs-adv-images.layout-desktop-bottom .rs-adv-thumbs::-webkit-scrollbar-thumb {
-    background: #ccc;
-    border-radius: 10px;
-  }
-
-  .rs-adv-images.layout-desktop-top .rs-adv-thumbs::-webkit-scrollbar-thumb:hover,
-  .rs-adv-images.layout-desktop-bottom .rs-adv-thumbs::-webkit-scrollbar-thumb:hover {
-    background: #aaa;
-  }
 }
 
 @media (max-width: 1024px) {
@@ -142,7 +119,7 @@
     flex: 1;
   }
 
-  /* Horizontal top/bottom thumbs scrolling & scrollbar styling */
+  /* Horizontal top/bottom thumbs scrolling */
   .rs-adv-images.layout-tablet-top .rs-adv-thumbs,
   .rs-adv-images.layout-tablet-bottom .rs-adv-thumbs {
     contain: inline-size;
@@ -150,8 +127,6 @@
     overflow-x: auto;
     overflow-y: hidden;
     padding: 4px 4px 8px;
-    scrollbar-width: thin;
-    scrollbar-color: #ccc #f1f1f1;
   }
 
   /* Thumbs wrap orientation */
@@ -197,8 +172,6 @@
     overflow-x: auto;
     overflow-y: hidden;
     padding: 4px 4px 8px;
-    scrollbar-width: thin;
-    scrollbar-color: #ccc #f1f1f1;
   }
 
   .rs-adv-images.layout-mobile-left .rs-adv-thumbs,
@@ -460,10 +433,16 @@
 /* Hide native scrollbar */
 .rs-adv-images.layout-desktop-top .rs-adv-thumbs::-webkit-scrollbar,
 .rs-adv-images.layout-desktop-bottom .rs-adv-thumbs::-webkit-scrollbar,
+.rs-adv-images.layout-desktop-left .rs-adv-thumbs::-webkit-scrollbar,
+.rs-adv-images.layout-desktop-right .rs-adv-thumbs::-webkit-scrollbar,
 .rs-adv-images.layout-tablet-top .rs-adv-thumbs::-webkit-scrollbar,
 .rs-adv-images.layout-tablet-bottom .rs-adv-thumbs::-webkit-scrollbar,
+.rs-adv-images.layout-tablet-left .rs-adv-thumbs::-webkit-scrollbar,
+.rs-adv-images.layout-tablet-right .rs-adv-thumbs::-webkit-scrollbar,
 .rs-adv-images.layout-mobile-top .rs-adv-thumbs::-webkit-scrollbar,
-.rs-adv-images.layout-mobile-bottom .rs-adv-thumbs::-webkit-scrollbar {
+.rs-adv-images.layout-mobile-bottom .rs-adv-thumbs::-webkit-scrollbar,
+.rs-adv-images.layout-mobile-left .rs-adv-thumbs::-webkit-scrollbar,
+.rs-adv-images.layout-mobile-right .rs-adv-thumbs::-webkit-scrollbar {
   display: none;
 }
 
