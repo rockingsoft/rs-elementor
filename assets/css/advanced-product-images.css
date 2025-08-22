@@ -233,7 +233,7 @@
 .rs-adv-images .rs-adv-main-img {
   max-width: 100%;
   width: auto;
-  height: auto;
+  height: var(--rs-main-image-height);
   object-fit: contain;
   object-position: center;
   display: block;
@@ -314,45 +314,41 @@
   border-radius: 12px;
 }
 
-.rs-adv-images .rs-adv-modal-close {
-  position: absolute;
-  top: 8px;
-  right: 8px;
+/* Shared modal button styles */
+.rs-adv-images button {
   width: 44px;
   height: 44px;
   border-radius: 50%;
   border: 0;
+  cursor: pointer;
   background: #2F6E63;
   color: #fff;
-  cursor: pointer;
   display: grid;
   place-items: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, .18);
+}
+
+.rs-adv-images button:hover {
+  background: #255A52;
+}
+
+/* Close button specific positioning and typography */
+.rs-adv-images .rs-adv-modal-close {
+  position: absolute;
+  top: 8px;
+  right: 8px;
   font-size: 20px;
   line-height: 1;
   padding: 0;
   text-align: center;
   font-weight: 600;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, .18);
   z-index: 3;
-}
-
-.rs-adv-images .rs-adv-modal-close:hover {
-  background: #255A52;
 }
 
 .rs-adv-images .rs-adv-nav {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  border: 0;
-  cursor: pointer;
-  background: #2F6E63;
-  color: #fff;
-  display: grid;
-  place-items: center;
   z-index: 2;
 }
 
