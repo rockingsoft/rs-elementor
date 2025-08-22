@@ -492,7 +492,7 @@ class RS_Elementor_Widget_Advanced_Add_To_Cart extends \Elementor\Widget_Base {
 		if ( function_exists( 'is_product' ) && is_product() && $hide_wc_variations ) {
 			$wrapper_classes .= ' rs-hide-wc-variations';
 		}
-		if ( $settings['hide_stock_notices'] === 'yes' ) {
+		if ( 'yes' === $settings['hide_stock_notices'] ) {
 			$wrapper_classes .= ' rs-hide-stock-notices';
 		}
 
