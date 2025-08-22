@@ -119,6 +119,7 @@ class RS_Elementor_Widget_Advanced_Product_Images extends \Elementor\Widget_Base
 				'tablet_default' => 'bottom',
 				'mobile_default' => 'bottom',
 				'toggle'         => false,
+				'frontend_available' => true,
 			)
 		);
 
