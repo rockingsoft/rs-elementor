@@ -56,7 +56,7 @@
         var large = active.getAttribute('data-large') || active.getAttribute('data-full');
         if (large && mainImg) { mainImg.src = large; }
         // Aspect ratio will update on image load event
-        if (modal && modal.classList.contains('is-open')) updateNavVisibility();
+        updateNavVisibility();
         updateThumbNav();
       }
 
