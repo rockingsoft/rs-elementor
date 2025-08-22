@@ -372,10 +372,9 @@
   display: grid;
   place-items: center;
   cursor: pointer;
-  background: var(--rs-thumb-nav-bg, var(--e-global-color-primary));
+  background: rgba(var(--rs-thumb-nav-bg, var(--e-global-color-primary)), .95);
   color: var(--rs-thumb-nav-color, #fff);
   box-shadow: 0 2px 8px rgba(0, 0, 0, .18);
-  opacity: .95;
 }
 
 .rs-adv-images .rs-adv-thumbs-nav:hover {
