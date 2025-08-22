@@ -1,4 +1,3 @@
-/* ===== Scoped styles – ONLY inside .rs-adv-images ===== */
 .rs-adv-images {
   width: 100%;
   max-width: 100%;
@@ -52,19 +51,55 @@
     padding: 5px;
     overflow: auto;
   }
+
+  .rs-adv-images.layout-desktop-top .rs-adv-thumbs,
+  .rs-adv-images.layout-desktop-bottom .rs-adv-thumbs {
+    contain: inline-size;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 4px 4px 8px;
+  }
+
+  /* Icon swap for vertical thumbs on desktop */
+  .rs-adv-images.layout-desktop-left .rs-adv-thumbs-nav .icon-h,
+  .rs-adv-images.layout-desktop-right .rs-adv-thumbs-nav .icon-h {
+    display: none;
+  }
+
+  .rs-adv-images.layout-desktop-left .rs-adv-thumbs-nav .icon-v,
+  .rs-adv-images.layout-desktop-right .rs-adv-thumbs-nav .icon-v {
+    display: inline-block;
+  }
+
+  /* Custom scrollbar for Webkit browsers */
+  .rs-adv-images.layout-desktop-top .rs-adv-thumbs::-webkit-scrollbar,
+  .rs-adv-images.layout-desktop-bottom .rs-adv-thumbs::-webkit-scrollbar {
+    height: 6px;
+  }
+
+  .rs-adv-images.layout-desktop-top .rs-adv-thumbs::-webkit-scrollbar-track,
+  .rs-adv-images.layout-desktop-bottom .rs-adv-thumbs::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+  }
+
+  .rs-adv-images.layout-desktop-top .rs-adv-thumbs::-webkit-scrollbar-thumb,
+  .rs-adv-images.layout-desktop-bottom .rs-adv-thumbs::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 10px;
+  }
+
+  .rs-adv-images.layout-desktop-top .rs-adv-thumbs::-webkit-scrollbar-thumb:hover,
+  .rs-adv-images.layout-desktop-bottom .rs-adv-thumbs::-webkit-scrollbar-thumb:hover {
+    background: #aaa;
+  }
 }
 
-/* When single-line thumbs are used in a horizontal layout, prevent the main image from being pushed out. */
-.rs-thumbs-nowrap-yes.layout-desktop-left .rs-adv-main-wrap,
-.rs-thumbs-nowrap-yes.layout-desktop-right .rs-adv-main-wrap {
-  min-width: 0;
-}
-
-/* Tablet */
 @media (max-width: 1024px) {
 
-  .rs-thumbs-nowrap-yes.layout-tablet-left .rs-adv-main-wrap,
-  .rs-thumbs-nowrap-yes.layout-tablet-right .rs-adv-main-wrap {
+  .rs-adv-images.layout-tablet-left .rs-adv-main-wrap,
+  .rs-adv-images.layout-tablet-right .rs-adv-main-wrap {
     min-width: 0;
   }
 
@@ -87,6 +122,7 @@
   .rs-adv-images.layout-tablet-top .rs-adv-thumbs,
   .rs-adv-images.layout-tablet-bottom .rs-adv-thumbs {
     flex-direction: row;
+    width: 100%;
   }
 
   .rs-adv-images.layout-tablet-left .rs-adv-thumbs,
@@ -105,13 +141,35 @@
   .rs-adv-images.layout-tablet-right .rs-adv-main {
     flex: 1;
   }
+
+  /* Horizontal top/bottom thumbs scrolling & scrollbar styling */
+  .rs-adv-images.layout-tablet-top .rs-adv-thumbs,
+  .rs-adv-images.layout-tablet-bottom .rs-adv-thumbs {
+    contain: inline-size;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 4px 4px 8px;
+    scrollbar-width: thin;
+    scrollbar-color: #ccc #f1f1f1;
+  }
+
+  /* Thumbs wrap orientation */
+  .rs-adv-images.layout-tablet-top .rs-adv-thumbs-wrap,
+  .rs-adv-images.layout-tablet-bottom .rs-adv-thumbs-wrap {
+    flex-direction: row;
+  }
+
+  .rs-adv-images.layout-tablet-left .rs-adv-thumbs-wrap,
+  .rs-adv-images.layout-tablet-right .rs-adv-thumbs-wrap {
+    flex-direction: column;
+  }
 }
 
-/* Mobile */
 @media (max-width: 767px) {
 
-  .rs-thumbs-nowrap-yes.layout-mobile-left .rs-adv-main-wrap,
-  .rs-thumbs-nowrap-yes.layout-mobile-right .rs-adv-main-wrap {
+  .rs-adv-images.layout-mobile-left .rs-adv-main-wrap,
+  .rs-adv-images.layout-mobile-right .rs-adv-main-wrap {
     min-width: 0;
   }
 
@@ -134,6 +192,13 @@
   .rs-adv-images.layout-mobile-top .rs-adv-thumbs,
   .rs-adv-images.layout-mobile-bottom .rs-adv-thumbs {
     flex-direction: row;
+    contain: inline-size;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 4px 4px 8px;
+    scrollbar-width: thin;
+    scrollbar-color: #ccc #f1f1f1;
   }
 
   .rs-adv-images.layout-mobile-left .rs-adv-thumbs,
@@ -152,50 +217,43 @@
   .rs-adv-images.layout-mobile-right .rs-adv-main {
     flex: 1;
   }
+
+  /* Thumbs wrap orientation */
+  .rs-adv-images.layout-mobile-top .rs-adv-thumbs-wrap,
+  .rs-adv-images.layout-mobile-bottom .rs-adv-thumbs-wrap {
+    flex-direction: row;
+  }
+
+  .rs-adv-images.layout-mobile-left .rs-adv-thumbs-wrap,
+  .rs-adv-images.layout-mobile-right .rs-adv-thumbs-wrap {
+    flex-direction: column;
+  }
+
+  /* Icon swap for vertical thumbs on mobile */
+  .rs-adv-images.layout-mobile-left .rs-adv-thumbs-nav .icon-h,
+  .rs-adv-images.layout-mobile-right .rs-adv-thumbs-nav .icon-h {
+    display: none;
+  }
+
+  .rs-adv-images.layout-mobile-left .rs-adv-thumbs-nav .icon-v,
+  .rs-adv-images.layout-mobile-right .rs-adv-thumbs-nav .icon-v {
+    display: inline-block;
+  }
 }
 
 /* Thumbs (ocultas si existe .hide-thumbs) */
 .rs-adv-images .rs-adv-thumbs {
   display: flex;
   gap: var(--thumb-gap, 8px);
-  flex-wrap: wrap;
 }
 
-.rs-thumbs-nowrap-yes .rs-adv-thumbs {
-  contain: inline-size;
-  flex-wrap: nowrap;
-  overflow-x: auto;
-  overflow-y: hidden;
-  /* Hide vertical scrollbar if it appears */
-  padding: 4px 4px 8px;
-  /* Space for scrollbar */
-  scrollbar-width: thin;
-  /* Firefox */
-  scrollbar-color: #ccc #f1f1f1;
-  /* Firefox */
+/* Orientation-aware layout for thumbs wrap */
+.rs-adv-images.layout-mobile-portrait .rs-adv-thumbs {
+  flex-direction: column;
 }
 
-/* Custom scrollbar for Webkit browsers */
-.rs-thumbs-nowrap-yes .rs-adv-thumbs::-webkit-scrollbar {
-  height: 6px;
-}
-
-.rs-thumbs-nowrap-yes .rs-adv-thumbs::-webkit-scrollbar-track {
-  background: #f1f1f1;
-  border-radius: 10px;
-}
-
-.rs-thumbs-nowrap-yes .rs-adv-thumbs::-webkit-scrollbar-thumb {
-  background: #ccc;
-  border-radius: 10px;
-}
-
-.rs-thumbs-nowrap-yes .rs-adv-thumbs::-webkit-scrollbar-thumb:hover {
-  background: #aaa;
-}
-
-.rs-adv-images.hide-thumbs .rs-adv-thumbs {
-  display: none;
+.rs-adv-images.layout-mobile-landscape .rs-adv-thumbs {
+  flex-direction: row;
 }
 
 .rs-adv-images .rs-adv-thumb {
@@ -360,34 +418,6 @@
   flex-direction: column;
 }
 
-/* Tablet */
-@media (max-width: 1024px) {
-
-  .rs-adv-images.layout-tablet-top .rs-adv-thumbs-wrap,
-  .rs-adv-images.layout-tablet-bottom .rs-adv-thumbs-wrap {
-    flex-direction: row;
-  }
-
-  .rs-adv-images.layout-tablet-left .rs-adv-thumbs-wrap,
-  .rs-adv-images.layout-tablet-right .rs-adv-thumbs-wrap {
-    flex-direction: column;
-  }
-}
-
-/* Mobile */
-@media (max-width: 767px) {
-
-  .rs-adv-images.layout-mobile-top .rs-adv-thumbs-wrap,
-  .rs-adv-images.layout-mobile-bottom .rs-adv-thumbs-wrap {
-    flex-direction: row;
-  }
-
-  .rs-adv-images.layout-mobile-left .rs-adv-thumbs-wrap,
-  .rs-adv-images.layout-mobile-right .rs-adv-thumbs-wrap {
-    flex-direction: column;
-  }
-}
-
 .rs-adv-images .rs-adv-thumbs-nav {
   width: 36px;
   height: 36px;
@@ -427,58 +457,14 @@
   display: none;
 }
 
-/* Icon swap per breakpoint to avoid cross-scope overrides */
-@media (min-width: 1025px) {
-
-  .rs-adv-images.layout-desktop-left .rs-adv-thumbs-nav .icon-h,
-  .rs-adv-images.layout-desktop-right .rs-adv-thumbs-nav .icon-h {
-    display: none;
-  }
-
-  .rs-adv-images.layout-desktop-left .rs-adv-thumbs-nav .icon-v,
-  .rs-adv-images.layout-desktop-right .rs-adv-thumbs-nav .icon-v {
-    display: inline-block;
-  }
-}
-
-@media (min-width: 768px) and (max-width: 1024px) {
-
-  .rs-adv-images.layout-tablet-left .rs-adv-thumbs-nav .icon-h,
-  .rs-adv-images.layout-tablet-right .rs-adv-thumbs-nav .icon-h {
-    display: none;
-  }
-
-  .rs-adv-images.layout-tablet-left .rs-adv-thumbs-nav .icon-v,
-  .rs-adv-images.layout-tablet-right .rs-adv-thumbs-nav .icon-v {
-    display: inline-block;
-  }
-}
-
-@media (max-width: 767px) {
-
-  .rs-adv-images.layout-mobile-left .rs-adv-thumbs-nav .icon-h,
-  .rs-adv-images.layout-mobile-right .rs-adv-thumbs-nav .icon-h {
-    display: none;
-  }
-
-  .rs-adv-images.layout-mobile-left .rs-adv-thumbs-nav .icon-v,
-  .rs-adv-images.layout-mobile-right .rs-adv-thumbs-nav .icon-v {
-    display: inline-block;
-  }
-}
-
 /* Hide native scrollbar */
-.rs-thumbs-nowrap-yes .rs-adv-thumbs::-webkit-scrollbar {
+.rs-adv-images.layout-desktop-top .rs-adv-thumbs::-webkit-scrollbar,
+.rs-adv-images.layout-desktop-bottom .rs-adv-thumbs::-webkit-scrollbar,
+.rs-adv-images.layout-tablet-top .rs-adv-thumbs::-webkit-scrollbar,
+.rs-adv-images.layout-tablet-bottom .rs-adv-thumbs::-webkit-scrollbar,
+.rs-adv-images.layout-mobile-top .rs-adv-thumbs::-webkit-scrollbar,
+.rs-adv-images.layout-mobile-bottom .rs-adv-thumbs::-webkit-scrollbar {
   display: none;
-}
-
-/* Orientation-aware layout for thumbs wrap */
-.rs-adv-images.layout-mobile-portrait .rs-adv-thumbs {
-  flex-direction: column;
-}
-
-.rs-adv-images.layout-mobile-landscape .rs-adv-thumbs {
-  flex-direction: row;
 }
 
 .rs-adv-images .rs-adv-modal-backdrop {
