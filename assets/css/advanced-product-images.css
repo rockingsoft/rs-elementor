@@ -6,6 +6,14 @@
   overflow: hidden;
 }
 
+/* Ensure icons inherit color for both <i> and <svg> rendered by Elementor Icons_Manager */
+.rs-adv-images .rs-adv-inline-btn i,
+.rs-adv-images .rs-adv-inline-btn svg {
+  color: inherit;
+  fill: currentColor;
+  stroke: currentColor;
+}
+
 /* Layout (the HTML ya trae layout-top) */
 .rs-adv-images .rs-adv-images-inner {
   min-width: 0;
@@ -337,6 +345,16 @@
 .rs-adv-images .rs-adv-modal .rs-adv-modal-close:hover {
   background: var(--rs-modal-btn-bg-hover, var(--e-global-color-accent));
   color: var(--rs-modal-btn-color-hover, #fff);
+}
+
+/* Modal icons should follow the button color */
+.rs-adv-images .rs-adv-modal .rs-adv-nav i,
+.rs-adv-images .rs-adv-modal .rs-adv-nav svg,
+.rs-adv-images .rs-adv-modal .rs-adv-modal-close i,
+.rs-adv-images .rs-adv-modal .rs-adv-modal-close svg {
+  color: inherit;
+  fill: currentColor;
+  stroke: currentColor;
 }
 
 /* Modal buttons: active state */

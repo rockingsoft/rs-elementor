@@ -351,22 +351,26 @@ class RS_Elementor_Widget_Advanced_Product_Images extends \Elementor\Widget_Base
 		);
 
 		$this->add_control(
-			'inline_prev_icon_class',
+			'inline_prev_icon',
 			array(
-				'label'       => esc_html__( 'Prev Icon Class', 'rs-elementor-widgets' ),
-				'type'        => \Elementor\Controls_Manager::TEXT,
-				'placeholder' => 'fas fa-chevron-left',
-				'default'     => 'fas fa-chevron-left',
+				'label'   => esc_html__( 'Previous Icon', 'rs-elementor-widgets' ),
+				'type'    => \Elementor\Controls_Manager::ICONS,
+				'default' => array(
+					'value'   => 'fas fa-chevron-left',
+					'library' => 'fa-solid',
+				),
 			)
 		);
 
 		$this->add_control(
-			'inline_next_icon_class',
+			'inline_next_icon',
 			array(
-				'label'       => esc_html__( 'Next Icon Class', 'rs-elementor-widgets' ),
-				'type'        => \Elementor\Controls_Manager::TEXT,
-				'placeholder' => 'fas fa-chevron-right',
-				'default'     => 'fas fa-chevron-right',
+				'label'   => esc_html__( 'Next Icon', 'rs-elementor-widgets' ),
+				'type'    => \Elementor\Controls_Manager::ICONS,
+				'default' => array(
+					'value'   => 'fas fa-chevron-right',
+					'library' => 'fa-solid',
+				),
 			)
 		);
 
@@ -770,7 +774,14 @@ class RS_Elementor_Widget_Advanced_Product_Images extends \Elementor\Widget_Base
 				<?php if ( ! empty( $settings['inline_navigation'] ) && 'yes' === $settings['inline_navigation'] ) : ?>
 					<div class="rs-adv-main-wrap">
 						<button type="button" class="rs-adv-inline-btn rs-adv-inline-prev" aria-label="<?php echo esc_attr__( 'Previous image', 'rs-elementor-widgets' ); ?>" aria-disabled="true">
-							<i class="<?php echo esc_attr( $settings['inline_prev_icon_class'] ?? 'fas fa-chevron-left' ); ?>" aria-hidden="true"></i>
+							<?php
+							if ( ! empty( $settings['inline_prev_icon'] ) && ! empty( $settings['inline_prev_icon']['value'] ) ) {
+								\Elementor\Icons_Manager::render_icon( $settings['inline_prev_icon'], array( 'aria-hidden' => 'true' ) );
+							} else {
+								$prev_class = $settings['inline_prev_icon_class'] ?? 'fas fa-chevron-left';
+								echo '<i class="' . esc_attr( $prev_class ) . '" aria-hidden="true"></i>';
+							}
+							?>
 						</button>
 						<div class="rs-adv-main" role="button" tabindex="0" aria-label="<?php echo esc_attr__( 'Open image in fullscreen', 'rs-elementor-widgets' ); ?>">
 							<?php
@@ -785,7 +796,14 @@ class RS_Elementor_Widget_Advanced_Product_Images extends \Elementor\Widget_Base
 							<?php endif; ?>
 						</div>
 						<button type="button" class="rs-adv-inline-btn rs-adv-inline-next" aria-label="<?php echo esc_attr__( 'Next image', 'rs-elementor-widgets' ); ?>" aria-disabled="<?php echo count( $images ) > 1 ? 'false' : 'true'; ?>">
-							<i class="<?php echo esc_attr( $settings['inline_next_icon_class'] ?? 'fas fa-chevron-right' ); ?>" aria-hidden="true"></i>
+							<?php
+							if ( ! empty( $settings['inline_next_icon'] ) && ! empty( $settings['inline_next_icon']['value'] ) ) {
+								\Elementor\Icons_Manager::render_icon( $settings['inline_next_icon'], array( 'aria-hidden' => 'true' ) );
+							} else {
+								$next_class = $settings['inline_next_icon_class'] ?? 'fas fa-chevron-right';
+								echo '<i class="' . esc_attr( $next_class ) . '" aria-hidden="true"></i>';
+							}
+							?>
 						</button>
 					</div>
 				<?php else : ?>
