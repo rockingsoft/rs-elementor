@@ -6,6 +6,10 @@
       if (!thumbs.length) return;
       var mainImg = root.querySelector('.rs-adv-main-img');
       var mainArea = root.querySelector('.rs-adv-main');
+      var thumbsWrap = root.querySelector('.rs-adv-thumbs-wrap');
+      var thumbsContainer = root.querySelector('.rs-adv-thumbs');
+      var thumbsPrev = root.querySelector('.rs-adv-thumbs-prev');
+      var thumbsNext = root.querySelector('.rs-adv-thumbs-next');
       var modal = root.querySelector('.rs-adv-modal');
       var modalImg = root.querySelector('.rs-adv-modal-img');
       var btnClose = root.querySelector('.rs-adv-modal-close');
@@ -43,17 +47,17 @@
         active.classList.add('is-active');
 
         // If single-line mode is active, scroll the thumbnail into view.
-        if (root.classList.contains('rs-thumbs-nowrap-yes')) {
-          active.scrollIntoView({
-            behavior: 'smooth',
-            block: 'nearest',
-            inline: 'center'
-          });
-        }
+        // Always ensure active thumb is visible
+        active.scrollIntoView({
+          behavior: 'smooth',
+          block: 'nearest',
+          inline: 'center'
+        });
         var large = active.getAttribute('data-large') || active.getAttribute('data-full');
         if (large && mainImg) { mainImg.src = large; }
         // Aspect ratio will update on image load event
         if (modal && modal.classList.contains('is-open')) updateNavVisibility();
+        updateThumbNav();
       }
 
       function updateModalImage() {
@@ -189,6 +193,66 @@
 
       setCurrent(0);
       updateNavVisibility();
+
+      // ---- Thumbnails nav (arrows) ----
+      function isVertical() {
+        if (!thumbsContainer) return false;
+        var style = window.getComputedStyle(thumbsContainer);
+        return style.flexDirection === 'column';
+      }
+
+      function updateThumbNav() {
+        if (!thumbsContainer || !thumbsPrev || !thumbsNext) return;
+        var vertical = isVertical();
+        var pos = vertical ? thumbsContainer.scrollTop : thumbsContainer.scrollLeft;
+        var size = vertical ? thumbsContainer.clientHeight : thumbsContainer.clientWidth;
+        var scrollSize = vertical ? thumbsContainer.scrollHeight : thumbsContainer.scrollWidth;
+        var atStart = pos <= 0;
+        var atEnd = (pos + size) >= (scrollSize - 1);
+        thumbsPrev.classList.toggle('is-disabled', atStart);
+        thumbsPrev.setAttribute('aria-disabled', atStart ? 'true' : 'false');
+        thumbsPrev.tabIndex = atStart ? -1 : 0;
+        thumbsNext.classList.toggle('is-disabled', atEnd);
+        thumbsNext.setAttribute('aria-disabled', atEnd ? 'true' : 'false');
+        thumbsNext.tabIndex = atEnd ? -1 : 0;
+      }
+
+      function scrollThumbs(dir) {
+        if (!thumbsContainer) return;
+        var vertical = isVertical();
+        var gap = parseInt(getComputedStyle(thumbsContainer).gap || '8', 10) || 8;
+        // Use first thumb size as step
+        var thumbEl = thumbs[0];
+        var step = 0;
+        if (thumbEl) {
+          var rect = thumbEl.getBoundingClientRect();
+          step = vertical ? (rect.height + gap) : (rect.width + gap);
+        }
+        if (!step) step = vertical ? (thumbsContainer.clientHeight * 0.9) : (thumbsContainer.clientWidth * 0.9);
+        var delta = dir * step;
+        if (vertical) {
+          thumbsContainer.scrollBy({ top: delta, left: 0, behavior: 'smooth' });
+        } else {
+          thumbsContainer.scrollBy({ left: delta, top: 0, behavior: 'smooth' });
+        }
+        // Recompute disabled state after scrolling settles
+        setTimeout(updateThumbNav, 250);
+      }
+
+      if (thumbsPrev && thumbsNext && thumbsContainer) {
+        thumbsPrev.addEventListener('click', function () {
+          if (thumbsPrev.classList.contains('is-disabled')) return;
+          scrollThumbs(-1);
+        });
+        thumbsNext.addEventListener('click', function () {
+          if (thumbsNext.classList.contains('is-disabled')) return;
+          scrollThumbs(1);
+        });
+        thumbsContainer.addEventListener('scroll', updateThumbNav, { passive: true });
+        window.addEventListener('resize', function () { setTimeout(updateThumbNav, 100); });
+        // Initialize state
+        updateThumbNav();
+      }
 
       // Editor preview: if modal has preview-open class, open it programmatically
       if (modal && modal.classList.contains('is-preview-open')) {

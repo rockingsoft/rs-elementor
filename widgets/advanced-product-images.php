@@ -821,15 +821,23 @@ class RS_Elementor_Widget_Advanced_Product_Images extends \Elementor\Widget_Base
 		?>
 		<div id="<?php echo esc_attr( $widget_id ); ?>" class="<?php echo esc_attr( $container_classes ); ?>" data-variation-map="<?php echo esc_attr( $var_map_json ); ?>" data-click-action="<?php echo esc_attr( $click_action ); ?>" data-click-url="<?php echo esc_url( $click_url ); ?>" data-click-new-tab="<?php echo esc_attr( $click_new_tab ); ?>">
 			<div class="rs-adv-images-inner">
-				<div class="rs-adv-thumbs" style="--thumb-size: <?php echo (int) $thumb_size; ?>px; --thumb-gap: <?php echo (int) $thumb_gap; ?>px;"<?php echo $hide_thumbnails ? ' aria-hidden="true"' : ''; ?>>
-					<?php foreach ( $images as $index => $img ) : ?>
-						<button type="button" class="rs-adv-thumb<?php echo ( 0 === (int) $index ) ? ' is-active' : ''; ?>" data-index="<?php echo (int) $index; ?>" data-full="<?php echo esc_url( $img['full'] ); ?>" data-large="<?php echo esc_url( $img['large'] ); ?>">
-							<?php
-							$thumb_src = $img['thumb'] ? $img['thumb'] : ( $img['large'] ? $img['large'] : $img['full'] );
-							?>
-							<img src="<?php echo esc_url( $thumb_src ); ?>" alt="<?php echo esc_attr( $img['alt'] ); ?>"/>
-						</button>
-					<?php endforeach; ?>
+				<div class="rs-adv-thumbs-wrap"<?php echo $hide_thumbnails ? ' aria-hidden="true"' : ''; ?>>
+					<button type="button" class="rs-adv-thumbs-nav rs-adv-thumbs-prev" aria-label="<?php echo esc_attr__( 'Scroll thumbnails previous', 'rs-elementor-widgets' ); ?>" tabindex="0">
+						<span aria-hidden="true">&#10094;</span>
+					</button>
+					<div class="rs-adv-thumbs" style="--thumb-size: <?php echo (int) $thumb_size; ?>px; --thumb-gap: <?php echo (int) $thumb_gap; ?>px;">
+						<?php foreach ( $images as $index => $img ) : ?>
+							<button type="button" class="rs-adv-thumb<?php echo ( 0 === (int) $index ) ? ' is-active' : ''; ?>" data-index="<?php echo (int) $index; ?>" data-full="<?php echo esc_url( $img['full'] ); ?>" data-large="<?php echo esc_url( $img['large'] ); ?>">
+								<?php
+								$thumb_src = $img['thumb'] ? $img['thumb'] : ( $img['large'] ? $img['large'] : $img['full'] );
+								?>
+								<img src="<?php echo esc_url( $thumb_src ); ?>" alt="<?php echo esc_attr( $img['alt'] ); ?>"/>
+							</button>
+						<?php endforeach; ?>
+					</div>
+					<button type="button" class="rs-adv-thumbs-nav rs-adv-thumbs-next" aria-label="<?php echo esc_attr__( 'Scroll thumbnails next', 'rs-elementor-widgets' ); ?>" tabindex="0">
+						<span aria-hidden="true">&#10095;</span>
+					</button>
 				</div>
 				<?php if ( ! empty( $settings['inline_navigation'] ) && 'yes' === $settings['inline_navigation'] ) : ?>
 					<div class="rs-adv-main-wrap">
