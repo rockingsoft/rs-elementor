@@ -313,7 +313,7 @@ class RS_Elementor_Widget_Variation_Chooser extends \Elementor\Widget_Base {
 					'library' => 'fa-solid',
 				),
 				'condition' => array(
-					'style_type'        => 'thumbnails',
+					'style_type'         => 'thumbnails',
 					'thumbs_single_line' => 'yes',
 				),
 			)
@@ -329,7 +329,7 @@ class RS_Elementor_Widget_Variation_Chooser extends \Elementor\Widget_Base {
 					'library' => 'fa-solid',
 				),
 				'condition' => array(
-					'style_type'        => 'thumbnails',
+					'style_type'         => 'thumbnails',
 					'thumbs_single_line' => 'yes',
 				),
 			)
@@ -348,12 +348,15 @@ class RS_Elementor_Widget_Variation_Chooser extends \Elementor\Widget_Base {
 						'max' => 72,
 					),
 				),
-				'default'    => array( 'size' => 22, 'unit' => 'px' ),
+				'default'    => array(
+					'size' => 22,
+					'unit' => 'px',
+				),
 				'selectors'  => array(
 					'{{WRAPPER}}' => '--rs-varc-nav-size: {{SIZE}}{{UNIT}};',
 				),
 				'condition'  => array(
-					'style_type'        => 'thumbnails',
+					'style_type'         => 'thumbnails',
 					'thumbs_single_line' => 'yes',
 				),
 			)
@@ -374,7 +377,7 @@ class RS_Elementor_Widget_Variation_Chooser extends \Elementor\Widget_Base {
 					'{{WRAPPER}}' => '--rs-varc-nav-bg: {{VALUE}};',
 				),
 				'condition' => array(
-					'style_type'        => 'thumbnails',
+					'style_type'         => 'thumbnails',
 					'thumbs_single_line' => 'yes',
 				),
 			)
@@ -388,7 +391,7 @@ class RS_Elementor_Widget_Variation_Chooser extends \Elementor\Widget_Base {
 					'{{WRAPPER}}' => '--rs-varc-nav-color: {{VALUE}};',
 				),
 				'condition' => array(
-					'style_type'        => 'thumbnails',
+					'style_type'         => 'thumbnails',
 					'thumbs_single_line' => 'yes',
 				),
 			)
@@ -402,7 +405,7 @@ class RS_Elementor_Widget_Variation_Chooser extends \Elementor\Widget_Base {
 					'{{WRAPPER}}' => '--rs-varc-nav-border-color: {{VALUE}};',
 				),
 				'condition' => array(
-					'style_type'        => 'thumbnails',
+					'style_type'         => 'thumbnails',
 					'thumbs_single_line' => 'yes',
 				),
 			)
@@ -422,7 +425,7 @@ class RS_Elementor_Widget_Variation_Chooser extends \Elementor\Widget_Base {
 					'{{WRAPPER}}' => '--rs-varc-nav-bg-hover: {{VALUE}};',
 				),
 				'condition' => array(
-					'style_type'        => 'thumbnails',
+					'style_type'         => 'thumbnails',
 					'thumbs_single_line' => 'yes',
 				),
 			)
@@ -436,7 +439,7 @@ class RS_Elementor_Widget_Variation_Chooser extends \Elementor\Widget_Base {
 					'{{WRAPPER}}' => '--rs-varc-nav-color-hover: {{VALUE}};',
 				),
 				'condition' => array(
-					'style_type'        => 'thumbnails',
+					'style_type'         => 'thumbnails',
 					'thumbs_single_line' => 'yes',
 				),
 			)
@@ -450,7 +453,7 @@ class RS_Elementor_Widget_Variation_Chooser extends \Elementor\Widget_Base {
 					'{{WRAPPER}}' => '--rs-varc-nav-border-color-hover: {{VALUE}};',
 				),
 				'condition' => array(
-					'style_type'        => 'thumbnails',
+					'style_type'         => 'thumbnails',
 					'thumbs_single_line' => 'yes',
 				),
 			)
@@ -470,7 +473,7 @@ class RS_Elementor_Widget_Variation_Chooser extends \Elementor\Widget_Base {
 					'{{WRAPPER}}' => '--rs-varc-nav-bg-disabled: {{VALUE}};',
 				),
 				'condition' => array(
-					'style_type'        => 'thumbnails',
+					'style_type'         => 'thumbnails',
 					'thumbs_single_line' => 'yes',
 				),
 			)
@@ -484,7 +487,7 @@ class RS_Elementor_Widget_Variation_Chooser extends \Elementor\Widget_Base {
 					'{{WRAPPER}}' => '--rs-varc-nav-color-disabled: {{VALUE}};',
 				),
 				'condition' => array(
-					'style_type'        => 'thumbnails',
+					'style_type'         => 'thumbnails',
 					'thumbs_single_line' => 'yes',
 				),
 			)
@@ -498,7 +501,7 @@ class RS_Elementor_Widget_Variation_Chooser extends \Elementor\Widget_Base {
 					'{{WRAPPER}}' => '--rs-varc-nav-border-color-disabled: {{VALUE}};',
 				),
 				'condition' => array(
-					'style_type'        => 'thumbnails',
+					'style_type'         => 'thumbnails',
 					'thumbs_single_line' => 'yes',
 				),
 			)
