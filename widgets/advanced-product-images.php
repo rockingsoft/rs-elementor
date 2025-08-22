@@ -92,18 +92,34 @@ class RS_Elementor_Widget_Advanced_Product_Images extends \Elementor\Widget_Base
 			)
 		);
 
-		$this->add_control(
+		$this->add_responsive_control(
 			'thumbs_position',
 			array(
-				'label'   => esc_html__( 'Thumbnails Position', 'rs-elementor-widgets' ),
-				'type'    => \Elementor\Controls_Manager::SELECT,
-				'default' => 'left',
-				'options' => array(
-					'left'   => esc_html__( 'Left', 'rs-elementor-widgets' ),
-					'right'  => esc_html__( 'Right', 'rs-elementor-widgets' ),
-					'top'    => esc_html__( 'Top', 'rs-elementor-widgets' ),
-					'bottom' => esc_html__( 'Bottom', 'rs-elementor-widgets' ),
+				'label'              => esc_html__( 'Thumbnails Position', 'rs-elementor-widgets' ),
+				'type'               => \Elementor\Controls_Manager::CHOOSE,
+				'options'            => array(
+					'left'   => array(
+						'title' => esc_html__( 'Left', 'rs-elementor-widgets' ),
+						'icon'  => 'eicon-h-align-left',
+					),
+					'top'    => array(
+						'title' => esc_html__( 'Top', 'rs-elementor-widgets' ),
+						'icon'  => 'eicon-v-align-top',
+					),
+					'right'  => array(
+						'title' => esc_html__( 'Right', 'rs-elementor-widgets' ),
+						'icon'  => 'eicon-h-align-right',
+					),
+					'bottom' => array(
+						'title' => esc_html__( 'Bottom', 'rs-elementor-widgets' ),
+						'icon'  => 'eicon-v-align-bottom',
+					),
 				),
+				'default'            => 'left',
+				'tablet_default'     => 'bottom',
+				'mobile_default'     => 'bottom',
+				'toggle'             => false,
+				'frontend_available' => true,
 			)
 		);
 
@@ -172,6 +188,194 @@ class RS_Elementor_Widget_Advanced_Product_Images extends \Elementor\Widget_Base
 
 		$this->end_controls_section();
 
+		// Styles: Modal buttons (colors via CSS variables) with tabs.
+		$this->start_controls_section(
+			'section_style_modal',
+			array(
+				'label' => esc_html__( 'Modal', 'rs-elementor-widgets' ),
+				'tab'   => \Elementor\Controls_Manager::TAB_STYLE,
+			)
+		);
+
+		// Editor preview helpers.
+		$this->add_control(
+			'modal_preview_heading',
+			array(
+				'label'     => esc_html__( 'Editor Preview', 'rs-elementor-widgets' ),
+				'type'      => \Elementor\Controls_Manager::HEADING,
+				'separator' => 'before',
+			)
+		);
+
+		$this->add_control(
+			'modal_preview_open',
+			array(
+				'label'        => esc_html__( 'Force open modal in editor', 'rs-elementor-widgets' ),
+				'description'  => esc_html__( 'Editor-only: opens the modal in the preview so you can style it.', 'rs-elementor-widgets' ),
+				'type'         => \Elementor\Controls_Manager::SWITCHER,
+				'label_on'     => esc_html__( 'Yes', 'rs-elementor-widgets' ),
+				'label_off'    => esc_html__( 'No', 'rs-elementor-widgets' ),
+				'return_value' => 'yes',
+				'default'      => 'no',
+			)
+		);
+
+		$this->add_control(
+			'modal_buttons_heading',
+			array(
+				'label'     => esc_html__( 'Modal Buttons', 'rs-elementor-widgets' ),
+				'type'      => \Elementor\Controls_Manager::HEADING,
+				'separator' => 'before',
+			)
+		);
+
+		// Modal button size.
+		$this->add_responsive_control(
+			'modal_btn_size',
+			array(
+				'label'      => esc_html__( 'Button Size', 'rs-elementor-widgets' ),
+				'type'       => \Elementor\Controls_Manager::SLIDER,
+				'size_units' => array( 'px' ),
+				'range'      => array(
+					'px' => array(
+						'min' => 20,
+						'max' => 96,
+					),
+				),
+				'default'    => array(
+					'size' => 44,
+					'unit' => 'px',
+				),
+				'selectors'  => array(
+					'{{WRAPPER}}' => '--rs-modal-btn-size: {{SIZE}}{{UNIT}};',
+				),
+			)
+		);
+
+		// Modal navigation icons (use Elementor icon chooser).
+		$this->add_control(
+			'modal_prev_icon',
+			array(
+				'label'   => esc_html__( 'Previous Icon', 'rs-elementor-widgets' ),
+				'type'    => \Elementor\Controls_Manager::ICONS,
+				'default' => array(
+					'value'   => 'fas fa-chevron-left',
+					'library' => 'fa-solid',
+				),
+			)
+		);
+
+		$this->add_control(
+			'modal_next_icon',
+			array(
+				'label'   => esc_html__( 'Next Icon', 'rs-elementor-widgets' ),
+				'type'    => \Elementor\Controls_Manager::ICONS,
+				'default' => array(
+					'value'   => 'fas fa-chevron-right',
+					'library' => 'fa-solid',
+				),
+			)
+		);
+
+		$this->add_control(
+			'modal_close_icon',
+			array(
+				'label'   => esc_html__( 'Close Icon', 'rs-elementor-widgets' ),
+				'type'    => \Elementor\Controls_Manager::ICONS,
+				'default' => array(
+					'value'   => 'fas fa-times',
+					'library' => 'fa-solid',
+				),
+			)
+		);
+
+		$this->start_controls_tabs( 'tabs_modal_buttons' );
+
+		// Normal state.
+		$this->start_controls_tab(
+			'tab_modal_buttons_normal',
+			array( 'label' => esc_html__( 'Normal', 'rs-elementor-widgets' ) )
+		);
+		$this->add_control(
+			'modal_btn_bg',
+			array(
+				'label'     => esc_html__( 'Background', 'rs-elementor-widgets' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}}' => '--rs-modal-btn-bg: {{VALUE}};',
+				),
+			)
+		);
+		$this->add_control(
+			'modal_btn_color',
+			array(
+				'label'     => esc_html__( 'Text/Icon', 'rs-elementor-widgets' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}}' => '--rs-modal-btn-color: {{VALUE}};',
+				),
+			)
+		);
+		$this->end_controls_tab();
+
+		// Hover state.
+		$this->start_controls_tab(
+			'tab_modal_buttons_hover',
+			array( 'label' => esc_html__( 'Hover', 'rs-elementor-widgets' ) )
+		);
+		$this->add_control(
+			'modal_btn_bg_hover',
+			array(
+				'label'     => esc_html__( 'Background', 'rs-elementor-widgets' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}}' => '--rs-modal-btn-bg-hover: {{VALUE}};',
+				),
+			)
+		);
+		$this->add_control(
+			'modal_btn_color_hover',
+			array(
+				'label'     => esc_html__( 'Text/Icon', 'rs-elementor-widgets' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}}' => '--rs-modal-btn-color-hover: {{VALUE}};',
+				),
+			)
+		);
+		$this->end_controls_tab();
+
+		// Active state.
+		$this->start_controls_tab(
+			'tab_modal_buttons_active',
+			array( 'label' => esc_html__( 'Active', 'rs-elementor-widgets' ) )
+		);
+		$this->add_control(
+			'modal_btn_bg_active',
+			array(
+				'label'     => esc_html__( 'Background', 'rs-elementor-widgets' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}}' => '--rs-modal-btn-bg-active: {{VALUE}};',
+				),
+			)
+		);
+		$this->add_control(
+			'modal_btn_color_active',
+			array(
+				'label'     => esc_html__( 'Text/Icon', 'rs-elementor-widgets' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}}' => '--rs-modal-btn-color-active: {{VALUE}};',
+				),
+			)
+		);
+		$this->end_controls_tab();
+
+		$this->end_controls_tabs();
+
+		$this->end_controls_section();
+
 		// Behavior: Click action for main image.
 		$this->start_controls_section(
 			'section_behaviour',
@@ -217,68 +421,351 @@ class RS_Elementor_Widget_Advanced_Product_Images extends \Elementor\Widget_Base
 		);
 
 		$this->add_control(
-			'inline_prev_icon_class',
+			'inline_prev_icon',
 			array(
-				'label'       => esc_html__( 'Prev Icon Class', 'rs-elementor-widgets' ),
-				'type'        => \Elementor\Controls_Manager::TEXT,
-				'placeholder' => 'fas fa-chevron-left',
-				'default'     => 'fas fa-chevron-left',
+				'label'   => esc_html__( 'Previous Icon', 'rs-elementor-widgets' ),
+				'type'    => \Elementor\Controls_Manager::ICONS,
+				'default' => array(
+					'value'   => 'fas fa-chevron-left',
+					'library' => 'fa-solid',
+				),
 			)
 		);
 
 		$this->add_control(
-			'inline_next_icon_class',
+			'inline_next_icon',
 			array(
-				'label'       => esc_html__( 'Next Icon Class', 'rs-elementor-widgets' ),
-				'type'        => \Elementor\Controls_Manager::TEXT,
-				'placeholder' => 'fas fa-chevron-right',
-				'default'     => 'fas fa-chevron-right',
+				'label'   => esc_html__( 'Next Icon', 'rs-elementor-widgets' ),
+				'type'    => \Elementor\Controls_Manager::ICONS,
+				'default' => array(
+					'value'   => 'fas fa-chevron-right',
+					'library' => 'fa-solid',
+				),
 			)
 		);
 
+		$this->add_control(
+			'inline_buttons_heading',
+			array(
+				'label'     => esc_html__( 'Inline Navigation Buttons', 'rs-elementor-widgets' ),
+				'type'      => \Elementor\Controls_Manager::HEADING,
+				'separator' => 'before',
+			)
+		);
+
+		// Inline button size.
+		$this->add_responsive_control(
+			'inline_btn_size',
+			array(
+				'label'      => esc_html__( 'Button Size', 'rs-elementor-widgets' ),
+				'type'       => \Elementor\Controls_Manager::SLIDER,
+				'size_units' => array( 'px' ),
+				'range'      => array(
+					'px' => array(
+						'min' => 20,
+						'max' => 96,
+					),
+				),
+				'default'    => array(
+					'size' => 40,
+					'unit' => 'px',
+				),
+				'selectors'  => array(
+					'{{WRAPPER}}' => '--rs-inline-btn-size: {{SIZE}}{{UNIT}};',
+				),
+			)
+		);
+
+		$this->start_controls_tabs( 'tabs_inline_buttons' );
+
+		// Normal state.
+		$this->start_controls_tab(
+			'tab_inline_buttons_normal',
+			array( 'label' => esc_html__( 'Normal', 'rs-elementor-widgets' ) )
+		);
 		$this->add_control(
 			'inline_nav_bg',
 			array(
-				'label'     => esc_html__( 'Button Background', 'rs-elementor-widgets' ),
+				'label'     => esc_html__( 'Background', 'rs-elementor-widgets' ),
 				'type'      => \Elementor\Controls_Manager::COLOR,
 				'selectors' => array(
-					'{{WRAPPER}} .rs-adv-inline-btn' => 'background-color: {{VALUE}};',
+					'{{WRAPPER}}' => '--rs-inline-btn-bg: {{VALUE}};',
 				),
 			)
 		);
-
 		$this->add_control(
 			'inline_nav_color',
 			array(
-				'label'     => esc_html__( 'Icon Color', 'rs-elementor-widgets' ),
+				'label'     => esc_html__( 'Text/Icon', 'rs-elementor-widgets' ),
 				'type'      => \Elementor\Controls_Manager::COLOR,
 				'selectors' => array(
-					'{{WRAPPER}} .rs-adv-inline-btn' => 'color: {{VALUE}};',
+					'{{WRAPPER}}' => '--rs-inline-btn-color: {{VALUE}};',
 				),
 			)
 		);
+		$this->end_controls_tab();
 
+		// Hover state.
+		$this->start_controls_tab(
+			'tab_inline_buttons_hover',
+			array( 'label' => esc_html__( 'Hover', 'rs-elementor-widgets' ) )
+		);
+		$this->add_control(
+			'inline_nav_bg_hover',
+			array(
+				'label'     => esc_html__( 'Background', 'rs-elementor-widgets' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}}' => '--rs-inline-btn-bg-hover: {{VALUE}};',
+				),
+			)
+		);
+		$this->add_control(
+			'inline_nav_color_hover',
+			array(
+				'label'     => esc_html__( 'Text/Icon', 'rs-elementor-widgets' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}}' => '--rs-inline-btn-color-hover: {{VALUE}};',
+				),
+			)
+		);
+		$this->end_controls_tab();
+
+		// Disabled state.
+		$this->start_controls_tab(
+			'tab_inline_buttons_disabled',
+			array( 'label' => esc_html__( 'Disabled', 'rs-elementor-widgets' ) )
+		);
 		$this->add_control(
 			'inline_nav_bg_disabled',
 			array(
-				'label'     => esc_html__( 'Disabled Background', 'rs-elementor-widgets' ),
+				'label'     => esc_html__( 'Background', 'rs-elementor-widgets' ),
 				'type'      => \Elementor\Controls_Manager::COLOR,
 				'selectors' => array(
-					'{{WRAPPER}} .rs-adv-inline-btn.is-disabled' => 'background-color: {{VALUE}};',
+					'{{WRAPPER}}' => '--rs-inline-btn-bg-disabled: {{VALUE}};',
+				),
+			)
+		);
+		$this->add_control(
+			'inline_nav_color_disabled',
+			array(
+				'label'     => esc_html__( 'Text/Icon', 'rs-elementor-widgets' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}}' => '--rs-inline-btn-color-disabled: {{VALUE}};',
+				),
+			)
+		);
+		$this->end_controls_tab();
+
+		$this->end_controls_tabs();
+
+		$this->end_controls_section();
+
+		// Styles: Thumbnails.
+		$this->start_controls_section(
+			'section_style_thumbs',
+			array(
+				'label' => esc_html__( 'Thumbnails', 'rs-elementor-widgets' ),
+				'tab'   => \Elementor\Controls_Manager::TAB_STYLE,
+			)
+		);
+
+		$this->add_group_control(
+			\Elementor\Group_Control_Border::get_type(),
+			array(
+				'name'     => 'thumb_border',
+				'label'    => esc_html__( 'Border', 'rs-elementor-widgets' ),
+				'selector' => '{{WRAPPER}} .rs-adv-thumb',
+			)
+		);
+
+		$this->add_control(
+			'thumb_border_radius',
+			array(
+				'label'      => esc_html__( 'Border Radius', 'rs-elementor-widgets' ),
+				'type'       => \Elementor\Controls_Manager::DIMENSIONS,
+				'size_units' => array( 'px', '%', 'em', 'rem' ),
+				'selectors'  => array(
+					'{{WRAPPER}} .rs-adv-thumb'     => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} .rs-adv-modal-img' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				),
 			)
 		);
 
 		$this->add_control(
-			'inline_nav_color_disabled',
+			'thumb_active_border_color',
 			array(
-				'label'     => esc_html__( 'Disabled Icon Color', 'rs-elementor-widgets' ),
+				'label'     => esc_html__( 'Border Color (Active)', 'rs-elementor-widgets' ),
 				'type'      => \Elementor\Controls_Manager::COLOR,
+				'default'   => '#0073aa',
 				'selectors' => array(
-					'{{WRAPPER}} .rs-adv-inline-btn.is-disabled' => 'color: {{VALUE}};',
+					'{{WRAPPER}} .rs-adv-thumb.is-active' => 'border-color: {{VALUE}};',
+				),
+				'condition' => array(
+					'thumb_border_border!' => '',
 				),
 			)
 		);
+
+		$this->end_controls_section();
+
+		// Styles: Thumbnails Navigation (scroll arrows next to thumbs).
+		$this->start_controls_section(
+			'section_style_thumbs_nav',
+			array(
+				'label' => esc_html__( 'Thumbnails Navigation', 'rs-elementor-widgets' ),
+				'tab'   => \Elementor\Controls_Manager::TAB_STYLE,
+			)
+		);
+
+		$this->add_control(
+			'thumbs_nav_buttons_heading',
+			array(
+				'label'     => esc_html__( 'Thumbs Nav Buttons', 'rs-elementor-widgets' ),
+				'type'      => \Elementor\Controls_Manager::HEADING,
+				'separator' => 'before',
+			)
+		);
+
+		// Thumbnails nav button size.
+		$this->add_responsive_control(
+			'thumbs_nav_size',
+			array(
+				'label'      => esc_html__( 'Button Size', 'rs-elementor-widgets' ),
+				'type'       => \Elementor\Controls_Manager::SLIDER,
+				'size_units' => array( 'px' ),
+				'range'      => array(
+					'px' => array(
+						'min' => 20,
+						'max' => 72,
+					),
+				),
+				'default'    => array(
+					'size' => 36,
+					'unit' => 'px',
+				),
+				'selectors'  => array(
+					'{{WRAPPER}}' => '--rs-thumb-nav-size: {{SIZE}}{{UNIT}};',
+				),
+			)
+		);
+
+		$this->start_controls_tabs( 'tabs_thumbs_nav_buttons' );
+
+		// Normal state.
+		$this->start_controls_tab(
+			'tab_thumbs_nav_buttons_normal',
+			array( 'label' => esc_html__( 'Normal', 'rs-elementor-widgets' ) )
+		);
+		$this->add_control(
+			'thumbs_nav_bg',
+			array(
+				'label'     => esc_html__( 'Background', 'rs-elementor-widgets' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}}' => '--rs-thumb-nav-bg: {{VALUE}};',
+				),
+			)
+		);
+		$this->add_control(
+			'thumbs_nav_color',
+			array(
+				'label'     => esc_html__( 'Text/Icon', 'rs-elementor-widgets' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}}' => '--rs-thumb-nav-color: {{VALUE}};',
+				),
+			)
+		);
+		$this->add_control(
+			'thumbs_border_color',
+			array(
+				'label'     => esc_html__( 'Border Color', 'rs-elementor-widgets' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}}' => '--rs-thumb-nav-border-color: {{VALUE}};',
+				),
+			)
+		);
+		$this->end_controls_tab();
+
+		// Hover state.
+		$this->start_controls_tab(
+			'tab_thumbs_nav_buttons_hover',
+			array( 'label' => esc_html__( 'Hover', 'rs-elementor-widgets' ) )
+		);
+		$this->add_control(
+			'thumbs_nav_bg_hover',
+			array(
+				'label'     => esc_html__( 'Background', 'rs-elementor-widgets' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}}' => '--rs-thumb-nav-bg-hover: {{VALUE}};',
+				),
+			)
+		);
+		$this->add_control(
+			'thumbs_nav_color_hover',
+			array(
+				'label'     => esc_html__( 'Text/Icon', 'rs-elementor-widgets' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}}' => '--rs-thumb-nav-color-hover: {{VALUE}};',
+				),
+			)
+		);
+		$this->add_control(
+			'thumbs_border_color_hover',
+			array(
+				'label'     => esc_html__( 'Border Color', 'rs-elementor-widgets' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}}' => '--rs-thumb-nav-border-color-hover: {{VALUE}};',
+				),
+			)
+		);
+		$this->end_controls_tab();
+
+		// Disabled state.
+		$this->start_controls_tab(
+			'tab_thumbs_nav_buttons_disabled',
+			array( 'label' => esc_html__( 'Disabled', 'rs-elementor-widgets' ) )
+		);
+		$this->add_control(
+			'thumbs_nav_bg_disabled',
+			array(
+				'label'     => esc_html__( 'Background', 'rs-elementor-widgets' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}}' => '--rs-thumb-nav-bg-disabled: {{VALUE}};',
+				),
+			)
+		);
+		$this->add_control(
+			'thumbs_nav_color_disabled',
+			array(
+				'label'     => esc_html__( 'Text/Icon', 'rs-elementor-widgets' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}}' => '--rs-thumb-nav-color-disabled: {{VALUE}};',
+				),
+			)
+		);
+		$this->add_control(
+			'thumbs_border_color_disabled',
+			array(
+				'label'     => esc_html__( 'Border Color', 'rs-elementor-widgets' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}}' => '--rs-thumb-nav-border-color-disabled: {{VALUE}};',
+				),
+			)
+		);
+		$this->end_controls_tab();
+
+		$this->end_controls_tabs();
 
 		$this->end_controls_section();
 
@@ -308,30 +795,7 @@ class RS_Elementor_Widget_Advanced_Product_Images extends \Elementor\Widget_Base
 					),
 				),
 				'selectors'  => array(
-					'{{WRAPPER}} .rs-adv-main' => 'height: {{SIZE}}{{UNIT}};',
-					'{{WRAPPER}} .rs-adv-main .rs-adv-main-img' => 'height: 100%;',
-				),
-			)
-		);
-
-		$this->add_responsive_control(
-			'main_max_height',
-			array(
-				'label'      => esc_html__( 'Max Height', 'rs-elementor-widgets' ),
-				'type'       => \Elementor\Controls_Manager::SLIDER,
-				'size_units' => array( 'px', 'vh' ),
-				'range'      => array(
-					'px' => array(
-						'min' => 100,
-						'max' => 1200,
-					),
-					'vh' => array(
-						'min' => 10,
-						'max' => 100,
-					),
-				),
-				'selectors'  => array(
-					'{{WRAPPER}} .rs-adv-main' => '--rs-main-max: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}}' => '--rs-main-image-height: {{SIZE}}{{UNIT}};',
 				),
 			)
 		);
@@ -439,7 +903,6 @@ class RS_Elementor_Widget_Advanced_Product_Images extends \Elementor\Widget_Base
 		}
 
 		$settings                 = $this->get_settings_for_display();
-		$thumbs_position          = $settings['thumbs_position'];
 		$thumb_size               = isset( $settings['thumb_size'] ) ? (int) $settings['thumb_size'] : 80;
 		$thumb_gap                = isset( $settings['thumb_gap'] ) ? (int) $settings['thumb_gap'] : 8;
 		$include_variation_images = ( ! isset( $settings['include_variation_images'] ) ) || ( 'yes' === $settings['include_variation_images'] );
@@ -546,9 +1009,27 @@ class RS_Elementor_Widget_Advanced_Product_Images extends \Elementor\Widget_Base
 		}
 
 		$widget_id         = 'rs-adv-images-' . $this->get_id();
-		$allowed_positions = array( 'left', 'right', 'top', 'bottom' );
-		$pos               = in_array( $thumbs_position, $allowed_positions, true ) ? $thumbs_position : 'left';
-		$container_classes = 'rs-adv-images layout-' . $pos . ( $hide_thumbnails ? ' hide-thumbs' : '' );
+		$container_classes = array( 'rs-adv-images' );
+		if ( $hide_thumbnails ) {
+			$container_classes[] = 'hide-thumbs';
+		}
+
+		// Responsive classes for thumbnail position.
+		$positions = array(
+			'desktop' => ! empty( $settings['thumbs_position'] ) ? $settings['thumbs_position'] : 'left',
+			'tablet'  => ! empty( $settings['thumbs_position_tablet'] ) ? $settings['thumbs_position_tablet'] : '',
+			'mobile'  => ! empty( $settings['thumbs_position_mobile'] ) ? $settings['thumbs_position_mobile'] : '',
+		);
+
+		$container_classes[] = 'layout-desktop-' . $positions['desktop'];
+		if ( $positions['tablet'] ) {
+			$container_classes[] = 'layout-tablet-' . $positions['tablet'];
+		}
+		if ( $positions['mobile'] ) {
+			$container_classes[] = 'layout-mobile-' . $positions['mobile'];
+		}
+
+		$container_classes = implode( ' ', $container_classes );
 		$var_map_json      = wp_json_encode( $variation_index_map );
 		$click_action      = isset( $settings['click_action'] ) ? $settings['click_action'] : 'modal';
 		$click_url         = '';
@@ -579,20 +1060,37 @@ class RS_Elementor_Widget_Advanced_Product_Images extends \Elementor\Widget_Base
 		?>
 		<div id="<?php echo esc_attr( $widget_id ); ?>" class="<?php echo esc_attr( $container_classes ); ?>" data-variation-map="<?php echo esc_attr( $var_map_json ); ?>" data-click-action="<?php echo esc_attr( $click_action ); ?>" data-click-url="<?php echo esc_url( $click_url ); ?>" data-click-new-tab="<?php echo esc_attr( $click_new_tab ); ?>">
 			<div class="rs-adv-images-inner">
-				<div class="rs-adv-thumbs" style="--thumb-size: <?php echo (int) $thumb_size; ?>px; --thumb-gap: <?php echo (int) $thumb_gap; ?>px;"<?php echo $hide_thumbnails ? ' aria-hidden="true"' : ''; ?>>
-					<?php foreach ( $images as $index => $img ) : ?>
-						<button type="button" class="rs-adv-thumb<?php echo ( 0 === (int) $index ) ? ' is-active' : ''; ?>" data-index="<?php echo (int) $index; ?>" data-full="<?php echo esc_url( $img['full'] ); ?>" data-large="<?php echo esc_url( $img['large'] ); ?>">
-							<?php
-							$thumb_src = $img['thumb'] ? $img['thumb'] : ( $img['large'] ? $img['large'] : $img['full'] );
-							?>
-							<img src="<?php echo esc_url( $thumb_src ); ?>" alt="<?php echo esc_attr( $img['alt'] ); ?>"/>
-						</button>
-					<?php endforeach; ?>
+				<div class="rs-adv-thumbs-wrap">
+					<button type="button" class="rs-adv-thumbs-nav rs-adv-thumbs-prev" aria-label="<?php echo esc_attr__( 'Scroll thumbnails previous', 'rs-elementor-widgets' ); ?>" tabindex="0">
+						<i class="fas fa-chevron-left icon-h" aria-hidden="true"></i>
+						<i class="fas fa-chevron-up icon-v" aria-hidden="true"></i>
+					</button>
+					<div class="rs-adv-thumbs" style="--thumb-size: <?php echo (int) $thumb_size; ?>px; --thumb-gap: <?php echo (int) $thumb_gap; ?>px;">
+						<?php foreach ( $images as $index => $img ) : ?>
+							<button type="button" class="rs-adv-thumb<?php echo ( 0 === (int) $index ) ? ' is-active' : ''; ?>" data-index="<?php echo (int) $index; ?>" data-full="<?php echo esc_url( $img['full'] ); ?>" data-large="<?php echo esc_url( $img['large'] ); ?>">
+								<?php
+								$thumb_src = $img['thumb'] ? $img['thumb'] : ( $img['large'] ? $img['large'] : $img['full'] );
+								?>
+								<img src="<?php echo esc_url( $thumb_src ); ?>" alt="<?php echo esc_attr( $img['alt'] ); ?>"/>
+							</button>
+						<?php endforeach; ?>
+					</div>
+					<button type="button" class="rs-adv-thumbs-nav rs-adv-thumbs-next" aria-label="<?php echo esc_attr__( 'Scroll thumbnails next', 'rs-elementor-widgets' ); ?>" tabindex="0">
+						<i class="fas fa-chevron-right icon-h" aria-hidden="true"></i>
+						<i class="fas fa-chevron-down icon-v" aria-hidden="true"></i>
+					</button>
 				</div>
 				<?php if ( ! empty( $settings['inline_navigation'] ) && 'yes' === $settings['inline_navigation'] ) : ?>
 					<div class="rs-adv-main-wrap">
 						<button type="button" class="rs-adv-inline-btn rs-adv-inline-prev" aria-label="<?php echo esc_attr__( 'Previous image', 'rs-elementor-widgets' ); ?>" aria-disabled="true">
-							<i class="<?php echo esc_attr( $settings['inline_prev_icon_class'] ?? 'fas fa-chevron-left' ); ?>" aria-hidden="true"></i>
+							<?php
+							if ( ! empty( $settings['inline_prev_icon'] ) && ! empty( $settings['inline_prev_icon']['value'] ) ) {
+								\Elementor\Icons_Manager::render_icon( $settings['inline_prev_icon'], array( 'aria-hidden' => 'true' ) );
+							} else {
+								$prev_class = $settings['inline_prev_icon_class'] ?? 'fas fa-chevron-left';
+								echo '<i class="' . esc_attr( $prev_class ) . '" aria-hidden="true"></i>';
+							}
+							?>
 						</button>
 						<div class="rs-adv-main" role="button" tabindex="0" aria-label="<?php echo esc_attr__( 'Open image in fullscreen', 'rs-elementor-widgets' ); ?>">
 							<?php
@@ -607,7 +1105,14 @@ class RS_Elementor_Widget_Advanced_Product_Images extends \Elementor\Widget_Base
 							<?php endif; ?>
 						</div>
 						<button type="button" class="rs-adv-inline-btn rs-adv-inline-next" aria-label="<?php echo esc_attr__( 'Next image', 'rs-elementor-widgets' ); ?>" aria-disabled="<?php echo count( $images ) > 1 ? 'false' : 'true'; ?>">
-							<i class="<?php echo esc_attr( $settings['inline_next_icon_class'] ?? 'fas fa-chevron-right' ); ?>" aria-hidden="true"></i>
+							<?php
+							if ( ! empty( $settings['inline_next_icon'] ) && ! empty( $settings['inline_next_icon']['value'] ) ) {
+								\Elementor\Icons_Manager::render_icon( $settings['inline_next_icon'], array( 'aria-hidden' => 'true' ) );
+							} else {
+								$next_class = $settings['inline_next_icon_class'] ?? 'fas fa-chevron-right';
+								echo '<i class="' . esc_attr( $next_class ) . '" aria-hidden="true"></i>';
+							}
+							?>
 						</button>
 					</div>
 				<?php else : ?>
@@ -626,16 +1131,47 @@ class RS_Elementor_Widget_Advanced_Product_Images extends \Elementor\Widget_Base
 				<?php endif; ?>
 			</div>
 
-			<div class="rs-adv-modal" aria-hidden="true">
+			<?php
+			$in_editor = false;
+			if ( class_exists( '\\Elementor\\Plugin' ) && isset( \Elementor\Plugin::$instance ) && \Elementor\Plugin::$instance ) {
+				$editor = \Elementor\Plugin::$instance->editor ?? null;
+				if ( $editor && method_exists( $editor, 'is_edit_mode' ) ) {
+					$in_editor = (bool) $editor->is_edit_mode();
+				}
+			}
+			$force_open = $in_editor && ! empty( $settings['modal_preview_open'] ) && 'yes' === $settings['modal_preview_open'];
+			?>
+		<div class="rs-adv-modal<?php echo $force_open ? ' is-preview-open' : ''; ?>" aria-hidden="<?php echo $force_open ? 'false' : 'true'; ?>">
 				<div class="rs-adv-modal-backdrop"></div>
 				<div class="rs-adv-modal-content" role="dialog" aria-modal="true" aria-label="<?php echo esc_attr__( 'Product image viewer', 'rs-elementor-widgets' ); ?>">
-					<button type="button" class="rs-adv-modal-close" aria-label="<?php echo esc_attr__( 'Close', 'rs-elementor-widgets' ); ?>">&times;</button>
+					<button type="button" class="rs-adv-modal-close" aria-label="<?php echo esc_attr__( 'Close', 'rs-elementor-widgets' ); ?>">
+						<?php
+						if ( ! empty( $settings['modal_close_icon'] ) && ! empty( $settings['modal_close_icon']['value'] ) ) {
+							\Elementor\Icons_Manager::render_icon( $settings['modal_close_icon'], array( 'aria-hidden' => 'true' ) );
+						} else {
+							// Fallback to a default Font Awesome icon or a typographic ×.
+							echo '<i class="fas fa-times" aria-hidden="true"></i>';
+						}
+						?>
+					</button>
 					<button type="button" class="rs-adv-nav rs-adv-prev" aria-label="<?php echo esc_attr__( 'Previous image', 'rs-elementor-widgets' ); ?>">
-						<i class="fas fa-chevron-left" aria-hidden="true"></i>
+						<?php
+						if ( ! empty( $settings['modal_prev_icon'] ) && ! empty( $settings['modal_prev_icon']['value'] ) ) {
+							\Elementor\Icons_Manager::render_icon( $settings['modal_prev_icon'], array( 'aria-hidden' => 'true' ) );
+						} else {
+							echo '<i class="fas fa-chevron-left" aria-hidden="true"></i>';
+						}
+						?>
 					</button>
 					<img class="rs-adv-modal-img" src="<?php echo esc_url( $images[0]['full'] ); ?>" alt=""/>
 					<button type="button" class="rs-adv-nav rs-adv-next" aria-label="<?php echo esc_attr__( 'Next image', 'rs-elementor-widgets' ); ?>">
-						<i class="fas fa-chevron-right" aria-hidden="true"></i>
+						<?php
+						if ( ! empty( $settings['modal_next_icon'] ) && ! empty( $settings['modal_next_icon']['value'] ) ) {
+							\Elementor\Icons_Manager::render_icon( $settings['modal_next_icon'], array( 'aria-hidden' => 'true' ) );
+						} else {
+							echo '<i class="fas fa-chevron-right" aria-hidden="true"></i>';
+						}
+						?>
 					</button>
 				</div>
 			</div>

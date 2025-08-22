@@ -1,11 +1,24 @@
-/* RS Variation Chooser */
+/* RS Variation Chooser
+   ------------------------------------------------------------------
+   Sections
+   1) Base / Resets
+   2) Parent container helpers (Elementor/Woo)
+   3) Basic controls (label/select)
+   4) Thumbnails grid and items
+   5) Single-line carousel mode (arrows)
+   6) Uniform sizing mode
+   7) Accessibility and tooltip overrides
+   8) Fallbacks
+   9) Notices / Woo defaults / Editor-only
+------------------------------------------------------------------- */
+
+/* 1) Base / Resets ------------------------------------------------ */
 .rs-variation-chooser {
   display: block;
   max-width: 100%;
   width: 100%;
   min-width: 0;
   overflow: hidden;
-  contain: inline-size;
 }
 
 /* Ensure any descendants don't create intrinsic min-content width that enlarges the card */
@@ -15,7 +28,8 @@
   box-sizing: border-box;
 }
 
-/* Help parent containers (Elementor/WooCommerce) allow shrinking when this widget is inside */
+/* 2) Parent container helpers (Elementor/Woo) --------------------- */
+/* Help parent containers allow shrinking when this widget is inside */
 .elementor-widget:has(.rs-variation-chooser),
 .elementor-widget-container:has(.rs-variation-chooser),
 .elementor-column:has(.rs-variation-chooser),
@@ -27,6 +41,7 @@
   width: auto !important;
 }
 
+/* 3) Basic controls (label/select) -------------------------------- */
 .rs-variation-chooser .rs-varc-label {
   display: block;
   margin-bottom: 6px;
@@ -39,7 +54,8 @@
   padding: 6px 8px;
 }
 
-/* Thumbnails layout */
+/* 4) Thumbnails grid and items ----------------------------------- */
+/* Grid */
 .rs-variation-chooser .rs-varc-thumbs {
   display: flex;
   flex-wrap: wrap;
@@ -48,11 +64,12 @@
   min-width: 0;
 }
 
+/* Item */
 .rs-variation-chooser .rs-varc-thumb {
-  border: 1px solid #ddd;
+  border: 1px solid #e3e6ea;
   background: #fff;
   padding: 6px;
-  border-radius: 6px;
+  border-radius: 10px;
   cursor: pointer;
   outline: none;
   display: flex;
@@ -62,40 +79,48 @@
   appearance: none;
 }
 
-.rs-variation-chooser .rs-varc-thumb:hover {
-  background: #fff;
-  color: inherit;
-  border-color: #bbb;
-  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.04);
-}
-
-.rs-variation-chooser .rs-varc-thumb.is-active {
-  border-color: #2271b1;
-  box-shadow: 0 0 0 2px rgba(34, 113, 177, 0.15);
-}
-
+/* Interactive states */
+.rs-variation-chooser .rs-varc-thumb:hover,
 .rs-variation-chooser .rs-varc-thumb:focus,
 .rs-variation-chooser .rs-varc-thumb:focus-visible,
-.rs-variation-chooser .rs-varc-thumb:active,
-.rs-variation-chooser .rs-varc-thumb:hover {
+.rs-variation-chooser .rs-varc-thumb:active {
   background: #fff;
   outline: none;
 }
 
+.rs-variation-chooser .rs-varc-thumb:hover {
+  color: inherit;
+  border-color: #c9ced6;
+}
+
+.rs-variation-chooser .rs-varc-thumb.is-active {
+  border-color: #2271b1;
+}
+
+/* Focus ring color unified for all variants */
+.rs-variation-chooser .rs-varc-thumb:focus-visible {
+  outline: none;
+  border-color: #2271b1;
+}
+
+/* Image */
 .rs-variation-chooser .rs-varc-thumb img {
   display: block;
   width: 56px;
   height: 56px;
-  object-fit: cover;
+  object-fit: contain;
+  object-position: center !important;
   border-radius: 4px;
 }
 
+/* Fallback content (when no image) */
 .rs-variation-chooser .rs-varc-thumb-fallback {
   display: inline-block;
   padding: 8px 10px;
   font-size: 13px;
 }
 
+/* Name label below image */
 .rs-variation-chooser .rs-varc-thumb-name {
   display: block;
   margin-top: 6px;
@@ -107,26 +132,103 @@
   overflow-wrap: anywhere;
 }
 
-/* Single-line thumbnails with arrows */
-.rs-variation-chooser .rs-varc-thumbs-wrap.rs-varc-singleline { position: relative; display: block; max-width: 100%; width: 100%; min-width: 0; overflow: hidden; padding-inline: 28px; }
-.rs-variation-chooser .rs-varc-thumbs-wrap.rs-varc-singleline .rs-varc-thumbs { width: 100%; min-width: 0; display: flex; flex-wrap: nowrap; overflow-x: auto; gap: 8px; scroll-behavior: smooth; -webkit-overflow-scrolling: touch; -ms-overflow-style: none; scrollbar-width: none; }
+/* 5) Single-line carousel mode (arrows) --------------------------- */
+.rs-variation-chooser .rs-varc-thumbs-wrap.rs-varc-singleline {
+  position: relative;
+  display: block;
+  max-width: 100%;
+  width: 100%;
+  min-width: 0;
+  overflow: hidden;
+  padding-inline: 28px;
+}
+
+.rs-variation-chooser .rs-varc-thumbs-wrap.rs-varc-singleline .rs-varc-thumbs {
+  width: 100%;
+  min-width: 0;
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  gap: 8px;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  padding: 5px;
+}
+
 /* Hide scrollbar in WebKit */
-.rs-variation-chooser .rs-varc-thumbs-wrap.rs-varc-singleline .rs-varc-thumbs::-webkit-scrollbar { display: none; height: 0; width: 0; }
-.rs-variation-chooser .rs-varc-thumbs-wrap.rs-varc-singleline .rs-varc-thumb { flex: 0 0 auto; }
-.rs-variation-chooser .rs-varc-thumbs-wrap.rs-varc-singleline .rs-varc-nav { position: absolute; top: 50%; transform: translateY(-50%); width: 22px; height: 22px; border-radius: 50%; border: 1px solid #d9dfe6; background: #fff; color: #333; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; padding: 0; line-height: 1; z-index: 2; font-size: 13px; }
-.rs-variation-chooser .rs-varc-thumbs-wrap.rs-varc-singleline .rs-varc-prev { left: 3px; }
-.rs-variation-chooser .rs-varc-thumbs-wrap.rs-varc-singleline .rs-varc-next { right: 3px; }
+.rs-variation-chooser .rs-varc-thumbs-wrap.rs-varc-singleline .rs-varc-thumbs::-webkit-scrollbar {
+  display: none;
+  height: 0;
+  width: 0;
+}
+
+.rs-variation-chooser .rs-varc-thumbs-wrap.rs-varc-singleline .rs-varc-thumb {
+  flex: 0 0 auto;
+}
+
+/* Arrow buttons */
+.rs-variation-chooser .rs-varc-thumbs-wrap.rs-varc-singleline .rs-varc-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: var(--rs-varc-nav-size, 22px);
+  height: var(--rs-varc-nav-size, 22px);
+  border-radius: 50%;
+  border: 1px solid var(--rs-varc-nav-border-color, #d9dfe6);
+  background: var(--rs-varc-nav-bg, #fff);
+  color: var(--rs-varc-nav-color, #333);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  line-height: 1;
+  z-index: 2;
+  font-size: 13px;
+}
+
+/* Hide state */
+.rs-variation-chooser .rs-varc-thumbs-wrap.rs-varc-singleline .rs-varc-nav.is-hidden {
+  display: none !important;
+}
+
+.rs-variation-chooser .rs-varc-thumbs-wrap.rs-varc-singleline .rs-varc-nav svg {
+  width: calc(var(--rs-varc-nav-size, 22px) * var(--rs-varc-nav-icon-scale, 0.45));
+  height: calc(var(--rs-varc-nav-size, 22px) * var(--rs-varc-nav-icon-scale, 0.45));
+}
+
+.rs-variation-chooser .rs-varc-thumbs-wrap.rs-varc-singleline .rs-varc-prev {
+  left: 3px;
+}
+
+.rs-variation-chooser .rs-varc-thumbs-wrap.rs-varc-singleline .rs-varc-next {
+  right: 3px;
+}
 
 .rs-variation-chooser .rs-varc-thumbs-wrap.rs-varc-singleline .rs-varc-nav:hover {
-  background: #f5f7fa;
-  border-color: #cbd3dd;
+  background: var(--rs-varc-nav-bg-hover, #f5f7fa);
+  border-color: var(--rs-varc-nav-border-color-hover, #cbd3dd);
+  color: var(--rs-varc-nav-color-hover, inherit);
 }
 
 .rs-variation-chooser .rs-varc-thumbs-wrap.rs-varc-singleline .rs-varc-nav:active {
-  transform: translateY(1px);
+  transform: translateY(-50%) translateY(1px);
 }
 
-/* Uniform sizing mode: keep all thumbs same width & height, and gracefully clamp labels */
+/* Disabled state */
+.rs-variation-chooser .rs-varc-thumbs-wrap.rs-varc-singleline .rs-varc-nav[aria-disabled="true"],
+.rs-variation-chooser .rs-varc-thumbs-wrap.rs-varc-singleline .rs-varc-nav:disabled {
+  background: var(--rs-varc-nav-bg-disabled, #fff);
+  color: var(--rs-varc-nav-color-disabled, #999);
+  border-color: var(--rs-varc-nav-border-color-disabled, #e2e6ec);
+  cursor: default;
+  opacity: .6;
+}
+
+/* 6) Uniform sizing mode ----------------------------------------- */
+/* Keep all thumbs same width/height and clamp labels gracefully */
 .rs-variation-chooser.rs-varc-uniform .rs-varc-thumbs {
   align-items: stretch;
 }
@@ -140,10 +242,6 @@
   position: relative;
   aspect-ratio: 1 / 1;
   padding: 8px;
-  border-radius: 10px;
-  border: 1px solid #e3e6ea;
-  background: #fff;
-  transition: box-shadow .18s ease, border-color .18s ease, transform .12s ease;
 }
 
 .rs-variation-chooser.rs-varc-uniform .rs-varc-thumb img {
@@ -154,22 +252,13 @@
   display: block;
 }
 
-.rs-variation-chooser.rs-varc-uniform .rs-varc-thumb.is-active {
-  border-color: #2271b1;
-  box-shadow: 0 0 0 2px rgba(34, 113, 177, 0.15);
-}
+/* relies on base .rs-varc-thumb.is-active */
 
 .rs-variation-chooser.rs-varc-uniform .rs-varc-thumb:hover {
-  border-color: #c9ced6;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
   transform: translateY(-1px);
 }
 
-.rs-variation-chooser.rs-varc-uniform .rs-varc-thumb:focus-visible {
-  outline: none;
-  box-shadow: 0 0 0 2px rgba(34, 113, 177, 0.25);
-  border-color: #2271b1;
-}
+/* relies on base :focus-visible styling */
 
 /* Bottom caption overlay */
 .rs-variation-chooser.rs-varc-uniform .rs-varc-thumb .rs-varc-thumb-name {
@@ -196,6 +285,7 @@
   /* ~3 lines */
 }
 
+/* 7) Accessibility and tooltip overrides ------------------------- */
 /* Tooltips disabled intentionally */
 .rs-variation-chooser .rs-varc-thumb:hover::after,
 .rs-variation-chooser .rs-varc-thumb:focus-visible::after,
@@ -206,6 +296,7 @@
   content: none !important;
 }
 
+/* 8) Fallbacks ---------------------------------------------------- */
 /* Fallback single-line ellipsis if multi-line clamp unsupported */
 @supports not (-webkit-line-clamp: 2) {
   .rs-variation-chooser.rs-varc-uniform .rs-varc-thumb .rs-varc-thumb-name {
@@ -217,6 +308,7 @@
   }
 }
 
+/* 9) Notices / Woo defaults / Editor-only ------------------------ */
 /* Notices */
 .rs-varc-notice {
   padding: 10px;
@@ -236,4 +328,16 @@ form.variations_form.rs-varc-hide-defaults .variations,
 .variations_form.rs-varc-hide-defaults .single_variation,
 .variations_form.rs-varc-hide-defaults .woocommerce-variation {
   display: block;
+}
+
+/* Editor-only: hide Woo default variation selectors when our chooser is on the canvas
+   and within the same Elementor widget/container/column. This prevents the duplicate
+   "Model" dropdown from showing while designing. */
+.elementor-editor-active .elementor-widget:has(.rs-variation-chooser) .variations_form .variations,
+.elementor-editor-active .elementor-widget-container:has(.rs-variation-chooser) .variations_form .variations,
+.elementor-editor-active .elementor-column:has(.rs-variation-chooser) .variations_form .variations,
+.elementor-editor-active .elementor-widget:has(.rs-variation-chooser) .variations_form .reset_variations,
+.elementor-editor-active .elementor-widget-container:has(.rs-variation-chooser) .variations_form .reset_variations,
+.elementor-editor-active .elementor-column:has(.rs-variation-chooser) .variations_form .reset_variations {
+  display: none !important;
 }

@@ -302,6 +302,214 @@ class RS_Elementor_Widget_Variation_Chooser extends \Elementor\Widget_Base {
 			)
 		);
 
+		// Thumbs single-line navigation icons and styles (follow Advanced Product Images patterns).
+		$this->add_control(
+			'nav_prev_icon',
+			array(
+				'label'     => esc_html__( 'Prev Icon', 'rs-elementor-widgets' ),
+				'type'      => \Elementor\Controls_Manager::ICONS,
+				'default'   => array(
+					'value'   => 'fas fa-chevron-left',
+					'library' => 'fa-solid',
+				),
+				'condition' => array(
+					'style_type'         => 'thumbnails',
+					'thumbs_single_line' => 'yes',
+				),
+			)
+		);
+
+		$this->add_control(
+			'nav_next_icon',
+			array(
+				'label'     => esc_html__( 'Next Icon', 'rs-elementor-widgets' ),
+				'type'      => \Elementor\Controls_Manager::ICONS,
+				'default'   => array(
+					'value'   => 'fas fa-chevron-right',
+					'library' => 'fa-solid',
+				),
+				'condition' => array(
+					'style_type'         => 'thumbnails',
+					'thumbs_single_line' => 'yes',
+				),
+			)
+		);
+
+		// Size and colors via CSS variables for single-line nav buttons.
+		$this->add_responsive_control(
+			'nav_btn_size',
+			array(
+				'label'      => esc_html__( 'Nav Button Size', 'rs-elementor-widgets' ),
+				'type'       => \Elementor\Controls_Manager::SLIDER,
+				'size_units' => array( 'px' ),
+				'range'      => array(
+					'px' => array(
+						'min' => 20,
+						'max' => 72,
+					),
+				),
+				'default'    => array(
+					'size' => 22,
+					'unit' => 'px',
+				),
+				'selectors'  => array(
+					'{{WRAPPER}}' => '--rs-varc-nav-size: {{SIZE}}{{UNIT}};',
+				),
+				'condition'  => array(
+					'style_type'         => 'thumbnails',
+					'thumbs_single_line' => 'yes',
+				),
+			)
+		);
+
+		$this->start_controls_tabs( 'tabs_varc_nav_buttons' );
+
+		$this->start_controls_tab(
+			'tab_varc_nav_buttons_normal',
+			array( 'label' => esc_html__( 'Normal', 'rs-elementor-widgets' ) )
+		);
+		$this->add_control(
+			'nav_btn_bg',
+			array(
+				'label'     => esc_html__( 'Background', 'rs-elementor-widgets' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}}' => '--rs-varc-nav-bg: {{VALUE}};',
+				),
+				'condition' => array(
+					'style_type'         => 'thumbnails',
+					'thumbs_single_line' => 'yes',
+				),
+			)
+		);
+		$this->add_control(
+			'nav_btn_color',
+			array(
+				'label'     => esc_html__( 'Text/Icon', 'rs-elementor-widgets' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}}' => '--rs-varc-nav-color: {{VALUE}};',
+				),
+				'condition' => array(
+					'style_type'         => 'thumbnails',
+					'thumbs_single_line' => 'yes',
+				),
+			)
+		);
+		$this->add_control(
+			'nav_btn_border_color',
+			array(
+				'label'     => esc_html__( 'Border Color', 'rs-elementor-widgets' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}}' => '--rs-varc-nav-border-color: {{VALUE}};',
+				),
+				'condition' => array(
+					'style_type'         => 'thumbnails',
+					'thumbs_single_line' => 'yes',
+				),
+			)
+		);
+		$this->end_controls_tab();
+
+		$this->start_controls_tab(
+			'tab_varc_nav_buttons_hover',
+			array( 'label' => esc_html__( 'Hover', 'rs-elementor-widgets' ) )
+		);
+		$this->add_control(
+			'nav_btn_bg_hover',
+			array(
+				'label'     => esc_html__( 'Background', 'rs-elementor-widgets' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}}' => '--rs-varc-nav-bg-hover: {{VALUE}};',
+				),
+				'condition' => array(
+					'style_type'         => 'thumbnails',
+					'thumbs_single_line' => 'yes',
+				),
+			)
+		);
+		$this->add_control(
+			'nav_btn_color_hover',
+			array(
+				'label'     => esc_html__( 'Text/Icon', 'rs-elementor-widgets' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}}' => '--rs-varc-nav-color-hover: {{VALUE}};',
+				),
+				'condition' => array(
+					'style_type'         => 'thumbnails',
+					'thumbs_single_line' => 'yes',
+				),
+			)
+		);
+		$this->add_control(
+			'nav_btn_border_color_hover',
+			array(
+				'label'     => esc_html__( 'Border Color', 'rs-elementor-widgets' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}}' => '--rs-varc-nav-border-color-hover: {{VALUE}};',
+				),
+				'condition' => array(
+					'style_type'         => 'thumbnails',
+					'thumbs_single_line' => 'yes',
+				),
+			)
+		);
+		$this->end_controls_tab();
+
+		$this->start_controls_tab(
+			'tab_varc_nav_buttons_disabled',
+			array( 'label' => esc_html__( 'Disabled', 'rs-elementor-widgets' ) )
+		);
+		$this->add_control(
+			'nav_btn_bg_disabled',
+			array(
+				'label'     => esc_html__( 'Background', 'rs-elementor-widgets' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}}' => '--rs-varc-nav-bg-disabled: {{VALUE}};',
+				),
+				'condition' => array(
+					'style_type'         => 'thumbnails',
+					'thumbs_single_line' => 'yes',
+				),
+			)
+		);
+		$this->add_control(
+			'nav_btn_color_disabled',
+			array(
+				'label'     => esc_html__( 'Text/Icon', 'rs-elementor-widgets' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}}' => '--rs-varc-nav-color-disabled: {{VALUE}};',
+				),
+				'condition' => array(
+					'style_type'         => 'thumbnails',
+					'thumbs_single_line' => 'yes',
+				),
+			)
+		);
+		$this->add_control(
+			'nav_btn_border_color_disabled',
+			array(
+				'label'     => esc_html__( 'Border Color', 'rs-elementor-widgets' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}}' => '--rs-varc-nav-border-color-disabled: {{VALUE}};',
+				),
+				'condition' => array(
+					'style_type'         => 'thumbnails',
+					'thumbs_single_line' => 'yes',
+				),
+			)
+		);
+		$this->end_controls_tab();
+
+		$this->end_controls_tabs();
+
 		$this->add_responsive_control(
 			'uniform_thumb_square',
 			array(
@@ -506,7 +714,9 @@ class RS_Elementor_Widget_Variation_Chooser extends \Elementor\Widget_Base {
 		} elseif ( 'thumbnails' === $style_type ) {
 			if ( $single_line_nav ) {
 				echo '<div class="rs-varc-thumbs-wrap rs-varc-singleline">';
-				echo '<button type="button" class="rs-varc-nav rs-varc-prev" aria-label="' . esc_attr__( 'Previous variation', 'rs-elementor-widgets' ) . '">‹</button>';
+				echo '<button type="button" class="rs-varc-nav rs-varc-prev" aria-label="' . esc_attr__( 'Previous variation', 'rs-elementor-widgets' ) . '" aria-disabled="true">';
+				\Elementor\Icons_Manager::render_icon( $settings['nav_prev_icon'], array( 'aria-hidden' => 'true' ) );
+				echo '</button>';
 				echo '<div class="rs-varc-thumbs" role="list">';
 			} else {
 				echo '<div class="rs-varc-thumbs" role="list">';
@@ -536,7 +746,9 @@ class RS_Elementor_Widget_Variation_Chooser extends \Elementor\Widget_Base {
 			}
 			echo '</div>';
 			if ( $single_line_nav ) {
-				echo '<button type="button" class="rs-varc-nav rs-varc-next" aria-label="' . esc_attr__( 'Next variation', 'rs-elementor-widgets' ) . '">›</button>';
+				echo '<button type="button" class="rs-varc-nav rs-varc-next" aria-label="' . esc_attr__( 'Next variation', 'rs-elementor-widgets' ) . '" aria-disabled="true">';
+				\Elementor\Icons_Manager::render_icon( $settings['nav_next_icon'], array( 'aria-hidden' => 'true' ) );
+				echo '</button>';
 				echo '</div>';
 			}
 		}
