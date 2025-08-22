@@ -124,9 +124,6 @@ class RS_Elementor_Widget_Advanced_Add_To_Cart extends \Elementor\Widget_Base {
 				'label_off'    => esc_html__( 'No', 'rs-elementor-widgets' ),
 				'return_value' => 'yes',
 				'default'      => '',
-				'selectors'    => array(
-					'{{WRAPPER}} .rs-advanced-add-to-cart .stock' => 'display: none !important;',
-				),
 			)
 		);
 
@@ -494,6 +491,9 @@ class RS_Elementor_Widget_Advanced_Add_To_Cart extends \Elementor\Widget_Base {
 		$wrapper_classes   .= ( function_exists( 'is_product' ) && is_product() ) ? ' rs-context-single' : ' rs-context-loop';
 		if ( function_exists( 'is_product' ) && is_product() && $hide_wc_variations ) {
 			$wrapper_classes .= ' rs-hide-wc-variations';
+		}
+		if ( 'yes' === $settings['hide_stock_notices'] ) {
+			$wrapper_classes .= ' rs-hide-stock-notices';
 		}
 
 		echo '<div class="' . esc_attr( $wrapper_classes ) . '">';

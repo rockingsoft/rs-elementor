@@ -21,3 +21,7 @@
 .rs-advanced-add-to-cart.rs-context-loop form.cart {
   border: 0 !important;
 }
+
+.rs-hide-stock-notices .stock {
+  display: none !important;
+}
